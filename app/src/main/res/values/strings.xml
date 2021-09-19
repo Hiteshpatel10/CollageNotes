@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Collage Notes</string>
+
+    //Navigation
+    <string name="DashboardNav">dashboardNav</string>
+    <string name="FilterNav">FilterNav</string>
+</resources>

@@ -1,0 +1,9 @@
+package com.geekaid.collagenotes.navigation
+
+import com.geekaid.collagenotes.R
+
+sealed class Screens(val route: String) {
+
+    object DashboardNav: Screens(R.string.DashboardNav.toString())
+    object FilterNav: Screens(R.string.FilterNav.toString())
+}
