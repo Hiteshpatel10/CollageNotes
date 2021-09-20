@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -68,4 +69,8 @@ dependencies {
 
     //Compose Navigation
     implementation("androidx.navigation:navigation-compose:$compose_navigation")
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation 'com.google.firebase:firebase-storage'
 }

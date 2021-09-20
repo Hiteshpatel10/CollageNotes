@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "972672133160",
+    "project_id": "collage-notes-6ad3e",
+    "storage_bucket": "collage-notes-6ad3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972672133160:android:01db909421503f05efed1d",
+        "android_client_info": {
+          "package_name": "com.geekaid.collagenotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972672133160-5oj1iiapkkvojefbcd7tfpotuvmf7k75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClq7pbiBNNY4GjQCRm9Shmnkg7osB3YTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972672133160-5oj1iiapkkvojefbcd7tfpotuvmf7k75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
