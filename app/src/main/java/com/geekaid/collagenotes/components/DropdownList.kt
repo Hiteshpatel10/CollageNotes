@@ -53,6 +53,7 @@ fun dropdownList(list: List<String>, label: String): String {
             list.forEach { label ->
                 DropdownMenuItem(onClick = {
                     selectedText = label
+                    expanded = false
                 }) {
                     Text(text = label)
                 }

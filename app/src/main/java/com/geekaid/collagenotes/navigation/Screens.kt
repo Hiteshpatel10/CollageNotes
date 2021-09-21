@@ -6,4 +6,5 @@ sealed class Screens(val route: String) {
 
     object DashboardNav: Screens(R.string.DashboardNav.toString())
     object FilterNav: Screens(R.string.FilterNav.toString())
+    object DownloadedScreenNav: Screens(R.string.DownloadedNotesNav.toString())
 }

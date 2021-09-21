@@ -1,16 +1,15 @@
 package com.geekaid.collagenotes.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.ui.screens.DashboardScreen
+import com.geekaid.collagenotes.ui.screens.DownloadedNoteScreen
 import com.geekaid.collagenotes.ui.screens.FilterScreen
 
 @Composable
-fun Navigation() {
-
-    val navController = rememberNavController()
+fun Navigation(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Screens.FilterNav.route) {
 
@@ -20,5 +19,10 @@ fun Navigation() {
         composable(Screens.FilterNav.route) {
             FilterScreen()
         }
+
+        composable(Screens.DownloadedScreenNav.route) {
+            DownloadedNoteScreen()
+        }
+
     }
 }

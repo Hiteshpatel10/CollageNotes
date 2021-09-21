@@ -29,13 +29,23 @@ fun FilterScreen() {
             "BTech" -> {
                 branch = dropdownList(list = branchList, label = "Branch")
                 year = dropdownList(list = yearList, label = "Year")
-                semester = dropdownList(list = semesterList, label = "Semester")
             }
+        }
+
+        when(year){
+            "1 year" ->  semester = dropdownList(list = semesterList1, label = "Semester")
+            "2 year" ->  semester = dropdownList(list = semesterList2, label = "Semester")
+            "3 year" ->  semester = dropdownList(list = semesterList3, label = "Semester")
+            "4 year" ->  semester = dropdownList(list = semesterList4, label = "Semester")
         }
 
         when (branch) {
             "Computer Science" -> dropdownList(list = csSubjectList, label = "Subject")
         }
+
+
+
+
 
 
 
