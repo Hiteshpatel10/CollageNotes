@@ -10,6 +10,6 @@ import com.geekaid.collagenotes.components.NoteLayout
 @Composable
 fun DashboardScreen() {
     Column(modifier = Modifier.padding(4.dp)) {
-        NoteLayout()
+        NoteLayout(modifier = Modifier)
     }
 }

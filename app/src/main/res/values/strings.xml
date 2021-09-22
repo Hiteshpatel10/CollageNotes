@@ -5,6 +5,7 @@
     <string name="DashboardNav">dashboardNav</string>
     <string name="FilterNav">FilterNav</string>
     <string name="DownloadedNotesNav">DownloadedNotesNav</string>
+    <string name="UploadNav">UploadNav</string>
 
 
 </resources>

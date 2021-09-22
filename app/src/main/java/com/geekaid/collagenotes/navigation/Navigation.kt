@@ -7,11 +7,12 @@ import androidx.navigation.compose.composable
 import com.geekaid.collagenotes.ui.screens.DashboardScreen
 import com.geekaid.collagenotes.ui.screens.DownloadedNoteScreen
 import com.geekaid.collagenotes.ui.screens.FilterScreen
+import com.geekaid.collagenotes.ui.screens.UploadScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = Screens.FilterNav.route) {
+    NavHost(navController = navController, startDestination = Screens.DashboardNav.route) {
 
         composable(Screens.DashboardNav.route) {
             DashboardScreen()
@@ -19,9 +20,11 @@ fun Navigation(navController: NavHostController) {
         composable(Screens.FilterNav.route) {
             FilterScreen()
         }
-
         composable(Screens.DownloadedScreenNav.route) {
             DownloadedNoteScreen()
+        }
+        composable(Screens.UploadScreenNav.route) {
+            UploadScreen()
         }
 
     }

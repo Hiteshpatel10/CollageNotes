@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.navigation.Screens
@@ -25,6 +26,10 @@ fun BottomNav(navController: NavHostController) {
 
         IconButton(onClick = { navController.navigate(Screens.DownloadedScreenNav.route) }) {
             Icon(Icons.Filled.Download, contentDescription = "Downloaded Files" )
+        }
+
+        IconButton(onClick = { navController.navigate(Screens.UploadScreenNav.route) }) {
+            Icon(Icons.Filled.UploadFile, contentDescription = "Downloaded Files" )
         }
     }
 }
