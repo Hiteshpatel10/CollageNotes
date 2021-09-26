@@ -6,7 +6,7 @@
     <string name="FilterNav">FilterNav</string>
     <string name="DownloadedNotesNav">DownloadedNotesNav</string>
     <string name="UploadNav">UploadNav</string>
-    <string name="OTPVerifyNav">OTPVerifyNav</string>
+    <string name="SignInNav">SignInNav</string>
     <string name="SignUpNav">SignUpNav</string>
 
 

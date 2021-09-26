@@ -23,14 +23,12 @@ import com.geekaid.collagenotes.components.passwordVisible
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
-fun SignUpScreen(navController: NavHostController) {
+fun SignInScreen(navController: NavHostController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
     var passwordVisibility by remember { mutableStateOf(false) }
-    var confirmPasswordVisibility by remember { mutableStateOf(false) }
+
 
     val context = LocalContext.current
 
@@ -43,6 +41,7 @@ fun SignUpScreen(navController: NavHostController) {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             trailingIcon = {
                 Icon(Icons.Filled.Email, contentDescription = "Email")
             },
@@ -55,7 +54,9 @@ fun SignUpScreen(navController: NavHostController) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            trailingIcon = { passwordVisibility = passwordVisible() },
+            trailingIcon = {
+                passwordVisibility = passwordVisible()
+            },
             visualTransformation = if (passwordVisibility) VisualTransformation.None
             else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -64,25 +65,13 @@ fun SignUpScreen(navController: NavHostController) {
                 .padding(8.dp)
         )
 
-        OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            label = { Text("Confirm Password") },
-            trailingIcon = { confirmPasswordVisibility = passwordVisible() },
-            visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None
-            else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
+        Spacer(modifier = Modifier.padding(8.dp))
 
         Button(
             onClick = {
-//                registerValidate(
+//                loginValidate(
 //                    email = email,
 //                    password = password,
-//                    confirmPassword = confirmPassword,
 //                    context = context,
 //                    navController = navController
 //                )
@@ -93,7 +82,21 @@ fun SignUpScreen(navController: NavHostController) {
                 .padding(8.dp)
         )
         {
-            Text(text = "Sign Up")
+            Text(text = "Log In")
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(4.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Text(text = "Forgotten your login details?")
+            ClickableText(
+                text = AnnotatedString(" Get help Signing in"),
+                onClick = {
+//                    navController.navigate(Screens.ForgotPassword.route)
+                }
+            )
         }
 
         Box(
@@ -106,14 +109,16 @@ fun SignUpScreen(navController: NavHostController) {
                 modifier = Modifier
                     .padding(4.dp)
             ) {
-                Text(text = "Already have an account?")
+                Text(text = "Don't have an account?")
                 ClickableText(
-                    text = AnnotatedString(" Log In"),
+                    text = AnnotatedString(" Sign Up"),
                     onClick = {
-                        navController.navigate(Screens.SignInNav.route)
+                        navController.navigate(Screens.SignUpNav.route)
                     }
                 )
             }
         }
+
+
     }
 }

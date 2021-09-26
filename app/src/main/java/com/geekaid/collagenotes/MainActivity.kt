@@ -10,8 +10,12 @@ import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.components.BottomNav
 import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
+    val auth = Firebase.auth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -19,7 +23,11 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
-                        bottomBar = { BottomNav(navController) }
+                        bottomBar = {
+                            if (auth.currentUser != null) {
+                                BottomNav(navController)
+                            }
+                        }
                     ) {
                         Navigation(navController)
                     }
