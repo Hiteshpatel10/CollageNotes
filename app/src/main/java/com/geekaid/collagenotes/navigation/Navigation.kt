@@ -4,17 +4,29 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.geekaid.collagenotes.ui.auth.OTPVerifyScreen
+import com.geekaid.collagenotes.ui.auth.EmailVerificationScreen
+import com.geekaid.collagenotes.ui.auth.ForgotPassword
+import com.geekaid.collagenotes.ui.auth.SignInScreen
 import com.geekaid.collagenotes.ui.auth.SignUpScreen
 import com.geekaid.collagenotes.ui.screens.DashboardScreen
 import com.geekaid.collagenotes.ui.screens.DownloadedNoteScreen
 import com.geekaid.collagenotes.ui.screens.FilterScreen
 import com.geekaid.collagenotes.ui.screens.UploadScreen
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun Navigation(navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = Screens.DashboardNav.route) {
+    val auth = Firebase.auth
+
+    val startDestination = if (auth.currentUser != null && auth.currentUser!!.isEmailVerified)
+        Screens.DashboardNav.route
+    else
+        Screens.SignInNav.route
+
+
+    NavHost(navController = navController, startDestination = startDestination) {
 
         composable(Screens.DashboardNav.route) {
             DashboardScreen()
@@ -26,13 +38,19 @@ fun Navigation(navController: NavHostController) {
             DownloadedNoteScreen()
         }
         composable(Screens.UploadScreenNav.route) {
-            UploadScreen(navController)
+            UploadScreen(navController = navController)
         }
-        composable(Screens.OTPVerifyNav.route) {
-            OTPVerifyScreen(navController)
+        composable(Screens.SignInNav.route) {
+            SignInScreen(navController = navController)
         }
         composable(Screens.SignUpNav.route) {
-            SignUpScreen(navController)
+            SignUpScreen(navController = navController)
+        }
+        composable(Screens.ForgotPasswordNav.route) {
+            ForgotPassword(navController = navController)
+        }
+        composable(Screens.EmailVerificationNav.route) {
+            EmailVerificationScreen(navController = navController)
         }
 
     }

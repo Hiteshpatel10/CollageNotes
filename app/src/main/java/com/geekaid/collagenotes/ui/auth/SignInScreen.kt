@@ -20,19 +20,17 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.passwordVisible
-import com.geekaid.collagenotes.firebaseDao.authDao.registerUser
-import com.geekaid.collagenotes.model.SignUpModel
+import com.geekaid.collagenotes.firebaseDao.authDao.signInUser
+import com.geekaid.collagenotes.model.SignInModel
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
-fun SignUpScreen(navController: NavHostController) {
+fun SignInScreen(navController: NavHostController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-
     var passwordVisibility by remember { mutableStateOf(false) }
-    var confirmPasswordVisibility by remember { mutableStateOf(false) }
+
 
     val context = LocalContext.current
 
@@ -45,6 +43,7 @@ fun SignUpScreen(navController: NavHostController) {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             trailingIcon = {
                 Icon(Icons.Filled.Email, contentDescription = "Email")
             },
@@ -57,7 +56,9 @@ fun SignUpScreen(navController: NavHostController) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
-            trailingIcon = { passwordVisibility = passwordVisible() },
+            trailingIcon = {
+                passwordVisibility = passwordVisible()
+            },
             visualTransformation = if (passwordVisibility) VisualTransformation.None
             else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -66,22 +67,11 @@ fun SignUpScreen(navController: NavHostController) {
                 .padding(8.dp)
         )
 
-        OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            label = { Text("Confirm Password") },
-            trailingIcon = { confirmPasswordVisibility = passwordVisible() },
-            visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None
-            else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
+        Spacer(modifier = Modifier.padding(8.dp))
 
         Button(
             onClick = {
-                registerUser(context, SignUpModel(email,password, confirmPassword), navController)
+                signInUser(context, navController, SignInModel(email, password))
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier
@@ -89,7 +79,21 @@ fun SignUpScreen(navController: NavHostController) {
                 .padding(8.dp)
         )
         {
-            Text(text = "Sign Up")
+            Text(text = "Log In")
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(4.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Text(text = "Forgotten your login details?")
+            ClickableText(
+                text = AnnotatedString(" Get help Signing in"),
+                onClick = {
+                    navController.navigate(Screens.ForgotPasswordNav.route)
+                }
+            )
         }
 
         Box(
@@ -102,14 +106,15 @@ fun SignUpScreen(navController: NavHostController) {
                 modifier = Modifier
                     .padding(4.dp)
             ) {
-                Text(text = "Already have an account?")
+                Text(text = "Don't have an account?")
                 ClickableText(
-                    text = AnnotatedString(" Log In"),
+                    text = AnnotatedString(" Sign Up"),
                     onClick = {
-                        navController.navigate(Screens.SignInNav.route)
+                        navController.navigate(Screens.SignUpNav.route)
                     }
                 )
             }
         }
+
     }
 }
