@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
                         bottomBar = {
-                            if (auth.currentUser != null) {
+                            if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
                                 BottomNav(navController)
                             }
                         }

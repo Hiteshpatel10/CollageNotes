@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.passwordVisible
+import com.geekaid.collagenotes.firebaseDao.authDao.registerUser
+import com.geekaid.collagenotes.model.SignUpModel
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
@@ -79,13 +81,7 @@ fun SignUpScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-//                registerValidate(
-//                    email = email,
-//                    password = password,
-//                    confirmPassword = confirmPassword,
-//                    context = context,
-//                    navController = navController
-//                )
+                registerUser(context, SignUpModel(email,password, confirmPassword), navController)
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier

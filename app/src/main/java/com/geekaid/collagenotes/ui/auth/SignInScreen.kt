@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.passwordVisible
+import com.geekaid.collagenotes.firebaseDao.authDao.signInUser
+import com.geekaid.collagenotes.model.SignInModel
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
@@ -69,12 +71,7 @@ fun SignInScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-//                loginValidate(
-//                    email = email,
-//                    password = password,
-//                    context = context,
-//                    navController = navController
-//                )
+                signInUser(context, navController, SignInModel(email, password))
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier
@@ -94,7 +91,7 @@ fun SignInScreen(navController: NavHostController) {
             ClickableText(
                 text = AnnotatedString(" Get help Signing in"),
                 onClick = {
-//                    navController.navigate(Screens.ForgotPassword.route)
+                    navController.navigate(Screens.ForgotPasswordNav.route)
                 }
             )
         }
@@ -118,7 +115,6 @@ fun SignInScreen(navController: NavHostController) {
                 )
             }
         }
-
 
     }
 }
