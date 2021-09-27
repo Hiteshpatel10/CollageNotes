@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.geekaid.collagenotes.ui.auth.OTPVerifyScreen
+import com.geekaid.collagenotes.ui.auth.SignUpScreen
 import com.geekaid.collagenotes.ui.screens.DashboardScreen
 import com.geekaid.collagenotes.ui.screens.DownloadedNoteScreen
 import com.geekaid.collagenotes.ui.screens.FilterScreen
@@ -24,7 +26,13 @@ fun Navigation(navController: NavHostController) {
             DownloadedNoteScreen()
         }
         composable(Screens.UploadScreenNav.route) {
-            UploadScreen()
+            UploadScreen(navController)
+        }
+        composable(Screens.OTPVerifyNav.route) {
+            OTPVerifyScreen(navController)
+        }
+        composable(Screens.SignUpNav.route) {
+            SignUpScreen(navController)
         }
 
     }

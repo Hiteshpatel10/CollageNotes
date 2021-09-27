@@ -14,15 +14,15 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NoteLayout(modifier: Modifier) {
+    
     Card(modifier.padding(2.dp)) {
         Column(modifier.padding(4.dp)) {
-            Row() {
+            Row {
                 NoteDetails(modifier)
                 NoteSidebar(modifier)
             }
         }
     }
-
 }
 
 @Composable
@@ -32,13 +32,13 @@ fun NoteDetails(modifier: Modifier) {
         Spacer(modifier = Modifier.padding(2.dp))
         Text(text = "Format: Pdf")
         Spacer(modifier = Modifier.padding(2.dp))
-        Vote(modifier)
+        Vote(modifier.padding(top = 50.dp))
     }
 }
 
 @Composable
 fun NoteSidebar(modifier: Modifier) {
-    Column {
+    Column(modifier) {
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
@@ -55,14 +55,13 @@ fun NoteSidebar(modifier: Modifier) {
 
 @Composable
 fun Vote(modifier: Modifier) {
-    Row(modifier.padding(top = 50.dp)) {
+    Row(modifier) {
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.ThumbUp, contentDescription = "Upvote")
         }
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.ThumbDown, contentDescription = "Upvote")
         }
-
     }
 }
 
