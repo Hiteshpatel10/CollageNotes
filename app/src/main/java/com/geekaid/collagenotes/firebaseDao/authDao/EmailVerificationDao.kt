@@ -17,7 +17,7 @@ fun emailVerificationDao(context: Context, navController: NavHostController) {
             if (it.isSuccessful) {
                 Toast.makeText(context, "Email verification link send", Toast.LENGTH_SHORT).show()
                     .also {
-                        navController.navigate(Screens.DashboardNav.route)
+                        navController.navigate(Screens.SignInNav.route)
                     }
             }
         }
