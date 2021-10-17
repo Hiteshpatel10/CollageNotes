@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.util
 
 import android.content.Context
 import android.net.Uri
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.google.firebase.firestore.ktx.firestore
@@ -12,12 +13,17 @@ fun fileUpload(uri: Uri, context: Context, fileModel: FileUploadModel) {
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val locationRef =
-        storageRef.child(fileModel.course).child(fileModel.branch).child(fileModel.subject)
-            .child(fileModel.fileUploadPath)
     val firebaseFirestore = Firebase.firestore
-    val firestoreRef = firebaseFirestore.collection(fileModel.course).document(fileModel.branch)
-        .collection(fileModel.subject).document(fileModel.fileUploadPath)
+
+    val locationRef =
+        storageRef.child("courses").child(fileModel.course).child(fileModel.branch)
+            .child(fileModel.subject)
+            .child("notes")
+            .child(fileModel.fileUploadPath)
+    val firestoreRef = firebaseFirestore.collection("courses").document(fileModel.course)
+        .collection(fileModel.branch).document(fileModel.subject)
+        .collection("notes").document(fileModel.fileUploadPath)
+
 
     firestoreRef.get()
         .addOnCompleteListener { task ->
@@ -32,13 +38,16 @@ fun fileUpload(uri: Uri, context: Context, fileModel: FileUploadModel) {
                                 Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT).show()
                             }
                         }
+                        .addOnCompleteListener {
+                            Toast.makeText(context, it.result.toString(), Toast.LENGTH_LONG).show()
+                        }
                         .addOnFailureListener {
-                            Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                         }
                 }
             }
         }
         .addOnFailureListener {
-            Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
         }
 }

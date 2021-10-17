@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.*
 import com.google.firebase.auth.ktx.auth
@@ -31,6 +33,7 @@ fun FileUploadComponent(noteUri: String, context: Context) {
     var subject by remember { mutableStateOf("") }
     val filePath by remember { mutableStateOf("${uriResult.path}") }
     val fileMime by remember { mutableStateOf("$mime") }
+
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
