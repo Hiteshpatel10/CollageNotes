@@ -1,4 +1,4 @@
-package com.geekaid.collagenotes.util
+package com.geekaid.collagenotes.firebaseDao
 
 import android.content.Context
 import android.net.Uri
@@ -9,7 +9,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-fun fileUpload(uri: Uri, context: Context, fileModel: FileUploadModel) {
+fun fileUploadDao(uri: Uri, context: Context, fileModel: FileUploadModel) {
 
     val storage = Firebase.storage
     val storageRef = storage.reference
