@@ -1,21 +1,14 @@
 package com.geekaid.collagenotes.viewmodel
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.geekaid.collagenotes.model.FilterModel
 
 class DashboardViewModel() : ViewModel() {
 
-    val db = Firebase.firestore
-    val auth = Firebase.auth
+    var filter = mutableStateOf(FilterModel())
+    var courseList = mutableStateOf<ArrayList<FileUploadModel>>(arrayListOf())
 
-    val courseList: MutableState<ArrayList<FileUploadModel>> = mutableStateOf(arrayListOf())
-
-    init {
-//        db.collection(auth.currentUser?.email.toString()).
-    }
 }
