@@ -9,8 +9,9 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 
-fun dashboardDao(viewModel: DashboardViewModel) {
+fun dashboardDao(viewModel: DashboardViewModel, context: CoroutineScope) {
 
     val db = Firebase.firestore
     val auth = Firebase.auth
@@ -18,20 +19,20 @@ fun dashboardDao(viewModel: DashboardViewModel) {
 
     db.collection("Users").document(auth.currentUser?.email.toString())
         .collection("SearchFilter").document("FilterData")
-        .addSnapshotListener{ value, error ->
-            if(error != null){
+        .addSnapshotListener { value, error ->
+            if (error != null) {
                 return@addSnapshotListener
             }
 
             if (value != null && value.exists()) {
                 viewModel.filter.value = value.toObject<FilterModel>()!!
                 val filter = value.toObject<FilterModel>()!!
-                db.collection("courses").document("BTech")
+                db.collection("courses").document(filter.course)
                     .collection(filter.branch).document(filter.subject)
                     .collection("notes").addSnapshotListener { course, e ->
 
-                        if(e != null){
-                            Log.i("dow","${e.message}")
+                        if (e != null) {
+                            Log.i("dow", "${e.message}")
                         }
 
                         for (dc: DocumentChange in course?.documentChanges!!) {
@@ -42,8 +43,9 @@ fun dashboardDao(viewModel: DashboardViewModel) {
                         viewModel.courseList.value = courseList
                     }
             } else {
-                Log.i("notes","fhg f $value")
+                Log.i("notes", "fhg f $value")
             }
         }
 }
+
 

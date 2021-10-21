@@ -12,17 +12,17 @@ import com.geekaid.collagenotes.components.FileUploadComponent
 fun UploadScreen(navController: NavHostController) {
 
     val context = LocalContext.current
-    var bool by remember { mutableStateOf(true)}
-    var noteUri by remember { mutableStateOf("")}
+    var bool by remember { mutableStateOf(true) }
+    var noteUri by remember { mutableStateOf("") }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         bool = false
         noteUri = uri.toString()
     }
 
     if (bool) {
-        FileSelectComponent(launcher)
+        FileSelectComponent(launcher = launcher)
     } else {
-        FileUploadComponent(noteUri,context)
+        FileUploadComponent(noteUri = noteUri, context = context, navController = navController)
     }
 
 }

@@ -9,15 +9,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun FilterScreen() {
+fun FilterScreen(navController: NavHostController) {
 
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     var course by remember { mutableStateOf("") }
     var branch by remember { mutableStateOf("") }
@@ -39,14 +43,17 @@ fun FilterScreen() {
 
         Button(
             onClick = {
-                filterScreenDao(
-                    FilterModel(
-                        course = course,
-                        branch = branch,
-                        subject = subject
-                    ),
-                    context = context
-                )
+                scope.launch {
+                    filterScreenDao(
+                        FilterModel(
+                            course = course,
+                            branch = branch,
+                            subject = subject
+                        ),
+                        context = context,
+                        navController = navController
+                    )
+                }
             },
             modifier = Modifier
                 .padding(start = 128.dp, end = 128.dp, top = 16.dp)

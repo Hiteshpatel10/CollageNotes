@@ -6,28 +6,36 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.fileUploadDao
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.util.*
+import com.geekaid.collagenotes.util.branchList
+import com.geekaid.collagenotes.util.courseList
+import com.geekaid.collagenotes.util.csSubjectList
+import com.geekaid.collagenotes.util.yearList
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 @Composable
-fun FileUploadComponent(noteUri: String, context: Context) {
+fun FileUploadComponent(
+    noteUri: String,
+    context: Context,
+    navController: NavHostController,
+) {
 
     val auth = Firebase.auth
 
     val uriResult: Uri = Uri.parse(noteUri)
     val mime = context.contentResolver.getType(uriResult)
 
+    val scope = rememberCoroutineScope()
     var course by remember { mutableStateOf("") }
     var branch by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
@@ -75,19 +83,22 @@ fun FileUploadComponent(noteUri: String, context: Context) {
         }
 
         Button(onClick = {
-            fileUploadDao(
-                uriResult,
-                context,
-                FileUploadModel(
-                    branch = branch,
-                    course = course,
-                    fileMime = fileMime,
-                    fileName = uriResult.lastPathSegment.toString(),
-                    fileUploadPath = "${auth.currentUser?.email}${uriResult.lastPathSegment}",
-                    subject = subject,
-                    year = year,
+            scope.launch {
+                fileUploadDao(
+                    uriResult,
+                    context,
+                    FileUploadModel(
+                        branch = branch,
+                        course = course,
+                        fileMime = fileMime,
+                        fileName = uriResult.lastPathSegment.toString(),
+                        fileUploadPath = "${auth.currentUser?.email}${uriResult.lastPathSegment}",
+                        subject = subject,
+                        year = year,
+                    ),
+                    navController = navController
                 )
-            )
+            }
         }, Modifier.padding(bottom = 64.dp)) {
             Text(text = "Upload File")
         }

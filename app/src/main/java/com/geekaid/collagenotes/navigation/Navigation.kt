@@ -35,7 +35,7 @@ fun Navigation(navController: NavHostController) {
             DashboardScreen()
         }
         composable(Screens.FilterNav.route) {
-            FilterScreen()
+            FilterScreen(navController = navController)
         }
         composable(Screens.DownloadedScreenNav.route) {
             DownloadedNoteScreen()

@@ -2,14 +2,21 @@ package com.geekaid.collagenotes.firebaseDao
 
 import android.content.Context
 import android.net.Uri
-import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navArgument
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-fun fileUploadDao(uri: Uri, context: Context, fileModel: FileUploadModel) {
+fun fileUploadDao(
+    uri: Uri,
+    context: Context,
+    fileModel: FileUploadModel,
+    navController: NavHostController
+) {
 
     val storage = Firebase.storage
     val storageRef = storage.reference
@@ -37,6 +44,7 @@ fun fileUploadDao(uri: Uri, context: Context, fileModel: FileUploadModel) {
                             locationRef.putFile(uri).also {
                                 Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT).show()
                             }
+                            navController.navigate(Screens.DashboardNav.route)
                         }
                         .addOnCompleteListener {
                             Toast.makeText(context, it.result.toString(), Toast.LENGTH_LONG).show()
