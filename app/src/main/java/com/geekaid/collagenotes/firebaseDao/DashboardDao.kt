@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.firebaseDao
 
+import android.util.Log
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
@@ -13,26 +14,36 @@ fun dashboardDao(viewModel: DashboardViewModel) {
 
     val db = Firebase.firestore
     val auth = Firebase.auth
+    val courseList: ArrayList<FileUploadModel> = arrayListOf()
 
     db.collection("Users").document(auth.currentUser?.email.toString())
-        .collection("SearchFilter").document("FilterData").get()
-        .addOnSuccessListener { document ->
-            viewModel.filter.value = document.toObject<FilterModel>()!!
-        }
-
-
-    db.collection("courses").document("BTech")
-        .collection("Computer Science").document("Operating System")
-        .collection("notes").addSnapshotListener { value, error ->
-
+        .collection("SearchFilter").document("FilterData")
+        .addSnapshotListener{ value, error ->
             if(error != null){
                 return@addSnapshotListener
             }
 
-            for (dc: DocumentChange in value?.documentChanges!!) {
-                if (dc.type == DocumentChange.Type.ADDED) {
-                    viewModel.courseList.value.add(dc.document.toObject(FileUploadModel::class.java))
-                }
+            if (value != null && value.exists()) {
+                viewModel.filter.value = value.toObject<FilterModel>()!!
+                val filter = value.toObject<FilterModel>()!!
+                db.collection("courses").document("BTech")
+                    .collection(filter.branch).document(filter.subject)
+                    .collection("notes").addSnapshotListener { course, e ->
+
+                        if(e != null){
+                            Log.i("dow","${e.message}")
+                        }
+
+                        for (dc: DocumentChange in course?.documentChanges!!) {
+                            if (dc.type == DocumentChange.Type.ADDED) {
+                                courseList.add(dc.document.toObject(FileUploadModel::class.java))
+                            }
+                        }
+                        viewModel.courseList.value = courseList
+                    }
+            } else {
+                Log.i("notes","fhg f $value")
             }
         }
 }
+
