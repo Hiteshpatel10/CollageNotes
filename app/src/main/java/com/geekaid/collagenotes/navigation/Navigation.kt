@@ -22,8 +22,11 @@ fun Navigation(navController: NavHostController) {
 
     val startDestination = if (auth.currentUser != null && auth.currentUser!!.isEmailVerified)
         Screens.DashboardNav.route
+    else if(auth.currentUser != null && !auth.currentUser!!.isEmailVerified)
+        Screens.EmailVerificationNav.route
     else
         Screens.SignInNav.route
+
 
 
     NavHost(navController = navController, startDestination = startDestination) {

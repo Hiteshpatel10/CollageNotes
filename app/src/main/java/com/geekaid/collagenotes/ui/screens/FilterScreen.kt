@@ -43,12 +43,6 @@ fun FilterScreen() {
             "Computer Science" -> dropdownList(list = csSubjectList, label = "Subject")
         }
 
-
-
-
-
-
-
         Button(
             onClick = {
 
