@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.geekaid.collagenotes.firebaseDao.fileUploadDao
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.*
 import com.google.firebase.auth.ktx.auth
@@ -74,7 +75,7 @@ fun FileUploadComponent(noteUri: String, context: Context) {
         }
 
         Button(onClick = {
-            fileUpload(
+            fileUploadDao(
                 uriResult,
                 context,
                 FileUploadModel(
