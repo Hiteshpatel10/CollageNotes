@@ -27,6 +27,6 @@ fun DashboardScreen() {
     }
 
     Column(modifier = Modifier.padding(4.dp)) {
-        NoteLayout(course = viewModel.courseList.value, modifier = Modifier)
+        NoteLayout(course = viewModel.courseList.value)
     }
 }

@@ -11,43 +11,73 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.ui.screens.DTest
 
 @Composable
-fun NoteLayout(course: ArrayList<FileUploadModel>,modifier: Modifier) {
-    
-    Card(modifier.padding(2.dp)) {
-        Column(modifier.padding(4.dp)) {
-           LazyColumn{
-                items(course){  item->
-                    Row {
-                        NoteDetails(item,modifier)
-                        NoteSidebar(modifier)
-                    }
+fun NoteLayout(course: ArrayList<FileUploadModel>) {
+
+    val constraintSet = ConstraintSet {
+        val noteDetails = createRefFor("noteDetails")
+        val noteSidebar = createRefFor("noteSidebar")
+        val noteVote = createRefFor("noteVote")
+
+        constrain(noteDetails) {
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+        }
+
+        constrain(noteSidebar) {
+            top.linkTo(parent.top)
+            end.linkTo(parent.end)
+        }
+
+        constrain(noteVote) {
+            bottom.linkTo(parent.bottom)
+            start.linkTo(parent.start)
+        }
+    }
+
+    LazyColumn {
+        items(course) {
+            Card(modifier = Modifier.padding(4.dp)) {
+                ConstraintLayout(constraintSet = constraintSet) {
+                    NoteDetails()
+                    NoteSidebar()
+                    Vote()
                 }
-           }
+            }
         }
     }
 }
 
 
-
 @Composable
-fun NoteDetails(course: FileUploadModel, modifier: Modifier) {
-    Column(modifier.fillMaxWidth(0.9f)) {
-        Text(text = "Subject: Computer Science ${course.subject}")
+fun NoteDetails() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, start = 8.dp)
+            .layoutId("noteDetails")
+    ) {
+        Text(text = "Subject: Computer Science ")
         Spacer(modifier = Modifier.padding(2.dp))
-        Text(text = "Format: Pdf ${course.fileMime}")
-        Spacer(modifier = Modifier.padding(2.dp))
-        Vote(modifier.padding(top = 50.dp))
+        Text(text = "Format: Pdf ")
     }
 }
 
 @Composable
-fun NoteSidebar(modifier: Modifier) {
-    Column(modifier) {
+fun NoteSidebar() {
+    Column(
+        modifier = Modifier
+            .padding(2.dp)
+            .layoutId("noteSidebar")
+    ) {
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
@@ -63,8 +93,11 @@ fun NoteSidebar(modifier: Modifier) {
 }
 
 @Composable
-fun Vote(modifier: Modifier) {
-    Row(modifier) {
+fun Vote() {
+    Row(modifier = Modifier
+        .padding(2.dp)
+        .layoutId("noteVote")) {
+
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.ThumbUp, contentDescription = "Upvote")
         }
