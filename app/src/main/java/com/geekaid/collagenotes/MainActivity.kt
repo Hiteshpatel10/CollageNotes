@@ -12,12 +12,14 @@ import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.plant(Timber.DebugTree())
         setContent {
             CollageNotesTheme {
                 val navController = rememberNavController()

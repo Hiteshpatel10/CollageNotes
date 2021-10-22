@@ -10,6 +10,7 @@ import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import timber.log.Timber
 
 fun fileUploadDao(
     uri: Uri,
@@ -27,6 +28,7 @@ fun fileUploadDao(
             .child(fileModel.subject)
             .child("notes")
             .child(fileModel.fileUploadPath)
+
     val firestoreRef = firebaseFirestore.collection("courses").document(fileModel.course)
         .collection(fileModel.branch).document(fileModel.subject)
         .collection("notes").document(fileModel.fileUploadPath)
@@ -51,6 +53,7 @@ fun fileUploadDao(
                         }
                         .addOnFailureListener {
                             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                            Timber.i(it.message)
                         }
                 }
             }

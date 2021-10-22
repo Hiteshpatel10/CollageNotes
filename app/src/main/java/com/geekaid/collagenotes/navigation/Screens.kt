@@ -8,6 +8,7 @@ sealed class Screens(val route: String) {
     object FilterNav : Screens(R.string.FilterNav.toString())
     object DownloadedScreenNav : Screens(R.string.DownloadedNotesNav.toString())
     object UploadScreenNav : Screens(R.string.UploadNav.toString())
+    object FavouriteScreenNav : Screens(R.string.FavouriteNav.toString())
 
     //Authentication
     object SignInNav : Screens(R.string.SignInNav.toString())
