@@ -11,13 +11,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.favouriteDao
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.ui.screens.DTest
 
 @Composable
 fun NoteLayout(course: ArrayList<FileUploadModel>) {
@@ -44,11 +44,11 @@ fun NoteLayout(course: ArrayList<FileUploadModel>) {
     }
 
     LazyColumn {
-        items(course) {
+        items(course) { course ->
             Card(modifier = Modifier.padding(4.dp)) {
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails()
-                    NoteSidebar()
+                    NoteSidebar(course = course)
                     Vote()
                 }
             }
@@ -72,7 +72,7 @@ fun NoteDetails() {
 }
 
 @Composable
-fun NoteSidebar() {
+fun NoteSidebar(course: FileUploadModel) {
     Column(
         modifier = Modifier
             .padding(2.dp)
@@ -82,8 +82,14 @@ fun NoteSidebar() {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
 
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.Favorite, contentDescription = "Favourite")
+        IconButton(onClick = {
+            favouriteDao(course = course)
+        }) {
+            Icon(
+                Icons.Filled.Favorite,
+                contentDescription = "Favourite",
+                tint = if (course.fav) Color.Red else Color.Black
+            )
         }
 
         IconButton(onClick = { /*TODO*/ }) {
@@ -94,9 +100,11 @@ fun NoteSidebar() {
 
 @Composable
 fun Vote() {
-    Row(modifier = Modifier
-        .padding(2.dp)
-        .layoutId("noteVote")) {
+    Row(
+        modifier = Modifier
+            .padding(2.dp)
+            .layoutId("noteVote")
+    ) {
 
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.ThumbUp, contentDescription = "Upvote")

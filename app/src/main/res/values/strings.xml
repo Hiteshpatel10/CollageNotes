@@ -6,6 +6,7 @@
     <string name="FilterNav">FilterNav</string>
     <string name="DownloadedNotesNav">DownloadedNotesNav</string>
     <string name="UploadNav">UploadNav</string>
+    <string name="FavouriteNav">FavouriteNav</string>
 
     //Authentication
     <string name="SignInNav">SignInNav</string>

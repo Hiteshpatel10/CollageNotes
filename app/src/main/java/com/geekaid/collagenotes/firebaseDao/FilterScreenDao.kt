@@ -15,7 +15,7 @@ fun filterScreenDao(filterModel: FilterModel, context: Context, navController: N
     val db = Firebase.firestore
 
     db.collection("Users").document(auth.currentUser?.email.toString())
-        .collection("SearchFilter").document("FilterData").set(filterModel)
+        .collection("UserData").document("FilterData").set(filterModel)
         .addOnCompleteListener{
             navController.navigate(Screens.DashboardNav.route)
         }

@@ -22,6 +22,8 @@ import com.geekaid.collagenotes.util.yearList
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.util.*
 
 @Composable
 fun FileUploadComponent(
@@ -90,6 +92,8 @@ fun FileUploadComponent(
                     FileUploadModel(
                         branch = branch,
                         course = course,
+                        data = DateFormat.getDateInstance().format(Date()),
+                        fav = false,
                         fileMime = fileMime,
                         fileName = uriResult.lastPathSegment.toString(),
                         fileUploadPath = "${auth.currentUser?.email}${uriResult.lastPathSegment}",

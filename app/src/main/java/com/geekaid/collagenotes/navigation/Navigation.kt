@@ -8,10 +8,7 @@ import com.geekaid.collagenotes.ui.auth.EmailVerificationScreen
 import com.geekaid.collagenotes.ui.auth.ForgotPassword
 import com.geekaid.collagenotes.ui.auth.SignInScreen
 import com.geekaid.collagenotes.ui.auth.SignUpScreen
-import com.geekaid.collagenotes.ui.screens.DashboardScreen
-import com.geekaid.collagenotes.ui.screens.DownloadedNoteScreen
-import com.geekaid.collagenotes.ui.screens.FilterScreen
-import com.geekaid.collagenotes.ui.screens.UploadScreen
+import com.geekaid.collagenotes.ui.screens.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -43,6 +40,11 @@ fun Navigation(navController: NavHostController) {
         composable(Screens.UploadScreenNav.route) {
             UploadScreen(navController = navController)
         }
+        composable(Screens.FavouriteScreenNav.route){
+            FavouriteScreen()
+        }
+
+        //Authentication Screen Navigation
         composable(Screens.SignInNav.route) {
             SignInScreen(navController = navController)
         }

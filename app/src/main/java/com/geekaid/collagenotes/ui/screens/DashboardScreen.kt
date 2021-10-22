@@ -22,9 +22,10 @@ fun DashboardScreen() {
 
     SideEffect {
         scope.launch {
-            dashboardDao(viewModel = viewModel, context = scope)
+            dashboardDao(viewModel = viewModel)
         }
     }
+
 
     Column(modifier = Modifier.padding(4.dp)) {
         NoteLayout(course = viewModel.courseList.value)
