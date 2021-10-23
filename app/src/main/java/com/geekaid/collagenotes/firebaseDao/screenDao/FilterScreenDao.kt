@@ -1,4 +1,4 @@
-package com.geekaid.collagenotes.firebaseDao
+package com.geekaid.collagenotes.firebaseDao.screenDao
 
 import android.content.Context
 import android.widget.Toast

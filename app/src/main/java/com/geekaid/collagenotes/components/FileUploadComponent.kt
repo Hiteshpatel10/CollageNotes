@@ -13,7 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.geekaid.collagenotes.firebaseDao.fileUploadDao
+import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
+import com.geekaid.collagenotes.model.FeelingsModel
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.branchList
 import com.geekaid.collagenotes.util.courseList

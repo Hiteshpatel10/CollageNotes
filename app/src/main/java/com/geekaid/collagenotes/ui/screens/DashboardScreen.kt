@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.geekaid.collagenotes.components.NoteLayout
-import com.geekaid.collagenotes.firebaseDao.dashboardDao
+import com.geekaid.collagenotes.firebaseDao.screenDao.dashboardDao
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
 
@@ -28,6 +28,6 @@ fun DashboardScreen() {
 
 
     Column(modifier = Modifier.padding(4.dp)) {
-        NoteLayout(course = viewModel.courseList.value)
+        NoteLayout(notes = viewModel.courseList.value)
     }
 }

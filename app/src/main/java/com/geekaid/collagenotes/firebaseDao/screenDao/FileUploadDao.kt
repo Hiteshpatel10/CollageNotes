@@ -1,10 +1,9 @@
-package com.geekaid.collagenotes.firebaseDao
+package com.geekaid.collagenotes.firebaseDao.screenDao
 
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.navArgument
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.firestore.ktx.firestore
@@ -47,9 +46,6 @@ fun fileUploadDao(
                                 Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT).show()
                             }
                             navController.navigate(Screens.DashboardNav.route)
-                        }
-                        .addOnCompleteListener {
-                            Toast.makeText(context, it.result.toString(), Toast.LENGTH_LONG).show()
                         }
                         .addOnFailureListener {
                             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()

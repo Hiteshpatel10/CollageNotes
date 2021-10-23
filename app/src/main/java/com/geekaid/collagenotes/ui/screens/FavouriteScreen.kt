@@ -16,6 +16,6 @@ fun FavouriteScreen() {
     favouriteDaoFetch(favViewModel = favViewModel)
 
    Column(modifier = Modifier.padding(4.dp)) {
-       NoteLayout(course = favViewModel.favouriteList.value)
+       NoteLayout(notes = favViewModel.favouriteList.value)
    }
 }
