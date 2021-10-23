@@ -10,4 +10,6 @@ data class FileUploadModel(
     var fileUploadPath: String = "",
     var subject: String = "",
     var year: String = "",
+    val likes: ArrayList<String> = arrayListOf(),
+    val dislikes: ArrayList<String> = arrayListOf()
 )

@@ -17,10 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.favouriteDao
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.feelingsDislikeDao
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.feelingsLikeDao
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
-fun NoteLayout(course: ArrayList<FileUploadModel>) {
+fun NoteLayout(notes: ArrayList<FileUploadModel>) {
 
     val constraintSet = ConstraintSet {
         val noteDetails = createRefFor("noteDetails")
@@ -44,12 +48,12 @@ fun NoteLayout(course: ArrayList<FileUploadModel>) {
     }
 
     LazyColumn {
-        items(course) { course ->
+        items(notes) { note ->
             Card(modifier = Modifier.padding(4.dp)) {
                 ConstraintLayout(constraintSet = constraintSet) {
-                    NoteDetails()
-                    NoteSidebar(course = course)
-                    Vote()
+                    NoteDetails(note = note)
+                    NoteSidebar(note = note)
+                    Vote(note = note)
                 }
             }
         }
@@ -58,21 +62,21 @@ fun NoteLayout(course: ArrayList<FileUploadModel>) {
 
 
 @Composable
-fun NoteDetails() {
+fun NoteDetails(note: FileUploadModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 8.dp)
             .layoutId("noteDetails")
     ) {
-        Text(text = "Subject: Computer Science ")
+        Text(text = "Subject: ${note.subject} ")
         Spacer(modifier = Modifier.padding(2.dp))
-        Text(text = "Format: Pdf ")
+        Text(text = "Format: ${note.fileMime}")
     }
 }
 
 @Composable
-fun NoteSidebar(course: FileUploadModel) {
+fun NoteSidebar(note: FileUploadModel) {
     Column(
         modifier = Modifier
             .padding(2.dp)
@@ -83,12 +87,12 @@ fun NoteSidebar(course: FileUploadModel) {
         }
 
         IconButton(onClick = {
-            favouriteDao(course = course)
+            favouriteDao(course = note)
         }) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = "Favourite",
-                tint = if (course.fav) Color.Red else Color.Black
+                tint = if (note.fav) Color.Red else Color.Black
             )
         }
 
@@ -99,18 +103,29 @@ fun NoteSidebar(course: FileUploadModel) {
 }
 
 @Composable
-fun Vote() {
+fun Vote(note: FileUploadModel) {
+
+    val currentUser = Firebase.auth.currentUser!!.email
     Row(
         modifier = Modifier
             .padding(2.dp)
             .layoutId("noteVote")
     ) {
 
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.ThumbUp, contentDescription = "Upvote")
+        IconButton(onClick = { feelingsLikeDao(note) }) {
+            Icon(
+                Icons.Filled.ThumbUp,
+                contentDescription = "Upvote",
+                tint = if (note.likes.contains(currentUser)) Color.Blue else Color.Black
+            )
         }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.ThumbDown, contentDescription = "Upvote")
+
+        IconButton(onClick = { feelingsDislikeDao(note) }) {
+            Icon(
+                Icons.Filled.ThumbDown,
+                contentDescription = "Upvote",
+                tint = if (note.dislikes.contains(currentUser)) Color.Blue else Color.Black
+            )
         }
     }
 }

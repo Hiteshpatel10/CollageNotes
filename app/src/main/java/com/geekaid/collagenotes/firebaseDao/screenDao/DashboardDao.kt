@@ -1,6 +1,5 @@
-package com.geekaid.collagenotes.firebaseDao
+package com.geekaid.collagenotes.firebaseDao.screenDao
 
-import android.util.Log
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
