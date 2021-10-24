@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.navigation
 
+import android.app.DownloadManager
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, downloadManager: DownloadManager) {
 
     val auth = Firebase.auth
 
@@ -25,23 +26,22 @@ fun Navigation(navController: NavHostController) {
         Screens.SignInNav.route
 
 
-
     NavHost(navController = navController, startDestination = startDestination) {
 
         composable(Screens.DashboardNav.route) {
-            DashboardScreen()
+            DashboardScreen(downloadManager = downloadManager)
         }
         composable(Screens.FilterNav.route) {
             FilterScreen(navController = navController)
         }
         composable(Screens.DownloadedScreenNav.route) {
-            DownloadedNoteScreen()
+            DownloadedNoteScreen(downloadManager = downloadManager)
         }
         composable(Screens.UploadScreenNav.route) {
             UploadScreen(navController = navController)
         }
         composable(Screens.FavouriteScreenNav.route){
-            FavouriteScreen()
+            FavouriteScreen(downloadManager = downloadManager)
         }
 
         //Authentication Screen Navigation

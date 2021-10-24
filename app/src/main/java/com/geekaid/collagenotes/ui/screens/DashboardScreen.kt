@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.ui.screens
 
+import android.app.DownloadManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(downloadManager: DownloadManager) {
 
     val viewModel: DashboardViewModel = viewModel()
     val scope = rememberCoroutineScope()
@@ -28,6 +29,6 @@ fun DashboardScreen() {
 
 
     Column(modifier = Modifier.padding(4.dp)) {
-        NoteLayout(notes = viewModel.courseList.value)
+        NoteLayout(notes = viewModel.courseList.value, downloadManager = downloadManager)
     }
 }

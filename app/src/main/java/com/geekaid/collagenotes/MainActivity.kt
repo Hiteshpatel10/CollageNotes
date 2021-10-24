@@ -1,5 +1,7 @@
 package com.geekaid.collagenotes
 
+import android.app.DownloadManager
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,7 +21,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.plant(Timber.DebugTree())
+
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
         setContent {
             CollageNotesTheme {
                 val navController = rememberNavController()
@@ -31,7 +35,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) {
-                        Navigation(navController)
+                        Navigation(navController, downloadManager)
                     }
                 }
             }

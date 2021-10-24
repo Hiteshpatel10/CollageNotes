@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.components
 
+import android.app.DownloadManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,12 +20,13 @@ import androidx.constraintlayout.compose.ConstraintSet
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.favouriteDao
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.feelingsDislikeDao
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.feelingsLikeDao
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.noteDownloadDao
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun NoteLayout(notes: ArrayList<FileUploadModel>) {
+fun NoteLayout(notes: ArrayList<FileUploadModel>, downloadManager: DownloadManager) {
 
     val constraintSet = ConstraintSet {
         val noteDetails = createRefFor("noteDetails")
@@ -52,7 +54,7 @@ fun NoteLayout(notes: ArrayList<FileUploadModel>) {
             Card(modifier = Modifier.padding(4.dp)) {
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note)
-                    NoteSidebar(note = note)
+                    NoteSidebar(note = note, downloadManager = downloadManager)
                     Vote(note = note)
                 }
             }
@@ -76,7 +78,7 @@ fun NoteDetails(note: FileUploadModel) {
 }
 
 @Composable
-fun NoteSidebar(note: FileUploadModel) {
+fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
     Column(
         modifier = Modifier
             .padding(2.dp)
@@ -96,7 +98,7 @@ fun NoteSidebar(note: FileUploadModel) {
             )
         }
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { noteDownloadDao(note = note, downloadManager = downloadManager) }) {
             Icon(Icons.Filled.Download, contentDescription = "Download")
         }
     }

@@ -81,7 +81,7 @@ fun SignUpScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-                registerUser(context, SignUpModel(email,password, confirmPassword), navController)
+                registerUser(context, SignUpModel(email,password,confirmPassword), navController)
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier
