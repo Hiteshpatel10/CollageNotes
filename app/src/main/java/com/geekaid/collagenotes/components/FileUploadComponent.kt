@@ -106,6 +106,7 @@ fun FileUploadComponent(
                         branch = branch,
                         course = course,
                         data = DateFormat.getDateInstance().format(Date()),
+                        fav = false,
                         fileMime = fileMime,
                         fileName = fileName.toString(),
                         fileUploadPath = "${auth.currentUser?.email}${fileName}",
