@@ -79,6 +79,9 @@ fun NoteDetails(note: FileUploadModel) {
 
 @Composable
 fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
+
+    val currentUser = Firebase.auth.currentUser!!
+
     Column(
         modifier = Modifier
             .padding(2.dp)
@@ -94,7 +97,7 @@ fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = "Favourite",
-                tint = if (note.fav) Color.Red else Color.Black
+                tint = if (note.favourite.contains(currentUser.email )) Color.Red else Color.Black
             )
         }
 
