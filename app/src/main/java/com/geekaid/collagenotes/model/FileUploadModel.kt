@@ -6,10 +6,10 @@ data class FileUploadModel(
     var data: String = "",
     var fileName: String = "",
     var fileMime: String = "",
-    var favourite: MutableList<String> = mutableListOf(),
+    var fav: Boolean = true,
     var fileUploadPath: String = "",
     var subject: String = "",
     var year: String = "",
-    val likes: MutableList<String> = mutableListOf(),
-    val dislikes: MutableList<String> = mutableListOf()
+    val likes: ArrayList<String> = arrayListOf(),
+    val dislikes: ArrayList<String> = arrayListOf()
 )
