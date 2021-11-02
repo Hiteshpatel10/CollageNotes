@@ -10,9 +10,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @HiltViewModel
-class FavouriteViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class FavouriteViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    var favouriteList: MutableState<ArrayList<FileUploadModel>> = mutableStateOf(arrayListOf())
+    var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
 
     @ExperimentalCoroutinesApi
     fun getFavouriteNotes()  = repository.gerFavouriteNotes()

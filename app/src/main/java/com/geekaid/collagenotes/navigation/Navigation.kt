@@ -14,7 +14,9 @@ import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
 fun Navigation(
     navController: NavHostController,
@@ -42,7 +44,7 @@ fun Navigation(
             FilterScreen(navController = navController)
         }
         composable(Screens.DownloadedScreenNav.route) {
-            DownloadedNoteScreen(downloadManager = downloadManager)
+            DownloadedNoteScreen()
         }
         composable(Screens.UploadScreenNav.route) {
             UploadScreen(navController = navController)

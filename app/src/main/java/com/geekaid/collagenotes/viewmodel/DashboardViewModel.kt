@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.viewmodel
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.geekaid.collagenotes.model.DataOrException
@@ -17,16 +18,11 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var filter: MutableState<FilterModel> = mutableStateOf(FilterModel())
     var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
 
-    var notes: MutableState<DataOrException<List<FileUploadModel>,Exception>> = mutableStateOf(
-        DataOrException(
-            listOf(),
-            Exception("")
-        )
-    )
 
     @ExperimentalCoroutinesApi
     fun getFilter() = repository.getFilter()
 
+    @ExperimentalCoroutinesApi
     fun getNotes() = repository.getNotes(filter = filter.value)
 
 

@@ -23,7 +23,8 @@ class Repository {
             .collection("UserData").document("FilterData")
 
         val snapshotListener = collection.addSnapshotListener { value, error ->
-            offer(value)
+            if (error == null)
+                trySend(value)
         }
 
         awaitClose {
@@ -38,12 +39,13 @@ class Repository {
             .collection(filter.branch).document(filter.subject)
             .collection("notes")
 
-        val snapshotListner = noteRef.addSnapshotListener { value, error ->
-            offer(value)
+        val snapshotListener = noteRef.addSnapshotListener { value, error ->
+            if (error == null)
+                trySend(value)
         }
 
         awaitClose {
-            snapshotListner.remove()
+            snapshotListener.remove()
         }
     }
 
@@ -53,7 +55,8 @@ class Repository {
             .collection("Favourite")
 
         val snapshotListener = collection.addSnapshotListener { value, error ->
-            offer(value)
+            if (error == null)
+                trySend(value)
         }
 
         awaitClose {
