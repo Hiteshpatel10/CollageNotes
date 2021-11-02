@@ -1,34 +1,47 @@
 package com.geekaid.collagenotes.ui.screens
 
 import android.app.DownloadManager
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
 import com.geekaid.collagenotes.components.NoteLayout
-import com.geekaid.collagenotes.firebaseDao.screenDao.dashboardDao
+import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 @Composable
-fun DashboardScreen(downloadManager: DownloadManager) {
+fun DashboardScreen(downloadManager: DownloadManager, dashboardViewModel: DashboardViewModel) {
 
-    val viewModel: DashboardViewModel = viewModel()
-    val scope = rememberCoroutineScope()
+    dashboardViewModel.getFilter()
+        .collectAsState(initial = null).value?.toObject(FilterModel::class.java)?.let { filter ->
+            dashboardViewModel.filter.value = filter
+        }
 
-    SideEffect {
-        scope.launch {
-            dashboardDao(viewModel = viewModel)
+    if (dashboardViewModel.filter.value.course.isNotEmpty()) {
+        dashboardViewModel.getNotes()
+            .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)?.let { list ->
+                dashboardViewModel.courseList.value = list
+            }
+    }
+
+    when {
+        dashboardViewModel.filter.value.course.isEmpty() -> {
+            Text(text = "kdf")
+        }
+
+        dashboardViewModel.courseList.value.isEmpty() -> {
+            Text(text = "No Notes Found")
+        }
+
+        else -> {
+            NoteLayout(
+                notes = dashboardViewModel.courseList.value,
+                downloadManager = downloadManager
+            )
         }
     }
-
-
-    Column(modifier = Modifier.padding(4.dp)) {
-        NoteLayout(notes = viewModel.courseList.value, downloadManager = downloadManager)
-    }
 }
+

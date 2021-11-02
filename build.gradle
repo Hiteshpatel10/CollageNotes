@@ -3,6 +3,7 @@ buildscript {
     ext {
         compose_version = '1.0.1'
         compose_navigation ='2.4.0-alpha06'
+        kotlin_coroutines = '1.5.2'
     }
     repositories {
         google()
@@ -12,6 +13,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
 
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
         classpath 'com.google.gms:google-services:4.3.10'
     }
 }
@@ -19,3 +21,4 @@ buildscript {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
