@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -12,10 +13,13 @@ import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.components.BottomNav
 import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
+import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import timber.log.Timber
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val auth = Firebase.auth
 
@@ -23,6 +27,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val dashboardViewModel: DashboardViewModel by viewModels()
+        val favouriteViewModel: FavouriteViewModel by viewModels()
 
         setContent {
             CollageNotesTheme {
@@ -35,7 +41,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     ) {
-                        Navigation(navController, downloadManager)
+                        Navigation(navController, downloadManager, dashboardViewModel, favouriteViewModel)
                     }
                 }
             }

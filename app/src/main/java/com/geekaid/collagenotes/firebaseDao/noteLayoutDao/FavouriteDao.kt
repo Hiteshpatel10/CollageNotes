@@ -4,6 +4,7 @@ import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import timber.log.Timber
@@ -11,32 +12,31 @@ import timber.log.Timber
 fun favouriteDao(course: FileUploadModel) {
 
     val db = Firebase.firestore
-    val auth = Firebase.auth
+    val currentUser = Firebase.auth.currentUser!!
 
-    db.collection("Users").document(auth.currentUser?.email.toString())
-        .collection("Favourite").document(course.fileUploadPath).get()
+    val noteRef = db.collection("courses").document(course.course)
+        .collection(course.branch).document(course.subject)
+        .collection("notes").document(course.fileUploadPath)
+
+    val favouriteRef = db.collection("Users").document(currentUser.email.toString())
+        .collection("Favourite").document(course.fileUploadPath)
+
+    favouriteRef.get()
         .addOnSuccessListener { document ->
 
             if (document.exists()) {
-                db.collection("Users").document(auth.currentUser?.email.toString())
-                    .collection("Favourite").document(course.fileUploadPath).delete()
+                favouriteRef.delete()
 
-                db.collection("courses").document(course.course)
-                    .collection(course.branch).document(course.subject)
-                    .collection("notes").document(course.fileUploadPath)
-                    .update("fav", false)
+                noteRef.update("favourite", FieldValue.arrayRemove(currentUser.email))
 
                 Timber.i("delete")
 
             } else {
-                db.collection("courses").document(course.course)
-                    .collection(course.branch).document(course.subject)
-                    .collection("notes").document(course.fileUploadPath)
-                    .update("fav", true)
+                noteRef.update("favourite", FieldValue.arrayUnion(currentUser.email))
 
-                course.fav = !course.fav
-                db.collection("Users").document(auth.currentUser?.email.toString())
-                    .collection("Favourite").document(course.fileUploadPath).set(course)
+//                course.fav = !course.fav
+                course.favourite.add(currentUser.email.toString())
+                favouriteRef.set(course)
                 Timber.i("Added")
             }
         }

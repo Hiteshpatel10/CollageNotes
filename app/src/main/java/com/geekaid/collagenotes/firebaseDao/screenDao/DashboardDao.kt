@@ -15,7 +15,7 @@ fun dashboardDao(viewModel: DashboardViewModel) {
 
     val db = Firebase.firestore
     val auth = Firebase.auth
-    val courseList: ArrayList<FileUploadModel> = arrayListOf()
+    val courseList: MutableList<FileUploadModel> = mutableListOf()
 
     db.collection("Users").document(auth.currentUser?.email.toString())
         .collection("UserData").document("FilterData")
@@ -26,24 +26,28 @@ fun dashboardDao(viewModel: DashboardViewModel) {
 
             if (value != null && value.exists()) {
                 viewModel.filter.value = value.toObject<FilterModel>()!!
-                val filter = value.toObject<FilterModel>()!!
+                val filter = value.toObject<FilterModel>()
 
-                db.collection("courses").document(filter.course)
-                    .collection(filter.branch).document(filter.subject)
-                    .collection("notes").addSnapshotListener { course, e ->
+                if (filter != null) {
+                    db.collection("courses").document(filter.course)
+                        .collection(filter.branch).document(filter.subject)
+                        .collection("notes").addSnapshotListener { course, e ->
 
-                        if (e != null) {
-                            Timber.i(e.message)
-                        }
-
-                        for (dc: DocumentChange in course?.documentChanges!!) {
-                            if (dc.type == DocumentChange.Type.ADDED) {
-                                Timber.i(dc.document.toObject(FileUploadModel::class.java).toString())
-                                courseList.add(dc.document.toObject(FileUploadModel::class.java))
+                            if (e != null) {
+                                Timber.i(e.message)
                             }
+
+                            for (dc: DocumentChange in course?.documentChanges!!) {
+                                if (dc.type == DocumentChange.Type.ADDED) {
+                                    Timber.i(
+                                        dc.document.toObject(FileUploadModel::class.java).toString()
+                                    )
+                                    courseList.add(dc.document.toObject(FileUploadModel::class.java))
+                                }
+                            }
+                            viewModel.courseList.value = courseList
                         }
-                        viewModel.courseList.value = courseList
-                    }
+                }
             } else {
                 Timber.i(value.toString())
             }

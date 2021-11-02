@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
-import com.geekaid.collagenotes.model.FeelingsModel
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.branchList
 import com.geekaid.collagenotes.util.courseList
@@ -106,7 +105,6 @@ fun FileUploadComponent(
                         branch = branch,
                         course = course,
                         data = DateFormat.getDateInstance().format(Date()),
-                        fav = false,
                         fileMime = fileMime,
                         fileName = fileName.toString(),
                         fileUploadPath = "${auth.currentUser?.email}${fileName}",

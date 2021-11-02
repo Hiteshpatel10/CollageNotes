@@ -10,11 +10,18 @@ import com.geekaid.collagenotes.ui.auth.ForgotPassword
 import com.geekaid.collagenotes.ui.auth.SignInScreen
 import com.geekaid.collagenotes.ui.auth.SignUpScreen
 import com.geekaid.collagenotes.ui.screens.*
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
+import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun Navigation(navController: NavHostController, downloadManager: DownloadManager) {
+fun Navigation(
+    navController: NavHostController,
+    downloadManager: DownloadManager,
+    dashboardViewModel: DashboardViewModel,
+    favouriteViewModel: FavouriteViewModel
+) {
 
     val auth = Firebase.auth
 
@@ -29,7 +36,7 @@ fun Navigation(navController: NavHostController, downloadManager: DownloadManage
     NavHost(navController = navController, startDestination = startDestination) {
 
         composable(Screens.DashboardNav.route) {
-            DashboardScreen(downloadManager = downloadManager)
+            DashboardScreen(downloadManager = downloadManager, dashboardViewModel)
         }
         composable(Screens.FilterNav.route) {
             FilterScreen(navController = navController)
@@ -41,7 +48,7 @@ fun Navigation(navController: NavHostController, downloadManager: DownloadManage
             UploadScreen(navController = navController)
         }
         composable(Screens.FavouriteScreenNav.route){
-            FavouriteScreen(downloadManager = downloadManager)
+            FavouriteScreen(downloadManager = downloadManager, favouriteViewModel)
         }
 
         //Authentication Screen Navigation
