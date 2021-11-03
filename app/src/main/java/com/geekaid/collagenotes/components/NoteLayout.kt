@@ -13,7 +13,7 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
@@ -58,7 +58,6 @@ fun NoteLayout(notes: List<FileUploadModel>, downloadManager: DownloadManager) {
                     NoteDetails(note = note)
                     NoteSidebar(note = note, downloadManager = downloadManager)
                     Vote(note = note)
-
                 }
             }
         }
@@ -83,6 +82,8 @@ fun NoteDetails(note: FileUploadModel) {
 @Composable
 fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
     val currentUser = Firebase.auth.currentUser!!
+    var downloadIconTint by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .padding(2.dp)
@@ -102,8 +103,15 @@ fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
             )
         }
 
-        IconButton(onClick = { noteDownloadDao(note = note, downloadManager = downloadManager) }) {
-            Icon(Icons.Filled.Download, contentDescription = "Download")
+        IconButton(onClick = {
+            noteDownloadDao(note = note, downloadManager = downloadManager)
+            downloadIconTint = true
+        }) {
+            Icon(
+                Icons.Filled.Download,
+                contentDescription = "Download",
+                tint = if (downloadIconTint) Color.Blue else Color.Black
+            )
         }
     }
 }

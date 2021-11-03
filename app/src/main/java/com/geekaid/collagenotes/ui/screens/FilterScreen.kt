@@ -14,10 +14,12 @@ import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.util.*
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
-fun FilterScreen(navController: NavHostController) {
+fun FilterScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -26,18 +28,31 @@ fun FilterScreen(navController: NavHostController) {
     var branch by remember { mutableStateOf("") }
     var subject by remember { mutableStateOf("") }
 
+    Timber.i(dashboardViewModel.filter.toString())
     Column(modifier = Modifier.padding(8.dp)) {
 
-        course = dropdownList(list = courseList, label = "Course")
+        course = dropdownList(
+            list = courseList,
+            label = "Course",
+            defaultValue = dashboardViewModel.filter.value.course
+        )
 
         when (course) {
             "BTech" -> {
-                branch = dropdownList(list = branchList, label = "Branch")
+                branch = dropdownList(
+                    list = branchList,
+                    label = "Branch",
+                    defaultValue = dashboardViewModel.filter.value.branch
+                )
             }
         }
 
         when (branch) {
-            "Computer Science" -> subject = dropdownList(list = csSubjectList, label = "Subject")
+            "Computer Science" -> subject = dropdownList(
+                list = csSubjectList,
+                label = "Subject",
+                defaultValue = dashboardViewModel.filter.value.subject
+            )
         }
 
         Button(

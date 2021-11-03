@@ -4,6 +4,8 @@ import android.app.DownloadManager
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
@@ -13,7 +15,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @Composable
-fun DashboardScreen(downloadManager: DownloadManager, dashboardViewModel: DashboardViewModel) {
+fun DashboardScreen(
+    downloadManager: DownloadManager,
+    dashboardViewModel: DashboardViewModel,
+    navController: NavHostController,
+) {
 
     dashboardViewModel.getFilter()
         .collectAsState(initial = null).value?.toObject(FilterModel::class.java)?.let { filter ->
@@ -22,7 +28,8 @@ fun DashboardScreen(downloadManager: DownloadManager, dashboardViewModel: Dashbo
 
     if (dashboardViewModel.filter.value.course.isNotEmpty()) {
         dashboardViewModel.getNotes()
-            .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)?.let { list ->
+            .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)
+            ?.let { list ->
                 dashboardViewModel.courseList.value = list
             }
     }
@@ -33,7 +40,7 @@ fun DashboardScreen(downloadManager: DownloadManager, dashboardViewModel: Dashbo
         }
 
         dashboardViewModel.courseList.value.isEmpty() -> {
-            Text(text = "No Notes Found")
+            NoNotesFound(navController = navController, buttonDisplay = true)
         }
 
         else -> {

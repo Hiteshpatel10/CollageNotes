@@ -29,7 +29,7 @@ fun Navigation(
 
     val startDestination = if (auth.currentUser != null && auth.currentUser!!.isEmailVerified)
         Screens.DashboardNav.route
-    else if(auth.currentUser != null && !auth.currentUser!!.isEmailVerified)
+    else if (auth.currentUser != null && !auth.currentUser!!.isEmailVerified)
         Screens.EmailVerificationNav.route
     else
         Screens.SignInNav.route
@@ -38,10 +38,14 @@ fun Navigation(
     NavHost(navController = navController, startDestination = startDestination) {
 
         composable(Screens.DashboardNav.route) {
-            DashboardScreen(downloadManager = downloadManager, dashboardViewModel)
+            DashboardScreen(
+                downloadManager = downloadManager,
+                dashboardViewModel = dashboardViewModel,
+                navController = navController
+            )
         }
         composable(Screens.FilterNav.route) {
-            FilterScreen(navController = navController)
+            FilterScreen(navController = navController, dashboardViewModel = dashboardViewModel)
         }
         composable(Screens.DownloadedScreenNav.route) {
             DownloadedNoteScreen()
@@ -49,8 +53,12 @@ fun Navigation(
         composable(Screens.UploadScreenNav.route) {
             UploadScreen(navController = navController)
         }
-        composable(Screens.FavouriteScreenNav.route){
-            FavouriteScreen(downloadManager = downloadManager, favouriteViewModel)
+        composable(Screens.FavouriteScreenNav.route) {
+            FavouriteScreen(
+                downloadManager = downloadManager,
+                favouriteViewModel = favouriteViewModel,
+                navController = navController
+            )
         }
 
         //Authentication Screen Navigation

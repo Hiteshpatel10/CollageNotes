@@ -18,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 
 @Composable
-fun dropdownList(list: List<String>, label: String): String {
+fun dropdownList(list: List<String>, label: String, defaultValue: String = ""): String {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf("") }
+    var selectedText by remember { mutableStateOf(defaultValue) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
+
+
 
     val icon = if (expanded)
         Icons.Filled.ArrowDropUp

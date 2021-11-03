@@ -22,7 +22,6 @@ import com.geekaid.collagenotes.util.yearList
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.text.DateFormat
 import java.util.*
 
@@ -37,7 +36,7 @@ fun FileUploadComponent(
 
     val uriResult: Uri = Uri.parse(noteUri)
     val mime = context.contentResolver.getType(uriResult)
-    val indexSS = uriResult.lastPathSegment?.lastIndexOf('/')?.and(1)
+    uriResult.lastPathSegment?.lastIndexOf('/')?.and(1)
 
     val scope = rememberCoroutineScope()
     var course by remember { mutableStateOf("") }
@@ -46,12 +45,12 @@ fun FileUploadComponent(
     var subject by remember { mutableStateOf("") }
     val filePath by remember { mutableStateOf("${uriResult.path}") }
     val fileMime by remember { mutableStateOf("$mime") }
-    val i by remember {
+    val index by remember {
         mutableStateOf(
             uriResult.lastPathSegment?.lastIndexOf('/')?.plus(1).toString()
         )
     }
-    val fileName by remember { mutableStateOf(uriResult.lastPathSegment?.substring(i.toInt())) }
+    val fileName by remember { mutableStateOf(uriResult.lastPathSegment?.substring(index.toInt())) }
 
 
 
@@ -60,10 +59,6 @@ fun FileUploadComponent(
         Column(Modifier.weight(1f)) {
 
             Column(modifier = Modifier.padding(8.dp)) {
-                Timber.i(uriResult.lastPathSegment?.lastIndexOf('/').toString())
-                Timber.i(uriResult.lastPathSegment?.length.toString())
-                Timber.i(uriResult.lastPathSegment.toString())
-                Timber.i(uriResult.lastPathSegment?.substring(i.toInt()).toString())
                 OutlinedTextField(
                     value = filePath, onValueChange = {},
                     label = { Text(text = "File Path") },
@@ -84,8 +79,8 @@ fun FileUploadComponent(
 
                 when (course) {
                     "BTech" -> {
-                        branch = dropdownList(list = branchList, label = "Branch")
-                        year = dropdownList(list = yearList, label = "Year")
+                        branch = dropdownList(list = branchList, label = "Branch" )
+                        year = dropdownList(list = yearList, label = "Year" )
                     }
                 }
 
