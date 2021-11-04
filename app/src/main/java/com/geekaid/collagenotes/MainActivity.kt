@@ -9,16 +9,23 @@ import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.runtime.*
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.components.BottomNav
 import com.geekaid.collagenotes.navigation.Navigation
+import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val auth = Firebase.auth
@@ -33,20 +40,39 @@ class MainActivity : ComponentActivity() {
         setContent {
             CollageNotesTheme {
                 val navController = rememberNavController()
+
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
                         bottomBar = {
-                            if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
+                            if (bottomNavVisibility(navController = navController)) {
                                 BottomNav(navController)
                             }
                         }
                     ) {
-                        Navigation(navController, downloadManager, dashboardViewModel, favouriteViewModel)
+                        Navigation(
+                            navController,
+                            downloadManager,
+                            dashboardViewModel,
+                            favouriteViewModel
+                        )
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+fun bottomNavVisibility(navController: NavController): Boolean {
+
+    var isBottomNavVisible by remember { mutableStateOf(false) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+    when (navBackStackEntry?.destination?.route) {
+        Screens.SlashNav.route -> isBottomNavVisible = false
+        Screens.DashboardNav.route -> isBottomNavVisible = true
+    }
+    return isBottomNavVisible
 }
 
 

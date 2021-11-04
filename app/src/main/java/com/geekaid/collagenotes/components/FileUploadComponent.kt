@@ -3,11 +3,13 @@ package com.geekaid.collagenotes.components
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +20,6 @@ import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.branchList
 import com.geekaid.collagenotes.util.courseList
 import com.geekaid.collagenotes.util.csSubjectList
-import com.geekaid.collagenotes.util.yearList
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ fun FileUploadComponent(
     val scope = rememberCoroutineScope()
     var course by remember { mutableStateOf("") }
     var branch by remember { mutableStateOf("") }
-    var year by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
     var subject by remember { mutableStateOf("") }
     val filePath by remember { mutableStateOf("${uriResult.path}") }
     val fileMime by remember { mutableStateOf("$mime") }
@@ -79,8 +80,7 @@ fun FileUploadComponent(
 
                 when (course) {
                     "BTech" -> {
-                        branch = dropdownList(list = branchList, label = "Branch" )
-                        year = dropdownList(list = yearList, label = "Year" )
+                        branch = dropdownList(list = branchList, label = "Branch")
                     }
                 }
 
@@ -89,7 +89,18 @@ fun FileUploadComponent(
                         dropdownList(list = csSubjectList, label = "Subject")
                 }
             }
+
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text(text = "Description") },
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp)
+                    .fillMaxHeight(0.3f)
+                    .fillMaxWidth()
+            )
         }
+
 
         Button(onClick = {
             scope.launch {
@@ -100,11 +111,11 @@ fun FileUploadComponent(
                         branch = branch,
                         course = course,
                         data = DateFormat.getDateInstance().format(Date()),
+                        description = description,
                         fileMime = fileMime,
                         fileName = fileName.toString(),
                         fileUploadPath = "${auth.currentUser?.email}${fileName}",
                         subject = subject,
-                        year = year,
                     ),
                     navController = navController
                 )

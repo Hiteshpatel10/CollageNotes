@@ -27,7 +27,7 @@ fun Navigation(
 
     val auth = Firebase.auth
 
-    val startDestination = if (auth.currentUser != null && auth.currentUser!!.isEmailVerified)
+    if (auth.currentUser != null && auth.currentUser!!.isEmailVerified)
         Screens.DashboardNav.route
     else if (auth.currentUser != null && !auth.currentUser!!.isEmailVerified)
         Screens.EmailVerificationNav.route
@@ -35,7 +35,11 @@ fun Navigation(
         Screens.SignInNav.route
 
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(navController = navController, startDestination = Screens.SlashNav.route) {
+
+        composable(Screens.SlashNav.route){
+            SplashScreen(navController = navController)
+        }
 
         composable(Screens.DashboardNav.route) {
             DashboardScreen(

@@ -13,7 +13,7 @@ class Repository {
 
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
-    private val currentUser = auth.currentUser!!
+    private val currentUser = auth.currentUser
 
 
     @ExperimentalCoroutinesApi
@@ -51,7 +51,7 @@ class Repository {
 
     @ExperimentalCoroutinesApi
     fun gerFavouriteNotes() = callbackFlow {
-        val collection = firestore.collection("Users").document(currentUser.email.toString())
+        val collection = firestore.collection("Users").document(currentUser?.email.toString())
             .collection("Favourite")
 
         val snapshotListener = collection.addSnapshotListener { value, error ->

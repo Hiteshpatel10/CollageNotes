@@ -22,8 +22,7 @@ fun dropdownList(list: List<String>, label: String, defaultValue: String = ""): 
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(defaultValue) }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
-
-
+    var isError by remember { mutableStateOf(false) }
 
     val icon = if (expanded)
         Icons.Filled.ArrowDropUp
@@ -34,7 +33,9 @@ fun dropdownList(list: List<String>, label: String, defaultValue: String = ""): 
     Column(modifier = Modifier.padding(bottom = 2.dp, top = 2.dp)) {
         OutlinedTextField(
             value = selectedText,
-            onValueChange = { selectedText = it },
+            onValueChange = {
+                selectedText = it
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->

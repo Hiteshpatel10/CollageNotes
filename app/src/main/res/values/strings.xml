@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Collage Notes</string>
 
+    //SplashScreen
+    <string name="SplashNav">splashNav</string>
+
     //Navigation
     <string name="DashboardNav">dashboardNav</string>
     <string name="FilterNav">FilterNav</string>

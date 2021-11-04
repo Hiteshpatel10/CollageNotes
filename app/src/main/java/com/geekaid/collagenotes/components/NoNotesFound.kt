@@ -22,7 +22,6 @@ fun NoNotesFound(navController: NavHostController, buttonDisplay: Boolean) {
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-
         ) {
         Icon(Icons.Filled.Info, contentDescription = "Info", Modifier.size(40.dp))
         Text(text = "No Notes Found", style = MaterialTheme.typography.h5)
