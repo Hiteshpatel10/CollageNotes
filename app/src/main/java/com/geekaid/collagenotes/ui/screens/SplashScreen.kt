@@ -16,14 +16,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
+import timber.log.Timber
 
 @Composable
 fun SplashScreen(navController: NavController) {
 
     val scale = remember { Animatable(initialValue = 0f) }
     var nextScreen by remember { mutableStateOf("") }
-    val currentUser = FirebaseAuth.getInstance().currentUser
+    val currentUser = Firebase.auth.currentUser
 
     LaunchedEffect(key1 = true) {
         scale.animateTo(
@@ -45,7 +48,9 @@ fun SplashScreen(navController: NavController) {
             currentUser.isEmailVerified -> nextScreen = Screens.DashboardNav.route
         }
 
-        navController.navigate(nextScreen)
+        navController.navigate(nextScreen){
+            navController.popBackStack()
+        }
     }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {

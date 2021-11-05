@@ -37,17 +37,16 @@ fun signInUser(context: Context, navController: NavHostController, credential: S
     if (validateSignInData(context, credential)) {
         auth.signInWithEmailAndPassword(credential.email, credential.password)
             .addOnSuccessListener {
-                Toast.makeText(context, "SignIn Successfully", Toast.LENGTH_SHORT).show()
+
             }
             .addOnFailureListener {
                 Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
             .addOnCompleteListener {
-                if (auth.currentUser!!.isEmailVerified) {
+                if (auth.currentUser!!.isEmailVerified && auth.currentUser != null) {
+                    Toast.makeText(context, "SignIn Successfully", Toast.LENGTH_SHORT).show()
                     navController.navigate(Screens.DashboardNav.route) {
-                        popUpTo(Screens.SignInNav.route) {
-                            true
-                        }
+                        navController.popBackStack()
                     }
                 } else {
                     navController.navigate(Screens.EmailVerificationNav.route)

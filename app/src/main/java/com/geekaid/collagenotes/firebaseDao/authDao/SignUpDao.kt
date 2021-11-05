@@ -50,7 +50,7 @@ fun registerUser(context: Context, credential: SignUpModel, navController: NavHo
                 Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
             .addOnCompleteListener {
-                if(auth.currentUser?.isEmailVerified!!){
+                if(auth.currentUser!!.isEmailVerified){
                     navController.navigate(Screens.DashboardNav.route)
                 }else{
                     navController.navigate(Screens.EmailVerificationNav.route)

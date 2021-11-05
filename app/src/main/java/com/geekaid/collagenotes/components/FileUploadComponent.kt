@@ -76,52 +76,53 @@ fun FileUploadComponent(
                         .padding(top = 2.dp, bottom = 2.dp)
                 )
 
-                course = dropdownList(list = courseList, label = "Course")
+//                course = dropdownList(list = courseList, label = "Course")
+//
+//                when (course) {
+//                    "BTech" -> {
+//                        branch = dropdownList(list = branchList, label = "Branch")
+//                    }
+//                }
+//
+//                when (branch) {
+//                    "Computer Science" -> subject =
+//                        dropdownList(list = csSubjectList, label = "Subject")
+//                }
+//            }
 
-                when (course) {
-                    "BTech" -> {
-                        branch = dropdownList(list = branchList, label = "Branch")
-                    }
-                }
-
-                when (branch) {
-                    "Computer Science" -> subject =
-                        dropdownList(list = csSubjectList, label = "Subject")
-                }
-            }
-
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text(text = "Description") },
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .fillMaxHeight(0.3f)
-                    .fillMaxWidth()
-            )
-        }
-
-
-        Button(onClick = {
-            scope.launch {
-                fileUploadDao(
-                    uriResult,
-                    context,
-                    FileUploadModel(
-                        branch = branch,
-                        course = course,
-                        data = DateFormat.getDateInstance().format(Date()),
-                        description = description,
-                        fileMime = fileMime,
-                        fileName = fileName.toString(),
-                        fileUploadPath = "${auth.currentUser?.email}${fileName}",
-                        subject = subject,
-                    ),
-                    navController = navController
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text(text = "Description") },
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxHeight(0.3f)
+                        .fillMaxWidth()
                 )
             }
-        }, Modifier.padding(bottom = 64.dp)) {
-            Text(text = "Upload File")
+
+
+            Button(onClick = {
+                scope.launch {
+                    fileUploadDao(
+                        uriResult,
+                        context,
+                        FileUploadModel(
+                            branch = branch,
+                            course = course,
+                            data = DateFormat.getDateInstance().format(Date()),
+                            description = description,
+                            fileMime = fileMime,
+                            fileName = fileName.toString(),
+                            fileUploadPath = "${auth.currentUser?.email}${fileName}",
+                            subject = subject,
+                        ),
+                        navController = navController
+                    )
+                }
+            }, Modifier.padding(bottom = 64.dp)) {
+                Text(text = "Upload File")
+            }
         }
     }
 }

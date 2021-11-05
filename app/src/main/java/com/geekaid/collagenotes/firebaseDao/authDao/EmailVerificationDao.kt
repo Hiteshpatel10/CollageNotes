@@ -4,19 +4,19 @@ import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.navigation.Screens
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import timber.log.Timber
 
 
 fun emailVerificationDao(context: Context, navController: NavHostController) {
 
-    val auth = Firebase.auth
+    val auth = FirebaseAuth.getInstance()
 
     auth.currentUser!!.sendEmailVerification()
         .addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(context, "Email verification link send", Toast.LENGTH_SHORT).show()
-                    .also {
+                Toast.makeText(context, "Email verification link send", Toast.LENGTH_SHORT)
+                    .show().also {
                         navController.navigate(Screens.SignInNav.route)
                     }
             }

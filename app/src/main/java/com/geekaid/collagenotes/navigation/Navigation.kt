@@ -25,16 +25,6 @@ fun Navigation(
     favouriteViewModel: FavouriteViewModel
 ) {
 
-    val auth = Firebase.auth
-
-    if (auth.currentUser != null && auth.currentUser!!.isEmailVerified)
-        Screens.DashboardNav.route
-    else if (auth.currentUser != null && !auth.currentUser!!.isEmailVerified)
-        Screens.EmailVerificationNav.route
-    else
-        Screens.SignInNav.route
-
-
     NavHost(navController = navController, startDestination = Screens.SlashNav.route) {
 
         composable(Screens.SlashNav.route){
