@@ -15,6 +15,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
 
     var filter: MutableState<FilterModel> = mutableStateOf(FilterModel())
     var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
+    var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
 
 
     @ExperimentalCoroutinesApi
@@ -22,6 +23,10 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
 
     @ExperimentalCoroutinesApi
     fun getNotes() = repository.getNotes(filter = filter.value)
+
+    @ExperimentalCoroutinesApi
+    fun getFavouriteNotes()  = repository.gerFavouriteNotes()
+
 
 
 }

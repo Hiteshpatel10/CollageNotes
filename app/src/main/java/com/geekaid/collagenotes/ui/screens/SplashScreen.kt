@@ -15,11 +15,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.geekaid.collagenotes.navigation.Screens
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
-import timber.log.Timber
 
 @Composable
 fun SplashScreen(navController: NavController) {
@@ -38,7 +35,6 @@ fun SplashScreen(navController: NavController) {
                 }
             )
         )
-        delay(1000L)
 
         when{
             currentUser == null -> nextScreen = Screens.SignInNav.route

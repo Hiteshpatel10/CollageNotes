@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
@@ -52,6 +53,7 @@ fun FileUploadComponent(
         )
     }
     val fileName by remember { mutableStateOf(uriResult.lastPathSegment?.substring(index.toInt())) }
+    var validateInput by remember { mutableStateOf(false) }
 
 
 
@@ -76,33 +78,52 @@ fun FileUploadComponent(
                         .padding(top = 2.dp, bottom = 2.dp)
                 )
 
-//                course = dropdownList(list = courseList, label = "Course")
-//
-//                when (course) {
-//                    "BTech" -> {
-//                        branch = dropdownList(list = branchList, label = "Branch")
-//                    }
-//                }
-//
-//                when (branch) {
-//                    "Computer Science" -> subject =
-//                        dropdownList(list = csSubjectList, label = "Subject")
-//                }
-//            }
+                course =
+                    dropdownList(list = courseList, label = "Course", validateInput = validateInput)
 
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { description = it },
-                    label = { Text(text = "Description") },
-                    modifier = Modifier
-                        .padding(start = 8.dp, end = 8.dp)
-                        .fillMaxHeight(0.3f)
-                        .fillMaxWidth()
-                )
+                when (course) {
+                    "BTech" -> {
+                        branch = dropdownList(
+                            list = branchList,
+                            label = "Branch",
+                            validateInput = validateInput
+                        )
+                    }
+                }
+
+                when (branch) {
+                    "Computer Science" -> subject =
+                        dropdownList(
+                            list = csSubjectList,
+                            label = "Subject",
+                            validateInput = validateInput
+                        )
+                }
             }
 
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text(text = "Description") },
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp)
+                    .fillMaxHeight(0.3f)
+                    .fillMaxWidth()
+            )
+            if (validateInput) {
+                Text(
+                    text = "Description can't be empty",
+                    color = Color.Red,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth().padding(end = 8.dp)
+                )
+            }
+        }
 
-            Button(onClick = {
+
+        Button(onClick = {
+            validateInput = true
+            if (course.isNotEmpty() && subject.isNotEmpty() && branch.isNotEmpty()) {
                 scope.launch {
                     fileUploadDao(
                         uriResult,
@@ -120,9 +141,10 @@ fun FileUploadComponent(
                         navController = navController
                     )
                 }
-            }, Modifier.padding(bottom = 64.dp)) {
-                Text(text = "Upload File")
             }
+        }, Modifier.padding(bottom = 64.dp)) {
+            Text(text = "Upload File")
         }
     }
 }
+

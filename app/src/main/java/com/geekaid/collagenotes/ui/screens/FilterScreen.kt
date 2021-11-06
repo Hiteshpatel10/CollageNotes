@@ -27,6 +27,7 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
     var course by remember { mutableStateOf("") }
     var branch by remember { mutableStateOf("") }
     var subject by remember { mutableStateOf("") }
+    var validateInput by remember { mutableStateOf(false) }
 
     Timber.i(dashboardViewModel.filter.toString())
     Column(modifier = Modifier.padding(8.dp)) {
@@ -34,7 +35,8 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
         course = dropdownList(
             list = courseList,
             label = "Course",
-            defaultValue = dashboardViewModel.filter.value.course
+            defaultValue = dashboardViewModel.filter.value.course,
+            validateInput = validateInput
         )
 
         when (course) {
@@ -42,7 +44,8 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                 branch = dropdownList(
                     list = branchList,
                     label = "Branch",
-                    defaultValue = dashboardViewModel.filter.value.branch
+                    defaultValue = dashboardViewModel.filter.value.branch,
+                    validateInput = validateInput
                 )
             }
         }
@@ -51,22 +54,26 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
             "Computer Science" -> subject = dropdownList(
                 list = csSubjectList,
                 label = "Subject",
-                defaultValue = dashboardViewModel.filter.value.subject
+                defaultValue = dashboardViewModel.filter.value.subject,
+                validateInput = validateInput
             )
         }
 
         Button(
             onClick = {
+                validateInput = true
                 scope.launch {
-                    filterScreenDao(
-                        FilterModel(
-                            course = course,
-                            branch = branch,
-                            subject = subject
-                        ),
-                        context = context,
-                        navController = navController
-                    )
+                    if (course.isNotEmpty() && branch.isNotEmpty() && subject.isNotEmpty()) {
+                        filterScreenDao(
+                            FilterModel(
+                                course = course,
+                                branch = branch,
+                                subject = subject
+                            ),
+                            context = context,
+                            navController = navController
+                        )
+                    }
                 }
             },
             modifier = Modifier

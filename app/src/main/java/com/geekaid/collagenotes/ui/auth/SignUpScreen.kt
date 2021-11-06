@@ -9,6 +9,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Password
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,12 +23,15 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.passwordVisible
 import com.geekaid.collagenotes.firebaseDao.authDao.registerUser
 import com.geekaid.collagenotes.model.SignUpModel
+import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
 fun SignUpScreen(navController: NavHostController) {
 
     var email by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
@@ -45,7 +49,7 @@ fun SignUpScreen(navController: NavHostController) {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "Email") },
-            trailingIcon = {
+            leadingIcon = {
                 Icon(Icons.Filled.Email, contentDescription = "Email")
             },
             modifier = Modifier
@@ -53,10 +57,31 @@ fun SignUpScreen(navController: NavHostController) {
                 .padding(8.dp)
         )
 
+        Row(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = firstName,
+                onValueChange = { firstName = it },
+                label = { Text(text = "First Name") },
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .padding(8.dp)
+            )
+
+            OutlinedTextField(
+                value = lastName,
+                onValueChange = { lastName = it },
+                label = { Text(text = "Last Name") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+        }
+
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
+            leadingIcon = { Icon(Icons.Filled.Password, contentDescription = "password") },
             trailingIcon = { passwordVisibility = passwordVisible() },
             visualTransformation = if (passwordVisibility) VisualTransformation.None
             else PasswordVisualTransformation(),
@@ -70,6 +95,7 @@ fun SignUpScreen(navController: NavHostController) {
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
             label = { Text("Confirm Password") },
+            leadingIcon = { Icon(Icons.Filled.Password, contentDescription = "password") },
             trailingIcon = { confirmPasswordVisibility = passwordVisible() },
             visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None
             else PasswordVisualTransformation(),
@@ -81,7 +107,16 @@ fun SignUpScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-                registerUser(context, SignUpModel(email,password,confirmPassword), navController)
+                registerUser(
+                    context,
+                    SignUpModel(
+                        email,
+                        password,
+                        confirmPassword,
+                        userDetails = UserDetails(firstName = firstName, lastName = lastName)
+                    ),
+                    navController
+                )
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier

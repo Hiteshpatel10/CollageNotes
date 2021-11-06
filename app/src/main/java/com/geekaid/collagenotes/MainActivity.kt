@@ -18,8 +18,6 @@ import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
-import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +33,6 @@ class MainActivity : ComponentActivity() {
 
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val dashboardViewModel: DashboardViewModel by viewModels()
-        val favouriteViewModel: FavouriteViewModel by viewModels()
 
         setContent {
             CollageNotesTheme {
@@ -50,10 +47,9 @@ class MainActivity : ComponentActivity() {
                         }
                     ) {
                         Navigation(
-                            navController,
-                            downloadManager,
-                            dashboardViewModel,
-                            favouriteViewModel
+                            navController = navController,
+                            downloadManager = downloadManager,
+                            dashboardViewModel = dashboardViewModel,
                         )
                     }
                 }

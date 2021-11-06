@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.SignUpModel
 import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 fun validateSignUpData(context: Context, credential: SignUpModel): Boolean {
 
@@ -13,6 +14,18 @@ fun validateSignUpData(context: Context, credential: SignUpModel): Boolean {
         credential.email.isEmpty() -> Toast.makeText(
             context,
             "Email can't be empty",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        credential.userDetails.firstName.isEmpty() -> Toast.makeText(
+            context,
+            "First Name can't be empty",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        credential.userDetails.lastName.isEmpty() -> Toast.makeText(
+            context,
+            "Lase Name can't be empty",
             Toast.LENGTH_SHORT
         ).show()
 
@@ -28,6 +41,7 @@ fun validateSignUpData(context: Context, credential: SignUpModel): Boolean {
             Toast.LENGTH_SHORT
         ).show()
 
+
         credential.password.isNotEmpty() -> {
             if (credential.password != credential.confirmPassword)
                 Toast.makeText(context, "Passwords don't match", Toast.LENGTH_SHORT).show()
@@ -40,6 +54,10 @@ fun validateSignUpData(context: Context, credential: SignUpModel): Boolean {
 
 fun registerUser(context: Context, credential: SignUpModel, navController: NavHostController) {
     val auth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
+
+    val storageRef = db.collection("Users").document(credential.email)
+        .collection("UserData").document("UserInfo")
 
     if (validateSignUpData(context, credential)) {
         auth.createUserWithEmailAndPassword(credential.email, credential.password)
@@ -50,9 +68,12 @@ fun registerUser(context: Context, credential: SignUpModel, navController: NavHo
                 Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
             .addOnCompleteListener {
-                if(auth.currentUser!!.isEmailVerified){
+               if(it.isSuccessful)
+                   storageRef.set(credential.userDetails)
+
+                if (auth.currentUser!!.isEmailVerified) {
                     navController.navigate(Screens.DashboardNav.route)
-                }else{
+                } else {
                     navController.navigate(Screens.EmailVerificationNav.route)
                 }
             }
