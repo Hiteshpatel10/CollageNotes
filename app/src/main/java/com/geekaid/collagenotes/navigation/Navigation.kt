@@ -11,9 +11,6 @@ import com.geekaid.collagenotes.ui.auth.SignInScreen
 import com.geekaid.collagenotes.ui.auth.SignUpScreen
 import com.geekaid.collagenotes.ui.screens.*
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
-import com.geekaid.collagenotes.viewmodel.FavouriteViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -21,8 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun Navigation(
     navController: NavHostController,
     downloadManager: DownloadManager,
-    dashboardViewModel: DashboardViewModel,
-    favouriteViewModel: FavouriteViewModel
+    dashboardViewModel: DashboardViewModel
 ) {
 
     NavHost(navController = navController, startDestination = Screens.SlashNav.route) {
@@ -50,7 +46,7 @@ fun Navigation(
         composable(Screens.FavouriteScreenNav.route) {
             FavouriteScreen(
                 downloadManager = downloadManager,
-                favouriteViewModel = favouriteViewModel,
+                dashboardViewModel = dashboardViewModel,
                 navController = navController
             )
         }
