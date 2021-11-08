@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
-fun NoNotesFound(navController: NavHostController, buttonDisplay: Boolean) {
+fun NoNotesFound( buttonDisplay: Boolean,navController: NavHostController) {
     Column(
         modifier = Modifier
             .padding(4.dp)

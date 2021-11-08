@@ -1,11 +1,13 @@
 package com.geekaid.collagenotes.repo
 
 import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.UserDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Singleton
 
 @Singleton
@@ -62,5 +64,16 @@ class Repository {
         awaitClose {
             snapshotListener.remove()
         }
+    }
+
+    suspend fun getUserDetails(): UserDetails {
+
+        val collection = firestore.collection("Users").document(currentUser?.email.toString())
+            .collection("UserData").document("UserInfo")
+
+        val documentSnapshot = collection.get().await()
+
+
+        return documentSnapshot.toObject(UserDetails::class.java)!!
     }
 }

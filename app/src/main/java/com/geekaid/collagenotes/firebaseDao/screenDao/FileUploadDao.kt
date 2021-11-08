@@ -24,14 +24,12 @@ fun fileUploadDao(
 
     val locationRef =
         storageRef.child("courses").child(fileModel.course).child(fileModel.branch)
-            .child(fileModel.subject)
-            .child("notes")
-            .child(fileModel.fileUploadPath)
+            .child(fileModel.subject).child("notes")
+            .child(fileModel.fileInfo.fileUploadPath)
 
     val firestoreRef = firebaseFirestore.collection("courses").document(fileModel.course)
         .collection(fileModel.branch).document(fileModel.subject)
-        .collection("notes").document(fileModel.fileUploadPath)
-
+        .collection("notes").document(fileModel.fileInfo.fileUploadPath)
 
     firestoreRef.get()
         .addOnCompleteListener { task ->

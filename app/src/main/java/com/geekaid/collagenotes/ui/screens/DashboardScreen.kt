@@ -36,7 +36,7 @@ fun DashboardScreen(
 
     when {
         dashboardViewModel.filter.value.course.isEmpty() -> {
-            Text(text = "kdf")
+            NoNotesFound(navController = navController, buttonDisplay = true)
         }
 
         dashboardViewModel.courseList.value.isEmpty() -> {

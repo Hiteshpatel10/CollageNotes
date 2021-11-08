@@ -11,18 +11,18 @@ fun noteDownloadDao(note: FileUploadModel, downloadManager: DownloadManager) {
     val storage = Firebase.storage
 
     storage.reference.child("courses").child(note.course).child(note.branch).child(note.subject)
-        .child("notes").child(note.fileUploadPath).downloadUrl
+        .child("notes").child(note.fileInfo.fileUploadPath).downloadUrl
         .addOnSuccessListener { uri ->
-            val index: Int = (note.fileMime.lastIndexOf('/')).plus(1)
+            val index: Int = (note.fileInfo.fileMime.lastIndexOf('/')).plus(1)
 
             val request = DownloadManager.Request(uri)
-                .setTitle(note.fileName)
+                .setTitle(note.fileInfo.fileName)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setAllowedOverMetered(true)
                 .setDestinationInExternalPublicDir(
                     Environment.DIRECTORY_DOCUMENTS,
-                    "${note.fileName}.${note.fileMime.substring(index)}"
+                    "${note.fileInfo.fileName}.${note.fileInfo.fileMime.substring(index)}"
                 )
             downloadManager.enqueue(request)
         }

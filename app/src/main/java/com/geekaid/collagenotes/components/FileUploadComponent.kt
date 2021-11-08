@@ -17,7 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
+import com.geekaid.collagenotes.model.FileInfo
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.util.branchList
 import com.geekaid.collagenotes.util.courseList
 import com.geekaid.collagenotes.util.csSubjectList
@@ -32,6 +34,7 @@ fun FileUploadComponent(
     noteUri: String,
     context: Context,
     navController: NavHostController,
+    userDetails: UserDetails,
 ) {
 
     val auth = Firebase.auth
@@ -110,16 +113,17 @@ fun FileUploadComponent(
                     .fillMaxHeight(0.3f)
                     .fillMaxWidth()
             )
-            if (validateInput) {
+            if (validateInput && description.isEmpty()) {
                 Text(
                     text = "Description can't be empty",
                     color = Color.Red,
                     textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth().padding(end = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp)
                 )
             }
         }
-
 
         Button(onClick = {
             validateInput = true
@@ -131,12 +135,15 @@ fun FileUploadComponent(
                         FileUploadModel(
                             branch = branch,
                             course = course,
-                            data = DateFormat.getDateInstance().format(Date()),
-                            description = description,
-                            fileMime = fileMime,
-                            fileName = fileName.toString(),
-                            fileUploadPath = "${auth.currentUser?.email}${fileName}",
                             subject = subject,
+                            date = DateFormat.getDateInstance().format(Date()),
+                            fileInfo = FileInfo(
+                                fileMime = fileMime,
+                                fileName = fileName.toString(),
+                                fileUploadPath = "${auth.currentUser?.email}${fileName}",
+                                fileDescription = description,
+                                uploadedBy = "${userDetails.firstName} ${userDetails.lastName}"
+                            )
                         ),
                         navController = navController
                     )

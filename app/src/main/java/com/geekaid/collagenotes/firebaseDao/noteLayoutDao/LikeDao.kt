@@ -13,10 +13,10 @@ fun likeDao(note: FileUploadModel) {
 
     val noteRef = db.collection("courses").document(note.course)
         .collection(note.branch).document(note.subject)
-        .collection("notes").document(note.fileUploadPath)
+        .collection("notes").document(note.fileInfo.fileUploadPath)
 
     val favNoteRef = db.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document(note.fileUploadPath)
+        .collection("Favourite").document(note.fileInfo.fileUploadPath)
 
 
     if (note.likes.contains(currentUser.email)) {
