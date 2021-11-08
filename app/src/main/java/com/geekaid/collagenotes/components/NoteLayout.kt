@@ -75,7 +75,7 @@ fun NoteDetails(note: FileUploadModel) {
     ) {
         Text(text = "Subject: ${note.subject} ")
         Spacer(modifier = Modifier.padding(2.dp))
-        Text(text = "Format: ${note.fileMime}")
+        Text(text = "Format: ${note.fileInfo.fileMime}")
     }
 }
 

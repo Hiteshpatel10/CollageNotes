@@ -13,10 +13,10 @@ fun favouriteDao(course: FileUploadModel) {
 
     val noteRef = db.collection("courses").document(course.course)
         .collection(course.branch).document(course.subject)
-        .collection("notes").document(course.fileUploadPath)
+        .collection("notes").document(course.fileInfo.fileUploadPath)
 
     val favouriteRef = db.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document(course.fileUploadPath)
+        .collection("Favourite").document(course.fileInfo.fileUploadPath)
 
     favouriteRef.get()
         .addOnSuccessListener { document ->

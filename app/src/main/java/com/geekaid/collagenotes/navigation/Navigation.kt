@@ -41,7 +41,7 @@ fun Navigation(
             DownloadedNoteScreen()
         }
         composable(Screens.UploadScreenNav.route) {
-            UploadScreen(navController = navController)
+            UploadScreen(navController = navController, dashboardViewModel = dashboardViewModel)
         }
         composable(Screens.FavouriteScreenNav.route) {
             FavouriteScreen(

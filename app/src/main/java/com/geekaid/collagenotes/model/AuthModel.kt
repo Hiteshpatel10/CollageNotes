@@ -12,7 +12,3 @@ data class SignInModel(
     val password: String
 )
 
-data class UserDetails(
-    var firstName: String = "",
-    var lastName: String = "",
-)
