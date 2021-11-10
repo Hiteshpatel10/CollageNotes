@@ -4,16 +4,15 @@ import android.app.DownloadManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.twotone.Download
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
@@ -52,6 +51,7 @@ fun NoteLayout(notes: List<FileUploadModel>, downloadManager: DownloadManager) {
     }
 
     LazyColumn(modifier = Modifier.padding(4.dp)) {
+
         items(notes) { note ->
             Card(modifier = Modifier.padding(4.dp)) {
                 ConstraintLayout(constraintSet = constraintSet) {
@@ -73,9 +73,9 @@ fun NoteDetails(note: FileUploadModel) {
             .padding(top = 8.dp, start = 8.dp)
             .layoutId("noteDetails")
     ) {
-        Text(text = "Subject: ${note.subject} ")
-        Spacer(modifier = Modifier.padding(2.dp))
-        Text(text = "Format: ${note.fileInfo.fileMime}")
+        HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime )
+        HeadingValueStyle(heading = "Date", value = note.date )
+        HeadingValueStyle(heading = "Description", value = note.fileInfo.fileDescription )
     }
 }
 
@@ -113,6 +113,7 @@ fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
                 tint = if (downloadIconTint) Color.Blue else Color.Black
             )
         }
+
     }
 }
 
@@ -124,12 +125,13 @@ fun Vote(note: FileUploadModel) {
     Row(
         modifier = Modifier
             .padding(2.dp)
-            .layoutId("noteVote")
+            .layoutId("noteVote"),
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
         Text(
             text = note.likes.size.toString(),
-            modifier = Modifier.padding(start = 8.dp, top = 12.dp)
+            modifier = Modifier.padding(start = 8.dp)
         )
 
         IconButton(onClick = { likeDao(note = note) }) {
@@ -139,6 +141,23 @@ fun Vote(note: FileUploadModel) {
                 tint = if (note.likes.contains(currentUser.email)) Color.Red else Color.Black
             )
         }
+
+        Text(
+            text = note.downloadedTimes.toString(),
+        )
+
+        IconButton(onClick = {}) {
+            Icon(
+                Icons.TwoTone.Download,
+                contentDescription = "Downloaded Times",
+            )
+        }
+
+        Text(
+            text = "UPLOADED BY : ${note.fileInfo.uploadedBy}",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 4.dp)
+        )
     }
 }
 
