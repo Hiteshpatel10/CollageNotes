@@ -28,7 +28,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
 
     init {
         viewModelScope.launch {
-            getNotes()
+            userDetails.value = repository.getUserDetails()
         }
     }
 
@@ -38,12 +38,6 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
 
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
-    suspend fun getUserDetails() {
-        repository.getUserDetails().collect {
-            if (it != null)
-                userDetails.value = it.toObject(UserDetails::class.java)!!
-        }
-    }
 
     fun get() {
         viewModelScope.launch {
