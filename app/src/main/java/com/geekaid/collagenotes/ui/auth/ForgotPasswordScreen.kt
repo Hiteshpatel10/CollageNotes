@@ -5,9 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -16,12 +14,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.components.ProgressBar
 import com.geekaid.collagenotes.firebaseDao.authDao.forgotPasswordDao
+import com.geekaid.collagenotes.viewmodel.AuthViewModel
 
 @Composable
-fun ForgotPassword(navController: NavHostController) {
+fun ForgotPassword(navController: NavHostController, authViewModel: AuthViewModel) {
 
-    val email = remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -39,8 +39,8 @@ fun ForgotPassword(navController: NavHostController) {
             fontSize = 24.sp
         )
         OutlinedTextField(
-            value = email.value,
-            onValueChange = { email.value = it },
+            value = email,
+            onValueChange = { email = it },
             label = { Text(text = "Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier
@@ -50,9 +50,12 @@ fun ForgotPassword(navController: NavHostController) {
 
         Spacer(modifier = Modifier.padding(8.dp))
 
+        ProgressBar(isDisplay = authViewModel.displayProgressBar.value)
+
         Button(
             onClick = {
-                forgotPasswordDao(context, navController)
+                authViewModel.displayProgressBar.value = true
+                forgotPasswordDao(email, context, navController,  authViewModel = authViewModel)
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier

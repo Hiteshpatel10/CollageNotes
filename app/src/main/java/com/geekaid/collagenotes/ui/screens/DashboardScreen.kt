@@ -1,7 +1,6 @@
 package com.geekaid.collagenotes.ui.screens
 
 import android.app.DownloadManager
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
@@ -25,6 +24,7 @@ fun DashboardScreen(
         .collectAsState(initial = null).value?.toObject(FilterModel::class.java)?.let { filter ->
             dashboardViewModel.filter.value = filter
         }
+
 
     if (dashboardViewModel.filter.value.course.isNotEmpty()) {
         dashboardViewModel.getNotes()

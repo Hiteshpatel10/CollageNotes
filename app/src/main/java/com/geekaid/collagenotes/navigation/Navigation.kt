@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.navigation
 
 import android.app.DownloadManager
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +11,7 @@ import com.geekaid.collagenotes.ui.auth.ForgotPassword
 import com.geekaid.collagenotes.ui.auth.SignInScreen
 import com.geekaid.collagenotes.ui.auth.SignUpScreen
 import com.geekaid.collagenotes.ui.screens.*
+import com.geekaid.collagenotes.viewmodel.AuthViewModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -20,6 +22,8 @@ fun Navigation(
     downloadManager: DownloadManager,
     dashboardViewModel: DashboardViewModel
 ) {
+
+    val authViewModel: AuthViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screens.SlashNav.route) {
 
@@ -53,16 +57,16 @@ fun Navigation(
 
         //Authentication Screen Navigation
         composable(Screens.SignInNav.route) {
-            SignInScreen(navController = navController)
+            SignInScreen(navController = navController, authViewModel = authViewModel)
         }
         composable(Screens.SignUpNav.route) {
-            SignUpScreen(navController = navController)
+            SignUpScreen(navController = navController, authViewModel = authViewModel)
         }
         composable(Screens.ForgotPasswordNav.route) {
-            ForgotPassword(navController = navController)
+            ForgotPassword(navController = navController,  authViewModel = authViewModel)
         }
         composable(Screens.EmailVerificationNav.route) {
-            EmailVerificationScreen(navController = navController)
+            EmailVerificationScreen(navController = navController,  authViewModel = authViewModel)
         }
 
     }

@@ -9,7 +9,9 @@ import com.geekaid.collagenotes.components.FileSelectComponent
 import com.geekaid.collagenotes.components.FileUploadComponent
 import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
 fun UploadScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
 
@@ -22,9 +24,7 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
         noteUri = uri.toString()
     }
 
-    SideEffect {
-        userDetails = dashboardViewModel.getUserDetails()
-    }
+    userDetails = dashboardViewModel.userDetails.value
 
     if (bool) {
         FileSelectComponent(launcher = launcher)

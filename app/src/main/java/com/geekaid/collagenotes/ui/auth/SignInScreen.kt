@@ -19,13 +19,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.components.ProgressBar
 import com.geekaid.collagenotes.components.passwordVisible
 import com.geekaid.collagenotes.firebaseDao.authDao.signInUser
 import com.geekaid.collagenotes.model.SignInModel
 import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.viewmodel.AuthViewModel
 
 @Composable
-fun SignInScreen(navController: NavHostController) {
+fun SignInScreen(navController: NavHostController, authViewModel: AuthViewModel) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -39,6 +41,8 @@ fun SignInScreen(navController: NavHostController) {
             .padding(top = 180.dp)
             .padding(10.dp)
     ) {
+
+
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -69,9 +73,11 @@ fun SignInScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.padding(8.dp))
 
+        ProgressBar(isDisplay = authViewModel.displayProgressBar.value)
+
         Button(
             onClick = {
-                signInUser(context, navController, SignInModel(email, password))
+                signInUser(context, navController, authViewModel ,SignInModel(email, password))
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier
