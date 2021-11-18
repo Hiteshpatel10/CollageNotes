@@ -12,12 +12,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.components.ProgressBar
 import com.geekaid.collagenotes.firebaseDao.authDao.emailVerificationDao
+import com.geekaid.collagenotes.viewmodel.AuthViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun EmailVerificationScreen(navController: NavHostController) {
+fun EmailVerificationScreen(navController: NavHostController, authViewModel: AuthViewModel) {
 
     val auth = Firebase.auth
     val context = LocalContext.current
@@ -36,9 +38,12 @@ fun EmailVerificationScreen(navController: NavHostController) {
             textAlign = TextAlign.Center
         )
 
+        ProgressBar(isDisplay = authViewModel.displayProgressBar.value)
+
         Button(
             onClick = {
-                emailVerificationDao(context, navController)
+                authViewModel.displayProgressBar.value = true
+                emailVerificationDao(context, navController, authViewModel)
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier

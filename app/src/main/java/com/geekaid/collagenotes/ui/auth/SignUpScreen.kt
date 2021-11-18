@@ -20,14 +20,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.components.ProgressBar
 import com.geekaid.collagenotes.components.passwordVisible
 import com.geekaid.collagenotes.firebaseDao.authDao.registerUser
 import com.geekaid.collagenotes.model.SignUpModel
 import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.viewmodel.AuthViewModel
 
 @Composable
-fun SignUpScreen(navController: NavHostController) {
+fun SignUpScreen(navController: NavHostController, authViewModel: AuthViewModel) {
 
     var email by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
@@ -105,6 +107,8 @@ fun SignUpScreen(navController: NavHostController) {
                 .padding(8.dp)
         )
 
+        ProgressBar(isDisplay = authViewModel.displayProgressBar.value)
+
         Button(
             onClick = {
                 registerUser(
@@ -115,7 +119,8 @@ fun SignUpScreen(navController: NavHostController) {
                         confirmPassword,
                         userDetails = UserDetails(firstName = firstName, lastName = lastName)
                     ),
-                    navController
+                    navController,
+                    authViewModel
                 )
             },
             contentPadding = PaddingValues(14.dp),

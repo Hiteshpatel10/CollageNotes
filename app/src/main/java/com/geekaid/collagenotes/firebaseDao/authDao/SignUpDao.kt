@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.SignUpModel
 import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -52,7 +53,12 @@ fun validateSignUpData(context: Context, credential: SignUpModel): Boolean {
     return false
 }
 
-fun registerUser(context: Context, credential: SignUpModel, navController: NavHostController) {
+fun registerUser(
+    context: Context,
+    credential: SignUpModel,
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+) {
     val auth = FirebaseAuth.getInstance()
     val db = FirebaseFirestore.getInstance()
 
@@ -60,11 +66,14 @@ fun registerUser(context: Context, credential: SignUpModel, navController: NavHo
         .collection("UserData").document("UserInfo")
 
     if (validateSignUpData(context, credential)) {
+        authViewModel.displayProgressBar.value = true
         auth.createUserWithEmailAndPassword(credential.email, credential.password)
             .addOnSuccessListener {
+                authViewModel.displayProgressBar.value = false
                 Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
+                authViewModel.displayProgressBar.value = false
                 Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
             .addOnCompleteListener {

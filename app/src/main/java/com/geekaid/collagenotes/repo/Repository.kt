@@ -15,8 +15,6 @@ class Repository {
 
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
-    private val currentUser = auth.currentUser
-
 
     @ExperimentalCoroutinesApi
     fun getFilter() = callbackFlow {
@@ -53,7 +51,7 @@ class Repository {
 
     @ExperimentalCoroutinesApi
     fun gerFavouriteNotes() = callbackFlow {
-        val collection = firestore.collection("Users").document(currentUser?.email.toString())
+        val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
             .collection("Favourite")
 
         val snapshotListener = collection.addSnapshotListener { value, error ->
@@ -68,12 +66,9 @@ class Repository {
 
     suspend fun getUserDetails(): UserDetails {
 
-        val collection = firestore.collection("Users").document(currentUser?.email.toString())
+        val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
             .collection("UserData").document("UserInfo")
 
-        val documentSnapshot = collection.get().await()
-
-
-        return documentSnapshot.toObject(UserDetails::class.java)!!
+        return collection.get().await().toObject(UserDetails::class.java)!!
     }
 }
