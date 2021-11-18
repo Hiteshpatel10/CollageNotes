@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun BottomNav(navController: NavHostController) {
 
-    val auth = FirebaseAuth.getInstance()
     var alertBoxShow by remember { mutableStateOf(false) }
 
     BottomAppBar {

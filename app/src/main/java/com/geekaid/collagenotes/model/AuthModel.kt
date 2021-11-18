@@ -12,8 +12,3 @@ data class SignInModel(
     val password: String
 )
 
-data class AlertReturn(
-    var showAlertDialog: Boolean = false,
-    var signInNavigate: Boolean = false,
-)
-
