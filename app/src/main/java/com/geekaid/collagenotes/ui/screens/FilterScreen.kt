@@ -13,10 +13,11 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.util.*
+import com.geekaid.collagenotes.util.branchList
+import com.geekaid.collagenotes.util.courseList
+import com.geekaid.collagenotes.util.csSubjectList
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun FilterScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
@@ -29,7 +30,7 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
     var subject by remember { mutableStateOf("") }
     var validateInput by remember { mutableStateOf(false) }
 
-    Timber.i(dashboardViewModel.filter.toString())
+
     Column(modifier = Modifier.padding(8.dp)) {
 
         course = dropdownList(
@@ -57,7 +58,15 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                 defaultValue = dashboardViewModel.filter.value.subject,
                 validateInput = validateInput
             )
+
+            "Electrical" -> subject = dropdownList(
+                list = csSubjectList,
+                label = "Subject",
+                defaultValue = dashboardViewModel.filter.value.subject,
+                validateInput = validateInput
+            )
         }
+
 
         Button(
             onClick = {

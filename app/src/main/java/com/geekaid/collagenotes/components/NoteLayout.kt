@@ -1,7 +1,10 @@
 package com.geekaid.collagenotes.components
 
 import android.app.DownloadManager
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -50,7 +53,7 @@ fun NoteLayout(notes: List<FileUploadModel>, downloadManager: DownloadManager) {
         }
     }
 
-    LazyColumn(modifier = Modifier.padding(4.dp)) {
+    LazyColumn(modifier = Modifier.padding(top = 4.dp, start = 4.dp, end = 4.dp, bottom = 60.dp)) {
 
         items(notes) { note ->
             Card(modifier = Modifier.padding(4.dp)) {
@@ -73,9 +76,9 @@ fun NoteDetails(note: FileUploadModel) {
             .padding(top = 8.dp, start = 8.dp)
             .layoutId("noteDetails")
     ) {
-        HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime )
-        HeadingValueStyle(heading = "Date", value = note.date )
-        HeadingValueStyle(heading = "Description", value = note.fileInfo.fileDescription )
+        HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime)
+        HeadingValueStyle(heading = "Date", value = note.date)
+        HeadingValueStyle(heading = "Description", value = note.fileInfo.fileDescription)
     }
 }
 

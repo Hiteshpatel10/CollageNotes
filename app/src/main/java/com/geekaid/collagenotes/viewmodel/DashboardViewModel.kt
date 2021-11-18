@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
+
 @HiltViewModel
 class DashboardViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
@@ -23,22 +23,31 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
     var userDetails: MutableState<UserDetails> = mutableStateOf(UserDetails())
-    val progressBar: MutableState<Boolean> = mutableStateOf(value = false)
+//    val progressBar: MutableState<Boolean> = mutableStateOf(value = false)
 
 
     init {
+
+    }
+
+
+    fun getDetails() {
         viewModelScope.launch {
             userDetails.value = repository.getUserDetails()
         }
     }
 
+    @ExperimentalCoroutinesApi
     fun getFilter() = repository.getFilter()
 
+    @ExperimentalCoroutinesApi
     fun getNotes() = repository.getNotes(filter = filter.value)
 
+    @ExperimentalCoroutinesApi
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
 
+    @ExperimentalCoroutinesApi
     fun get() {
         viewModelScope.launch {
             repository.gerFavouriteNotes().collect {

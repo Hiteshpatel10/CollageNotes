@@ -24,6 +24,7 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
         noteUri = uri.toString()
     }
 
+    dashboardViewModel.getDetails()
     userDetails = dashboardViewModel.userDetails.value
 
     if (bool) {
