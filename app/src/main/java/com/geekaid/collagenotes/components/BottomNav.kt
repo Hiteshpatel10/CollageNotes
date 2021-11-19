@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.navigation.Screens
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun BottomNav(navController: NavHostController) {
@@ -37,8 +36,12 @@ fun BottomNav(navController: NavHostController) {
             alertBoxShow = true
         }) {
             Icon(Icons.Filled.Logout, contentDescription = "Downloaded Files")
-            if(alertBoxShow)
-                alertBoxShow = signOutAlertDialog(isShow = alertBoxShow, navController = navController)
+            if(alertBoxShow) {
+                alertBoxShow =
+                    signOutAlertDialog(isShow = alertBoxShow, navController = navController)
+//                    if(auth.currentUser == null)
+
+            }
         }
     }
 }

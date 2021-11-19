@@ -8,9 +8,11 @@ import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 @ExperimentalCoroutinesApi
 @Composable
@@ -19,6 +21,8 @@ fun DashboardScreen(
     dashboardViewModel: DashboardViewModel,
     navController: NavHostController,
 ) {
+
+    val auth = Firebase.auth
 
     dashboardViewModel.getFilter()
         .collectAsState(initial = null).value?.toObject(FilterModel::class.java)?.let { filter ->
@@ -35,6 +39,9 @@ fun DashboardScreen(
     }
 
     when {
+
+        auth.currentUser == null -> navController.navigate(Screens.SplashNav.route)
+
         dashboardViewModel.filter.value.course.isEmpty() -> {
             NoNotesFound(navController = navController, buttonDisplay = true)
         }
