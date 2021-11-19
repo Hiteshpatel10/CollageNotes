@@ -65,7 +65,7 @@ fun bottomNavVisibility(navController: NavController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     when (navBackStackEntry?.destination?.route) {
-        Screens.SlashNav.route -> isBottomNavVisible = false
+        Screens.SplashNav.route -> isBottomNavVisible = false
         Screens.DashboardNav.route -> isBottomNavVisible = true
     }
     return isBottomNavVisible

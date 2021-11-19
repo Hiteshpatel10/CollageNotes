@@ -25,9 +25,9 @@ fun Navigation(
 
     val authViewModel: AuthViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = Screens.SlashNav.route) {
+    NavHost(navController = navController, startDestination = Screens.SplashNav.route) {
 
-        composable(Screens.SlashNav.route){
+        composable(Screens.SplashNav.route){
             SplashScreen(navController = navController)
         }
 

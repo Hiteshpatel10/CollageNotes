@@ -5,7 +5,7 @@ import com.geekaid.collagenotes.R
 sealed class Screens(val route: String) {
 
     //SplashScreen
-    object SlashNav : Screens(R.string.SplashNav.toString())
+    object SplashNav : Screens(R.string.SplashNav.toString())
 
     //Authentication
     object SignInNav : Screens(R.string.SignInNav.toString())

@@ -2,8 +2,9 @@ package com.geekaid.collagenotes.repo
 
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.model.UserDetails
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class Repository {
 
-    private val auth = FirebaseAuth.getInstance()
+    private val auth = Firebase.auth
     private val firestore = FirebaseFirestore.getInstance()
 
     @ExperimentalCoroutinesApi
