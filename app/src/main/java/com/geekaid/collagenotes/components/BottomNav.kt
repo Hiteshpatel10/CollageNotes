@@ -1,47 +1,91 @@
 package com.geekaid.collagenotes.components
 
-import androidx.compose.material.BottomAppBar
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
-import com.geekaid.collagenotes.navigation.Screens
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 
 @Composable
 fun BottomNav(navController: NavHostController) {
 
     var alertBoxShow by remember { mutableStateOf(false) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val screen = listOf(
+        BottomNavScreen.FilterNav,
+        BottomNavScreen.FavouriteScreenNav,
+        BottomNavScreen.DashboardNav,
+        BottomNavScreen.UploadScreenNav,
+    )
 
-    BottomAppBar {
-
-        IconButton(onClick = { navController.navigate(Screens.FilterNav.route) }) {
-            Icon(Icons.Filled.Search, contentDescription = "Search")
+    BottomNavigation {
+        screen.forEach {
+            AddItem(
+                screen = it,
+                currentDestination = currentDestination,
+                navController = navController
+            )
         }
 
-        IconButton(onClick = { navController.navigate(Screens.FavouriteScreenNav.route) }) {
-            Icon(Icons.Filled.Favorite, contentDescription = "Favourite List")
-        }
+        BottomNavigationItem(
 
-        IconButton(onClick = { navController.navigate(Screens.DashboardNav.route) }) {
-            Icon(Icons.Filled.Dashboard, contentDescription = "Dashboard")
-        }
+            label = {
+                Text(text = BottomNavScreen.SignOutScreenNav.title)
+            },
 
-        IconButton(onClick = { navController.navigate(Screens.UploadScreenNav.route) }) {
-            Icon(Icons.Filled.UploadFile, contentDescription = "Downloaded Files")
-        }
+            icon = {
+                Icon(
+                    imageVector = BottomNavScreen.SignOutScreenNav.icon,
+                    contentDescription = BottomNavScreen.SignOutScreenNav.title
+                )
+            },
 
-        IconButton(onClick = {
-            alertBoxShow = true
-        }) {
-            Icon(Icons.Filled.Logout, contentDescription = "Downloaded Files")
-            if(alertBoxShow) {
-                alertBoxShow =
-                    signOutAlertDialog(isShow = alertBoxShow, navController = navController)
-//                    if(auth.currentUser == null)
+            selected = alertBoxShow,
 
+            unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+
+            onClick = {
+                alertBoxShow = true
+            }
+        )
+    }
+
+    if (alertBoxShow)
+        alertBoxShow = signOutAlertDialog(isShow = alertBoxShow, navController = navController)
+}
+
+@Composable
+fun RowScope.AddItem(
+    screen: BottomNavScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+
+    BottomNavigationItem(
+
+        label = {
+            Text(text = screen.title)
+        },
+
+        icon = {
+            Icon(imageVector = screen.icon, contentDescription = screen.title)
+        },
+
+        selected = currentDestination?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
+
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(BottomNavScreen.DashboardNav.route)
+                launchSingleTop = true
             }
         }
-    }
+    )
 }
