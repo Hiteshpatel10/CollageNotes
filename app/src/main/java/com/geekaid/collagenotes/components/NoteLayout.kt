@@ -13,7 +13,7 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.twotone.Download
+import androidx.compose.material.icons.twotone.FileDownload
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -151,7 +151,7 @@ fun Vote(note: FileUploadModel) {
 
         IconButton(onClick = {}) {
             Icon(
-                Icons.TwoTone.Download,
+                Icons.TwoTone.FileDownload,
                 contentDescription = "Downloaded Times",
             )
         }

@@ -16,4 +16,11 @@
     <string name="SignUpNav">SignUpNav</string>
     <string name="EmailVerificationNav">EmailVerificationNav</string>
     <string name="ForgotPasswordNav">ForgotPasswordNav</string>
+
+    <string-array name="rulesList">
+        <item>Select the file you want to upload</item>
+        <item>Select the file you want to upload</item>
+        <item>Select the file you want to upload</item>
+        <item>Select the file you want to upload</item>
+    </string-array>
 </resources>

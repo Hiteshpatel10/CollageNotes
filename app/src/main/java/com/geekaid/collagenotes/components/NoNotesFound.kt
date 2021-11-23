@@ -15,21 +15,28 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
-fun NoNotesFound( buttonDisplay: Boolean,navController: NavHostController) {
+fun NoNotesFound(
+    buttonText: String,
+    displayText: String,
+    buttonDisplay: Boolean,
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        ) {
+    ) {
         Icon(Icons.Filled.Info, contentDescription = "Info", Modifier.size(40.dp))
-        Text(text = "No Notes Found", style = MaterialTheme.typography.h5)
+        Text(text = displayText, style = MaterialTheme.typography.h5)
 
         if (buttonDisplay) {
             Spacer(modifier = Modifier.padding(8.dp))
-            Button(onClick = { navController.navigate(Screens.FilterNav.route) }) {
-                Text(text = "Change Filter")
+            Button(
+                onClick = { navController.navigate(Screens.FilterNav.route) },
+            ) {
+                Text(text = buttonText)
             }
         }
     }

@@ -25,7 +25,12 @@ fun FavouriteScreen(
 
 
     if (dashboardViewModel.favouriteList.value.isEmpty()) {
-        NoNotesFound(navController = navController, buttonDisplay = false)
+        NoNotesFound(
+            buttonText = "Add Notes To Fav",
+            displayText = "No favourite notes found",
+            navController = navController,
+            buttonDisplay = false
+        )
     } else {
         NoteLayout(
             notes = dashboardViewModel.favouriteList.value,
