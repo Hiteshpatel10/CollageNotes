@@ -43,11 +43,21 @@ fun DashboardScreen(
         auth.currentUser == null -> navController.navigate(Screens.SplashNav.route)
 
         dashboardViewModel.filter.value.course.isEmpty() -> {
-            NoNotesFound(navController = navController, buttonDisplay = true)
+            NoNotesFound(
+                buttonText = "Add Filter",
+                displayText = "Please add filter",
+                navController = navController,
+                buttonDisplay = true
+            )
         }
 
         dashboardViewModel.courseList.value.isEmpty() -> {
-            NoNotesFound(navController = navController, buttonDisplay = true)
+            NoNotesFound(
+                buttonText = "Change Filter",
+                displayText = "No Notes Found",
+                navController = navController,
+                buttonDisplay = true
+            )
         }
 
         else -> {

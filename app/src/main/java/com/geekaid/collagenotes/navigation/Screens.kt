@@ -47,7 +47,7 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
 
     object FavouriteScreenNav : BottomNavScreen(
         route = R.string.FavouriteNav.toString(),
-        title = "Favourites",
+        title = "Favourite",
         icon = Icons.Filled.Favorite
     )
 

@@ -13,6 +13,15 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri>) {
+
+    val rulesList = listOf(
+        "Select the file you want to upload",
+        "Upload the file with appropriate name",
+        "Select the course, branch and subject of notes uploaded",
+        "provide a appropriate description for the file uploaded",
+        "Do not upload inappropriate content",
+    )
+
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
         Column(
@@ -24,22 +33,15 @@ fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri>) {
 
             Text(text = "Rules", style = MaterialTheme.typography.h3)
             Spacer(modifier = Modifier.padding(4.dp))
-            Text(
-                text = "1. Select the file you want to upload",
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = "2. Upload the file with appropriate name",
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = "3. Upload the file with appropriate name",
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = "4. provide a appropriate description for the file uploaded",
-                style = MaterialTheme.typography.body2
-            )
+
+            rulesList.forEachIndexed { index,  rule ->
+                Text(
+                    text = "${index+1}. $rule",
+                    style = MaterialTheme.typography.body2
+                )
+                Spacer(modifier = Modifier.padding(2.dp))
+            }
+
         }
 
         Button(
