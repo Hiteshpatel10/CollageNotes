@@ -23,6 +23,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
     var userDetails: MutableState<UserDetails> = mutableStateOf(UserDetails())
+    var progressBar: MutableState<Boolean> = mutableStateOf(value = false)
 
     fun getDetails() {
         viewModelScope.launch {

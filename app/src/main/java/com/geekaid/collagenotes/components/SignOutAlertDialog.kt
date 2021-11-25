@@ -14,17 +14,17 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
-import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.MainActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
-fun signOutAlertDialog(isShow: Boolean, navController: NavHostController): Boolean {
+fun signOutAlertDialog(isShow: Boolean): Boolean {
 
     val auth = Firebase.auth
     var openDialog by remember { mutableStateOf(isShow) }
-    val scope = rememberCoroutineScope()
     val activity = (LocalLifecycleOwner.current as ComponentActivity)
     val context = LocalContext.current
 

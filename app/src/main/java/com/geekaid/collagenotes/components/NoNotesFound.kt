@@ -21,23 +21,27 @@ fun NoNotesFound(
     buttonDisplay: Boolean,
     navController: NavHostController
 ) {
-    Column(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(Icons.Filled.Info, contentDescription = "Info", Modifier.size(40.dp))
-        Text(text = displayText, style = MaterialTheme.typography.h5)
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Column(
+            modifier = Modifier
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Icon(Icons.Filled.Info, contentDescription = "Info", Modifier.size(40.dp))
+            Text(text = displayText, style = MaterialTheme.typography.h5)
+        }
 
         if (buttonDisplay) {
-            Spacer(modifier = Modifier.padding(8.dp))
             Button(
                 onClick = { navController.navigate(Screens.FilterNav.route) },
+                modifier = Modifier.padding(bottom = 64.dp)
             ) {
                 Text(text = buttonText)
             }
+        }else{
+            Spacer(modifier = Modifier.padding(top = 34.dp ,bottom = 64.dp))
         }
     }
 }

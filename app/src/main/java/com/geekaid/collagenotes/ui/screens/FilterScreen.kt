@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -31,42 +32,47 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
     var validateInput by remember { mutableStateOf(false) }
 
 
-    Column(modifier = Modifier.padding(8.dp)) {
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp)
+        ) {
 
-        course = dropdownList(
-            list = courseList,
-            label = "Course",
-            defaultValue = dashboardViewModel.filter.value.course,
-            validateInput = validateInput
-        )
+            course = dropdownList(
+                list = courseList,
+                label = "Course",
+                defaultValue = dashboardViewModel.filter.value.course,
+                validateInput = validateInput
+            )
 
-        when (course) {
-            "BTech" -> {
-                branch = dropdownList(
-                    list = branchList,
-                    label = "Branch",
-                    defaultValue = dashboardViewModel.filter.value.branch,
+            when (course) {
+                "BTech" -> {
+                    branch = dropdownList(
+                        list = branchList,
+                        label = "Branch",
+                        defaultValue = dashboardViewModel.filter.value.branch,
+                        validateInput = validateInput
+                    )
+                }
+            }
+
+            when (branch) {
+                "Computer Science" -> subject = dropdownList(
+                    list = csSubjectList,
+                    label = "Subject",
+                    defaultValue = dashboardViewModel.filter.value.subject,
+                    validateInput = validateInput
+                )
+
+                "Electrical" -> subject = dropdownList(
+                    list = csSubjectList,
+                    label = "Subject",
+                    defaultValue = dashboardViewModel.filter.value.subject,
                     validateInput = validateInput
                 )
             }
         }
-
-        when (branch) {
-            "Computer Science" -> subject = dropdownList(
-                list = csSubjectList,
-                label = "Subject",
-                defaultValue = dashboardViewModel.filter.value.subject,
-                validateInput = validateInput
-            )
-
-            "Electrical" -> subject = dropdownList(
-                list = csSubjectList,
-                label = "Subject",
-                defaultValue = dashboardViewModel.filter.value.subject,
-                validateInput = validateInput
-            )
-        }
-
 
         Button(
             onClick = {
@@ -85,11 +91,10 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                     }
                 }
             },
-            modifier = Modifier
-                .padding(start = 128.dp, end = 128.dp, top = 16.dp)
-                .fillMaxWidth()
+            modifier = Modifier.padding(bottom = 64.dp)
         ) {
-            Text(text = "Submit")
+            Text(text = " Submit ")
         }
+
     }
 }

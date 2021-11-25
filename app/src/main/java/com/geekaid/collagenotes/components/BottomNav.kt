@@ -7,23 +7,20 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.geekaid.collagenotes.Constants
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
 fun BottomNav(navController: NavHostController) {
 
     var alertBoxShow by remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val screen = listOf(
-        BottomNavScreen.FilterNav,
-        BottomNavScreen.FavouriteScreenNav,
-        BottomNavScreen.DashboardNav,
-        BottomNavScreen.UploadScreenNav,
-    )
 
     BottomNavigation {
-        screen.forEach {
+        Constants.screen.forEach {
             AddItem(
                 screen = it,
                 currentDestination = currentDestination,
@@ -55,7 +52,7 @@ fun BottomNav(navController: NavHostController) {
     }
 
     if (alertBoxShow)
-        alertBoxShow = signOutAlertDialog(isShow = alertBoxShow, navController = navController)
+        alertBoxShow = signOutAlertDialog(isShow = alertBoxShow)
 }
 
 @Composable
