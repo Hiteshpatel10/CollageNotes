@@ -3,10 +3,10 @@ package com.geekaid.collagenotes.ui.screens
 import android.app.DownloadManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
-import com.geekaid.collagenotes.components.ProgressBar
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,17 +19,15 @@ fun FavouriteScreen(
     navController: NavHostController
 ) {
 
-    dashboardViewModel.progressBar.value = true
+    val context = LocalContext.current
+
     dashboardViewModel.getFavouriteNotes()
         .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)?.let { list ->
             dashboardViewModel.favouriteList.value = list
-            dashboardViewModel.progressBar.value = false
         }
 
 
     when {
-
-        dashboardViewModel.progressBar.value -> ProgressBar(isDisplay = dashboardViewModel.progressBar.value)
 
         dashboardViewModel.favouriteList.value.isEmpty() -> {
             NoNotesFound(
@@ -43,6 +41,7 @@ fun FavouriteScreen(
         else -> {
             NoteLayout(
                 notes = dashboardViewModel.favouriteList.value,
+                context = context,
                 downloadManager = downloadManager
             )
         }

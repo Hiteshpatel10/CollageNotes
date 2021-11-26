@@ -17,10 +17,7 @@
     <string name="EmailVerificationNav">EmailVerificationNav</string>
     <string name="ForgotPasswordNav">ForgotPasswordNav</string>
 
-    <string-array name="rulesList">
-        <item>Select the file you want to upload</item>
-        <item>Select the file you want to upload</item>
-        <item>Select the file you want to upload</item>
-        <item>Select the file you want to upload</item>
-    </string-array>
+    //Share string
+    <string name="share_message">Collage Notes \n Branch: %s, \nCourse: %s, \nsubject: %s, \ndownloadLink: %s</string>
+
 </resources>

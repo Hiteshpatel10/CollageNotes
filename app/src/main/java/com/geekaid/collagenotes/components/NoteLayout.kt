@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.components
 
 import android.app.DownloadManager
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,12 +26,13 @@ import androidx.constraintlayout.compose.ConstraintSet
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.favouriteDao
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.likeDao
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.noteDownloadDao
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.shareDao
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun NoteLayout(notes: List<FileUploadModel>, downloadManager: DownloadManager) {
+fun NoteLayout(notes: List<FileUploadModel>, context: Context, downloadManager: DownloadManager) {
 
     val constraintSet = ConstraintSet {
         val noteDetails = createRefFor("noteDetails")
@@ -59,7 +61,7 @@ fun NoteLayout(notes: List<FileUploadModel>, downloadManager: DownloadManager) {
             Card(modifier = Modifier.padding(4.dp)) {
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note)
-                    NoteSidebar(note = note, downloadManager = downloadManager)
+                    NoteSidebar(note = note, context = context, downloadManager = downloadManager)
                     Vote(note = note)
                 }
             }
@@ -83,7 +85,7 @@ fun NoteDetails(note: FileUploadModel) {
 }
 
 @Composable
-fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
+fun NoteSidebar(note: FileUploadModel, context: Context, downloadManager: DownloadManager) {
     val currentUser = Firebase.auth.currentUser!!
     var downloadIconTint by remember { mutableStateOf(false) }
 
@@ -92,7 +94,7 @@ fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
             .padding(2.dp)
             .layoutId("noteSidebar")
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { shareDao(note = note, context = context) }) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
 
@@ -107,7 +109,7 @@ fun NoteSidebar(note: FileUploadModel, downloadManager: DownloadManager) {
         }
 
         IconButton(onClick = {
-            noteDownloadDao(note = note, downloadManager = downloadManager)
+            noteDownloadDao(note = note, context = context, downloadManager = downloadManager)
             downloadIconTint = true
         }) {
             Icon(
