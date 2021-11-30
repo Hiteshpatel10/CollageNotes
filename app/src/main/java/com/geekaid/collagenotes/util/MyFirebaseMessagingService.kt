@@ -1,4 +1,4 @@
-package com.geekaid.collagenotes
+package com.geekaid.collagenotes.util
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import timber.log.Timber
