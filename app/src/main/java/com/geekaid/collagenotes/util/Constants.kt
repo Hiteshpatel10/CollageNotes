@@ -1,4 +1,4 @@
-package com.geekaid.collagenotes
+package com.geekaid.collagenotes.util
 
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 
@@ -18,5 +18,17 @@ object Constants {
         BottomNavScreen.DashboardNav,
         BottomNavScreen.UploadScreenNav,
     )
+
+
+//    val cs = listOf(
+//        "Advanced Engineering Mathematics",
+//        "Technical Communication",
+//        "Managerial Economics and Financial Accounting",
+//        "Digital Electronics",
+//        "Data Structures and Algorithms",
+//        "Object Oriented Programming",
+//        "Software Engineering",
+//        "Data Structures and Algorithms Lab",
+//    )
 
 }

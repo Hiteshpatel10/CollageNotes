@@ -7,7 +7,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.geekaid.collagenotes.Constants
+import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

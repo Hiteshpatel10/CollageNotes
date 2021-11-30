@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.navigation
 
 import android.app.DownloadManager
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -15,6 +16,7 @@ import com.geekaid.collagenotes.viewmodel.AuthViewModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
 fun Navigation(
