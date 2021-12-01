@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.BottomNav
+import com.geekaid.collagenotes.model.FilterListsModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Screens
@@ -11,6 +12,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 fun filterScreenDao(filterModel: FilterModel, context: Context, navController: NavHostController) {
 
@@ -26,4 +28,17 @@ fun filterScreenDao(filterModel: FilterModel, context: Context, navController: N
             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
         }
 
+}
+
+
+fun getFilter() {
+
+    val db = Firebase.firestore
+
+    db.collection("courses").document("filterList").get()
+        .addOnSuccessListener { document ->
+
+            Timber.i(document.toObject(FilterListsModel::class.java).toString())
+
+        }
 }

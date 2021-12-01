@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
+import com.geekaid.collagenotes.firebaseDao.screenDao.getFilter
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.util.branchList
 import com.geekaid.collagenotes.util.courseList
@@ -31,6 +32,7 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
     var subject by remember { mutableStateOf("") }
     var validateInput by remember { mutableStateOf(false) }
 
+    getFilter()
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
