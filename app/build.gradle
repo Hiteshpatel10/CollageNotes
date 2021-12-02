@@ -41,7 +41,9 @@ android {
     buildFeatures {
         compose true
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.0-beta03"
+    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -71,6 +73,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation("androidx.compose.compiler:compiler:1.1.0-beta03")
 
     //Compose Navigation
     implementation("androidx.navigation:navigation-compose:$compose_navigation")

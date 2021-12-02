@@ -9,12 +9,14 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.model.FilterListsModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -33,7 +35,10 @@ fun DashboardScreen(
             dashboardViewModel.filter.value = filter
         }
 
-
+    dashboardViewModel.getFilterLists()
+        .collectAsState(initial = null).value?.toObject(FilterListsModel::class.java)?.let {
+            Timber.i("kise ho ${it}")
+        }
     if (dashboardViewModel.filter.value.course.isNotEmpty()) {
         dashboardViewModel.getNotes()
             .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)
@@ -66,7 +71,7 @@ fun DashboardScreen(
         else -> {
             NoteLayout(
                 notes = dashboardViewModel.courseList.value,
-                context  = context,
+                context = context,
                 downloadManager = downloadManager
             )
         }

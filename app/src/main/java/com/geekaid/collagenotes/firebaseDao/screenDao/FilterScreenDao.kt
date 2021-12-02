@@ -3,12 +3,9 @@ package com.geekaid.collagenotes.firebaseDao.screenDao
 import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavHostController
-import com.geekaid.collagenotes.components.BottomNav
 import com.geekaid.collagenotes.model.FilterListsModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
-import com.geekaid.collagenotes.navigation.Screens
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

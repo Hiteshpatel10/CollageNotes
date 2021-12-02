@@ -4,15 +4,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.model.UserDetails
+import com.geekaid.collagenotes.model.*
 import com.geekaid.collagenotes.repo.Repository
+import com.google.firebase.firestore.DocumentSnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -21,9 +18,11 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
 
     var filter: MutableState<FilterModel> = mutableStateOf(FilterModel())
     var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
+    var courseList1: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var branchList12: MutableState<ListFetch> = mutableStateOf(ListFetch())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
+    var filterLists: MutableState<List<FilterListsModel>> = mutableStateOf(mutableListOf())
     var userDetails: MutableState<UserDetails> = mutableStateOf(UserDetails())
-    var progressBar: MutableState<Boolean> = mutableStateOf(value = false)
 
     fun getDetails() {
         viewModelScope.launch {
@@ -40,19 +39,13 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     @ExperimentalCoroutinesApi
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
-
     @ExperimentalCoroutinesApi
-    fun get() {
-        viewModelScope.launch {
-            repository.gerFavouriteNotes().collect {
-                Timber.i("get called")
-                if (it != null) {
-                    favouriteList.value = it.toObjects(FileUploadModel::class.java)
-                    Timber.i(it.toObjects(FileUploadModel::class.java).toString())
-                }
-            }
-        }
-    }
+    fun getFilterLists() = repository.getFilterLists()
 
+    suspend fun getCourseLists() = repository.getCourseList()
+
+    suspend fun getBranchList(course: String): DocumentSnapshot? {
+        return repository.getBranchList(course)
+    }
 
 }

@@ -3,12 +3,14 @@ package com.geekaid.collagenotes.repo
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.model.UserDetails
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
@@ -65,11 +67,42 @@ class Repository {
         }
     }
 
+    @ExperimentalCoroutinesApi
+    fun getFilterLists() = callbackFlow {
+        val collection = firestore.collection("courses").document("filterLists")
+
+        val snapshotListener = collection.addSnapshotListener { value, error ->
+            if (error == null)
+                trySend(value)
+        }
+
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+
     suspend fun getUserDetails(): UserDetails {
 
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
             .collection("UserData").document("UserInfo")
 
         return collection.get().await().toObject(UserDetails::class.java)!!
+    }
+
+    suspend fun getCourseList(): DocumentSnapshot? {
+
+        val collection = firestore.collection("lists").document("courselists")
+            .collection("clists").document("list")
+
+        return collection.get().await()
+    }
+
+    suspend fun getBranchList(course: String): DocumentSnapshot? {
+
+        val collection = firestore.collection("lists").document("courselists")
+            .collection(course).document("subjects")
+
+        return collection.get().await()
     }
 }

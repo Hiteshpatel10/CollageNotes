@@ -13,13 +13,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
-import com.geekaid.collagenotes.firebaseDao.screenDao.getFilter
 import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.util.branchList
-import com.geekaid.collagenotes.util.courseList
+import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.util.csSubjectList
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun FilterScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
@@ -32,8 +31,6 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
     var subject by remember { mutableStateOf("") }
     var validateInput by remember { mutableStateOf(false) }
 
-    getFilter()
-
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
             modifier = Modifier
@@ -41,8 +38,29 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                 .padding(8.dp)
         ) {
 
+
+            LaunchedEffect(key1 = false) {
+                Timber.i("this launched effect")
+                dashboardViewModel.courseList1.value =
+                    dashboardViewModel.getCourseLists()?.toObject(ListFetch::class.java)!!
+            }
+
+            scope.launch {
+
+                if(course.isNotEmpty()){
+                    try {
+                        Timber.i("course: $course")
+                        dashboardViewModel.branchList12.value =
+                            dashboardViewModel.getBranchList("Btech")?.toObject(ListFetch::class.java)!!
+                    } catch (e: Exception) {
+                        Timber.i("error ${e.message}")
+                    }
+                }
+
+                Timber.i("course: ${dashboardViewModel.branchList12.value}")
+            }
             course = dropdownList(
-                list = courseList,
+                list = dashboardViewModel.courseList1.value.list,
                 label = "Course",
                 defaultValue = dashboardViewModel.filter.value.course,
                 validateInput = validateInput
@@ -51,7 +69,7 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
             when (course) {
                 "BTech" -> {
                     branch = dropdownList(
-                        list = branchList,
+                        list = dashboardViewModel.branchList12.value.list,
                         label = "Branch",
                         defaultValue = dashboardViewModel.filter.value.branch,
                         validateInput = validateInput

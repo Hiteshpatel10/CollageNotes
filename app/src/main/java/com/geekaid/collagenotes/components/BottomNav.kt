@@ -11,6 +11,8 @@ import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+
+@ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
 fun BottomNav(navController: NavHostController) {
