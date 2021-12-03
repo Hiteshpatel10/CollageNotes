@@ -15,10 +15,8 @@ import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.model.ListFetch
-import com.geekaid.collagenotes.util.csSubjectList
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun FilterScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
@@ -38,60 +36,45 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                 .padding(8.dp)
         ) {
 
-
             LaunchedEffect(key1 = false) {
-                Timber.i("this launched effect")
-                dashboardViewModel.courseList1.value =
+                dashboardViewModel.courseList.value =
                     dashboardViewModel.getCourseLists()?.toObject(ListFetch::class.java)!!
             }
 
-            scope.launch {
-
-                if(course.isNotEmpty()){
-                    try {
-                        Timber.i("course: $course")
-                        dashboardViewModel.branchList12.value =
-                            dashboardViewModel.getBranchList("Btech")?.toObject(ListFetch::class.java)!!
-                    } catch (e: Exception) {
-                        Timber.i("error ${e.message}")
-                    }
+            if (course.isNotEmpty())
+                scope.launch {
+                    dashboardViewModel.branchList.value =
+                        dashboardViewModel.getBranchList(course)?.toObject(ListFetch::class.java)!!
                 }
 
-                Timber.i("course: ${dashboardViewModel.branchList12.value}")
-            }
+            if (course.isNotEmpty() && branch.isNotEmpty())
+                scope.launch {
+                    dashboardViewModel.subjectList.value =
+                        dashboardViewModel.getSubjectList(course, branch)?.toObject(ListFetch::class.java)!!
+                }
+
             course = dropdownList(
-                list = dashboardViewModel.courseList1.value.list,
+                list = dashboardViewModel.courseList.value.list,
                 label = "Course",
                 defaultValue = dashboardViewModel.filter.value.course,
                 validateInput = validateInput
             )
 
-            when (course) {
-                "BTech" -> {
-                    branch = dropdownList(
-                        list = dashboardViewModel.branchList12.value.list,
-                        label = "Branch",
-                        defaultValue = dashboardViewModel.filter.value.branch,
-                        validateInput = validateInput
-                    )
-                }
-            }
+            if (course.isNotEmpty())
+                branch = dropdownList(
+                    list = dashboardViewModel.branchList.value.list,
+                    label = "Branch",
+                    defaultValue = dashboardViewModel.filter.value.branch,
+                    validateInput = validateInput
+                )
 
-            when (branch) {
-                "Computer Science" -> subject = dropdownList(
-                    list = csSubjectList,
+            if (course.isNotEmpty() && branch.isNotEmpty())
+                subject = dropdownList(
+                    list = dashboardViewModel.subjectList.value.list,
                     label = "Subject",
                     defaultValue = dashboardViewModel.filter.value.subject,
                     validateInput = validateInput
                 )
-
-                "Electrical" -> subject = dropdownList(
-                    list = csSubjectList,
-                    label = "Subject",
-                    defaultValue = dashboardViewModel.filter.value.subject,
-                    validateInput = validateInput
-                )
-            }
         }
 
         Button(

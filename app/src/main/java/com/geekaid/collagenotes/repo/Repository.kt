@@ -92,16 +92,23 @@ class Repository {
 
     suspend fun getCourseList(): DocumentSnapshot? {
 
-        val collection = firestore.collection("lists").document("courselists")
-            .collection("clists").document("list")
+        val collection = firestore.collection("filterLists").document("courseList")
 
         return collection.get().await()
     }
 
     suspend fun getBranchList(course: String): DocumentSnapshot? {
 
-        val collection = firestore.collection("lists").document("courselists")
-            .collection(course).document("subjects")
+        val collection = firestore.collection("filterLists").document(course)
+            .collection("branch").document("branchList")
+
+        return collection.get().await()
+    }
+
+    suspend fun getSubjectList(course: String, branch: String): DocumentSnapshot? {
+
+        val collection = firestore.collection("filterLists").document(course)
+            .collection(branch).document("subjectList")
 
         return collection.get().await()
     }

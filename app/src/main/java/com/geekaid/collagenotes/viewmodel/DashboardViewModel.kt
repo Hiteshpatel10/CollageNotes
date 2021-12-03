@@ -17,19 +17,21 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     var filter: MutableState<FilterModel> = mutableStateOf(FilterModel())
-    var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
-    var courseList1: MutableState<ListFetch> = mutableStateOf(ListFetch())
-    var branchList12: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var notesList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
-    var filterLists: MutableState<List<FilterListsModel>> = mutableStateOf(mutableListOf())
     var userDetails: MutableState<UserDetails> = mutableStateOf(UserDetails())
 
+    // to store lists fetch in filterScreen.kt
+    var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var branchList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var subjectList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+
+    //function to get the user detail from firebase
     fun getDetails() {
-        viewModelScope.launch {
-            userDetails.value = repository.getUserDetails()
-        }
+        viewModelScope.launch { userDetails.value = repository.getUserDetails() }
     }
 
+    // functions to get data from firebase
     @ExperimentalCoroutinesApi
     fun getFilter() = repository.getFilter()
 
@@ -42,10 +44,16 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     @ExperimentalCoroutinesApi
     fun getFilterLists() = repository.getFilterLists()
 
+
+    // functions to fetch filter list
     suspend fun getCourseLists() = repository.getCourseList()
 
     suspend fun getBranchList(course: String): DocumentSnapshot? {
         return repository.getBranchList(course)
+    }
+
+    suspend fun getSubjectList(course: String, branch: String): DocumentSnapshot? {
+        return repository.getSubjectList(course = course, branch = branch)
     }
 
 }

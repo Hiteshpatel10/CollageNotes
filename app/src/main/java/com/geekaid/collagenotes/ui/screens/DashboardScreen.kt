@@ -43,7 +43,7 @@ fun DashboardScreen(
         dashboardViewModel.getNotes()
             .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)
             ?.let { list ->
-                dashboardViewModel.courseList.value = list
+                dashboardViewModel.notesList.value = list
             }
     }
 
@@ -59,7 +59,7 @@ fun DashboardScreen(
             )
         }
 
-        dashboardViewModel.courseList.value.isEmpty() -> {
+        dashboardViewModel.notesList.value.isEmpty() -> {
             NoNotesFound(
                 buttonText = "Change Filter",
                 displayText = "No Notes Found",
@@ -70,7 +70,7 @@ fun DashboardScreen(
 
         else -> {
             NoteLayout(
-                notes = dashboardViewModel.courseList.value,
+                notes = dashboardViewModel.notesList.value,
                 context = context,
                 downloadManager = downloadManager
             )
