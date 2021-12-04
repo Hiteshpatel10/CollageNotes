@@ -14,9 +14,6 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.util.branchList
-import com.geekaid.collagenotes.util.courseList
-import com.geekaid.collagenotes.util.csSubjectList
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
 
@@ -31,7 +28,6 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
     var subject by remember { mutableStateOf("") }
     var validateInput by remember { mutableStateOf(false) }
 
-
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
             modifier = Modifier
@@ -39,39 +35,43 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                 .padding(8.dp)
         ) {
 
+            LaunchedEffect(key1 = false) {
+                dashboardViewModel.courseList.value =
+                    dashboardViewModel.getCourseLists()!!
+            }
+
+            if (course.isNotEmpty())
+                scope.launch {
+                    dashboardViewModel.branchList.value = dashboardViewModel.getBranchList(course)!!
+                }
+
+            if (course.isNotEmpty() && branch.isNotEmpty())
+                scope.launch {
+                    dashboardViewModel.subjectList.value = dashboardViewModel.getSubjectList(course, branch)!!
+                }
+
             course = dropdownList(
-                list = courseList,
+                list = dashboardViewModel.courseList.value.list,
                 label = "Course",
                 defaultValue = dashboardViewModel.filter.value.course,
                 validateInput = validateInput
             )
 
-            when (course) {
-                "BTech" -> {
-                    branch = dropdownList(
-                        list = branchList,
-                        label = "Branch",
-                        defaultValue = dashboardViewModel.filter.value.branch,
-                        validateInput = validateInput
-                    )
-                }
-            }
+            if (course.isNotEmpty())
+                branch = dropdownList(
+                    list = dashboardViewModel.branchList.value.list,
+                    label = "Branch",
+                    defaultValue = dashboardViewModel.filter.value.branch,
+                    validateInput = validateInput
+                )
 
-            when (branch) {
-                "Computer Science" -> subject = dropdownList(
-                    list = csSubjectList,
+            if (course.isNotEmpty() && branch.isNotEmpty())
+                subject = dropdownList(
+                    list = dashboardViewModel.subjectList.value.list,
                     label = "Subject",
                     defaultValue = dashboardViewModel.filter.value.subject,
                     validateInput = validateInput
                 )
-
-                "Electrical" -> subject = dropdownList(
-                    list = csSubjectList,
-                    label = "Subject",
-                    defaultValue = dashboardViewModel.filter.value.subject,
-                    validateInput = validateInput
-                )
-            }
         }
 
         Button(

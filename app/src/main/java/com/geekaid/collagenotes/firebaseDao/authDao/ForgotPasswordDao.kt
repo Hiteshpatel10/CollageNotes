@@ -15,8 +15,6 @@ fun forgotPasswordDao(
     navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
-    val auth = Firebase.auth
-
     FirebaseAuth.getInstance().sendPasswordResetEmail(email.toString())
         .addOnCompleteListener {
             if (it.isSuccessful) {

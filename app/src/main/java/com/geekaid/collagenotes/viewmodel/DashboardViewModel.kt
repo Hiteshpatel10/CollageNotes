@@ -6,13 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.repo.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -20,17 +19,21 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     var filter: MutableState<FilterModel> = mutableStateOf(FilterModel())
-    var courseList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
+    var notesList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
     var userDetails: MutableState<UserDetails> = mutableStateOf(UserDetails())
-    var progressBar: MutableState<Boolean> = mutableStateOf(value = false)
 
+    // to store lists fetch in filterScreen.kt
+    var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var branchList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var subjectList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+
+    //function to get the user detail from firebase
     fun getDetails() {
-        viewModelScope.launch {
-            userDetails.value = repository.getUserDetails()
-        }
+        viewModelScope.launch { userDetails.value = repository.getUserDetails() }
     }
 
+    // functions to get data from firebase
     @ExperimentalCoroutinesApi
     fun getFilter() = repository.getFilter()
 
@@ -40,19 +43,15 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     @ExperimentalCoroutinesApi
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
+    // functions to fetch filter list
+    suspend fun getCourseLists() = repository.getCourseList()
 
-    @ExperimentalCoroutinesApi
-    fun get() {
-        viewModelScope.launch {
-            repository.gerFavouriteNotes().collect {
-                Timber.i("get called")
-                if (it != null) {
-                    favouriteList.value = it.toObjects(FileUploadModel::class.java)
-                    Timber.i(it.toObjects(FileUploadModel::class.java).toString())
-                }
-            }
-        }
+    suspend fun getBranchList(course: String): ListFetch ? {
+        return repository.getBranchList(course)
     }
 
+    suspend fun getSubjectList(course: String, branch: String): ListFetch? {
+        return repository.getSubjectList(course = course, branch = branch)
+    }
 
 }

@@ -34,6 +34,7 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
             noteUri = noteUri,
             userDetails = userDetails,
             context = context,
+            dashboardViewModel = dashboardViewModel,
             navController = navController
         )
     }

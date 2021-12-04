@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.geekaid.collagenotes.util.Constants
 
 @Composable
-fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri>) {
+fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri?>) {
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 

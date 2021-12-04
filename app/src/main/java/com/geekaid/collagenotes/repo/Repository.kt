@@ -1,14 +1,17 @@
 package com.geekaid.collagenotes.repo
 
 import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.model.UserDetails
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
@@ -66,10 +69,29 @@ class Repository {
     }
 
     suspend fun getUserDetails(): UserDetails {
-
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
             .collection("UserData").document("UserInfo")
 
         return collection.get().await().toObject(UserDetails::class.java)!!
+    }
+
+    suspend fun getCourseList(): ListFetch? {
+        val collection = firestore.collection("filterLists").document("courseList")
+
+        return collection.get().await().toObject(ListFetch::class.java)
+    }
+
+    suspend fun getBranchList(course: String): ListFetch? {
+        val collection = firestore.collection("filterLists").document(course)
+            .collection("branch").document("branchList")
+
+        return collection.get().await().toObject(ListFetch::class.java)
+    }
+
+    suspend fun getSubjectList(course: String, branch: String): ListFetch? {
+        val collection = firestore.collection("filterLists").document(course)
+            .collection(branch).document("subjectList")
+
+        return collection.get().await().toObject(ListFetch::class.java)
     }
 }

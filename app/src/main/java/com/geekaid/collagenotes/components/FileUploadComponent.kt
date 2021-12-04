@@ -20,9 +20,7 @@ import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
 import com.geekaid.collagenotes.model.FileInfo
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.UserDetails
-import com.geekaid.collagenotes.util.branchList
-import com.geekaid.collagenotes.util.courseList
-import com.geekaid.collagenotes.util.csSubjectList
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -35,6 +33,7 @@ fun FileUploadComponent(
     context: Context,
     navController: NavHostController,
     userDetails: UserDetails,
+    dashboardViewModel: DashboardViewModel,
 ) {
 
     val auth = Firebase.auth
@@ -59,8 +58,23 @@ fun FileUploadComponent(
     var validateInput by remember { mutableStateOf(false) }
 
 
-
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+        LaunchedEffect(key1 = false) {
+            dashboardViewModel.courseList.value =
+                dashboardViewModel.getCourseLists()!!
+        }
+
+        if (course.isNotEmpty())
+            scope.launch {
+                dashboardViewModel.branchList.value = dashboardViewModel.getBranchList(course)!!
+            }
+
+        if (course.isNotEmpty() && branch.isNotEmpty())
+            scope.launch {
+                dashboardViewModel.subjectList.value =
+                    dashboardViewModel.getSubjectList(course, branch)!!
+            }
 
         Column(Modifier.weight(1f)) {
 
@@ -81,27 +95,26 @@ fun FileUploadComponent(
                         .padding(top = 2.dp, bottom = 2.dp)
                 )
 
-                course =
-                    dropdownList(list = courseList, label = "Course", validateInput = validateInput)
+                course = dropdownList(
+                    list = dashboardViewModel.courseList.value.list,
+                    label = "Course",
+                    validateInput = validateInput
+                )
 
-                when (course) {
-                    "BTech" -> {
-                        branch = dropdownList(
-                            list = branchList,
-                            label = "Branch",
-                            validateInput = validateInput
-                        )
-                    }
-                }
+                if (course.isNotEmpty())
+                    branch = dropdownList(
+                        list = dashboardViewModel.branchList.value.list,
+                        label = "Branch",
+                        validateInput = validateInput
+                    )
 
-                when (branch) {
-                    "Computer Science" -> subject =
-                        dropdownList(
-                            list = csSubjectList,
-                            label = "Subject",
-                            validateInput = validateInput
-                        )
-                }
+                if (course.isNotEmpty() && branch.isNotEmpty())
+                    subject = dropdownList(
+                        list = dashboardViewModel.subjectList.value.list,
+                        label = "Subject",
+                        validateInput = validateInput
+                    )
+
             }
 
             OutlinedTextField(

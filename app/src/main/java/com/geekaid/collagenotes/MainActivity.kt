@@ -24,12 +24,13 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val auth = Firebase.auth
 
-    @ExperimentalMaterialApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
