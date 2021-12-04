@@ -34,11 +34,7 @@ fun DashboardScreen(
         .collectAsState(initial = null).value?.toObject(FilterModel::class.java)?.let { filter ->
             dashboardViewModel.filter.value = filter
         }
-
-    dashboardViewModel.getFilterLists()
-        .collectAsState(initial = null).value?.toObject(FilterListsModel::class.java)?.let {
-            Timber.i("kise ho ${it}")
-        }
+    
     if (dashboardViewModel.filter.value.course.isNotEmpty()) {
         dashboardViewModel.getNotes()
             .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)

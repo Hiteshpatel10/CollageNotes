@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.repo
 
 import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.model.UserDetails
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -67,49 +68,30 @@ class Repository {
         }
     }
 
-    @ExperimentalCoroutinesApi
-    fun getFilterLists() = callbackFlow {
-        val collection = firestore.collection("courses").document("filterLists")
-
-        val snapshotListener = collection.addSnapshotListener { value, error ->
-            if (error == null)
-                trySend(value)
-        }
-
-        awaitClose {
-            snapshotListener.remove()
-        }
-    }
-
-
     suspend fun getUserDetails(): UserDetails {
-
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
             .collection("UserData").document("UserInfo")
 
         return collection.get().await().toObject(UserDetails::class.java)!!
     }
 
-    suspend fun getCourseList(): DocumentSnapshot? {
-
+    suspend fun getCourseList(): ListFetch? {
         val collection = firestore.collection("filterLists").document("courseList")
 
-        return collection.get().await()
+        return collection.get().await().toObject(ListFetch::class.java)
     }
 
-    suspend fun getBranchList(course: String): DocumentSnapshot? {
-
+    suspend fun getBranchList(course: String): ListFetch? {
         val collection = firestore.collection("filterLists").document(course)
             .collection("branch").document("branchList")
 
-        return collection.get().await()
+        return collection.get().await().toObject(ListFetch::class.java)
     }
 
-    suspend fun getSubjectList(course: String, branch: String): DocumentSnapshot? {
-
+    suspend fun getSubjectList(course: String, branch: String): ListFetch? {
         val collection = firestore.collection("filterLists").document(course)
             .collection(branch).document("subjectList")
 
-        return collection.get().await()
+        return collection.get().await().toObject(ListFetch::class.java)
     }
 }

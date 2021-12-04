@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.launch
 
@@ -38,19 +37,17 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
 
             LaunchedEffect(key1 = false) {
                 dashboardViewModel.courseList.value =
-                    dashboardViewModel.getCourseLists()?.toObject(ListFetch::class.java)!!
+                    dashboardViewModel.getCourseLists()!!
             }
 
             if (course.isNotEmpty())
                 scope.launch {
-                    dashboardViewModel.branchList.value =
-                        dashboardViewModel.getBranchList(course)?.toObject(ListFetch::class.java)!!
+                    dashboardViewModel.branchList.value = dashboardViewModel.getBranchList(course)!!
                 }
 
             if (course.isNotEmpty() && branch.isNotEmpty())
                 scope.launch {
-                    dashboardViewModel.subjectList.value =
-                        dashboardViewModel.getSubjectList(course, branch)?.toObject(ListFetch::class.java)!!
+                    dashboardViewModel.subjectList.value = dashboardViewModel.getSubjectList(course, branch)!!
                 }
 
             course = dropdownList(

@@ -4,9 +4,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geekaid.collagenotes.model.*
+import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.ListFetch
+import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.repo.Repository
-import com.google.firebase.firestore.DocumentSnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -41,18 +43,14 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     @ExperimentalCoroutinesApi
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
-    @ExperimentalCoroutinesApi
-    fun getFilterLists() = repository.getFilterLists()
-
-
     // functions to fetch filter list
     suspend fun getCourseLists() = repository.getCourseList()
 
-    suspend fun getBranchList(course: String): DocumentSnapshot? {
+    suspend fun getBranchList(course: String): ListFetch ? {
         return repository.getBranchList(course)
     }
 
-    suspend fun getSubjectList(course: String, branch: String): DocumentSnapshot? {
+    suspend fun getSubjectList(course: String, branch: String): ListFetch? {
         return repository.getSubjectList(course = course, branch = branch)
     }
 
