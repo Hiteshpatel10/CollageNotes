@@ -45,8 +45,8 @@ fun NoteLayout(notes: List<FileUploadModel>, context: Context, downloadManager: 
             Card(modifier = Modifier.padding(4.dp), onClick = { isExpanded = !isExpanded }) {
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note, isExpanded = isExpanded)
-                    NoteSidebar(note = note, context = context, downloadManager = downloadManager)
-                    Vote(note = note)
+                    NoteSidebar(note = note, context = context)
+                    Vote(note = note, context = context, downloadManager = downloadManager)
                 }
             }
         }

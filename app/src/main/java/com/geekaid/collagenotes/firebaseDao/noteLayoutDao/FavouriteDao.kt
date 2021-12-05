@@ -1,22 +1,20 @@
 package com.geekaid.collagenotes.firebaseDao.noteLayoutDao
 
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.util.noteFavRef
+import com.geekaid.collagenotes.util.noteRef
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-fun favouriteDao(course: FileUploadModel) {
+fun favouriteDao(note: FileUploadModel) {
 
-    val db = Firebase.firestore
+    val firestore = Firebase.firestore
     val currentUser = Firebase.auth.currentUser!!
 
-    val noteRef = db.collection("courses").document(course.course)
-        .collection(course.branch).document(course.subject)
-        .collection("notes").document(course.fileInfo.fileUploadPath)
-
-    val favouriteRef = db.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document(course.fileInfo.fileUploadPath)
+    val noteRef = noteRef(note = note, firestore = firestore)
+    val favouriteRef = noteFavRef(note = note, firestore = firestore, currentUser = currentUser)
 
     favouriteRef.get()
         .addOnSuccessListener { document ->
@@ -27,8 +25,8 @@ fun favouriteDao(course: FileUploadModel) {
             } else {
                 noteRef.update("favourite", FieldValue.arrayUnion(currentUser.email))
 
-                course.favourite.add(currentUser.email.toString())
-                favouriteRef.set(course)
+                note.favourite.add(currentUser.email.toString())
+                favouriteRef.set(note)
             }
         }
 

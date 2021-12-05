@@ -8,10 +8,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.FileDownload
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,10 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
-import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.favouriteDao
-import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.likeDao
-import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.noteDownloadDao
-import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.shareDao
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.*
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -45,7 +39,7 @@ fun NoteDetails(note: FileUploadModel, isExpanded: Boolean) {
             HeadingValueStyle(heading = "Upload Date", value = note.date)
             HeadingValueStyle(heading = "Description", value = note.fileInfo.fileDescription)
             Spacer(modifier = Modifier.padding(24.dp))
-        }else{
+        } else {
             HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime)
             HeadingValueStyle(heading = "Subject", value = note.subject)
             HeadingValueStyle(heading = "Upload Date", value = note.date)
@@ -55,9 +49,8 @@ fun NoteDetails(note: FileUploadModel, isExpanded: Boolean) {
 }
 
 @Composable
-fun NoteSidebar(note: FileUploadModel, context: Context, downloadManager: DownloadManager) {
+fun NoteSidebar(note: FileUploadModel, context: Context) {
     val currentUser = Firebase.auth.currentUser!!
-    var downloadIconTint by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -69,7 +62,7 @@ fun NoteSidebar(note: FileUploadModel, context: Context, downloadManager: Downlo
         }
 
         IconButton(onClick = {
-            favouriteDao(course = note)
+            favouriteDao(note = note)
         }) {
             Icon(
                 Icons.Filled.Bookmark,
@@ -79,13 +72,11 @@ fun NoteSidebar(note: FileUploadModel, context: Context, downloadManager: Downlo
         }
 
         IconButton(onClick = {
-            noteDownloadDao(note = note, context = context, downloadManager = downloadManager)
-            downloadIconTint = true
+            reportDao(note = note, context = context)
         }) {
             Icon(
-                Icons.Filled.Download,
+                Icons.Filled.Report,
                 contentDescription = "Download",
-                tint = if (downloadIconTint) Color.Blue else Color.Black
             )
         }
 
@@ -93,9 +84,10 @@ fun NoteSidebar(note: FileUploadModel, context: Context, downloadManager: Downlo
 }
 
 @Composable
-fun Vote(note: FileUploadModel) {
+fun Vote(note: FileUploadModel, context: Context, downloadManager: DownloadManager) {
 
     val currentUser = Firebase.auth.currentUser!!
+    var downloadIconTint by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -121,10 +113,14 @@ fun Vote(note: FileUploadModel) {
             text = note.downloadedTimes.toString(),
         )
 
-        IconButton(onClick = {}) {
+        IconButton(onClick = {
+            noteDownloadDao(note = note, context = context, downloadManager = downloadManager)
+            downloadIconTint = true
+        }) {
             Icon(
                 Icons.TwoTone.FileDownload,
                 contentDescription = "Downloaded Times",
+                tint = if (downloadIconTint) Color.Blue else Color.Black
             )
         }
 
