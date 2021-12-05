@@ -5,16 +5,18 @@ data class FileUploadModel(
     var course: String = "",
     var date: String = "",
     var downloadedTimes: Long = 0,
-    val fileInfo: FileInfo = FileInfo(),
+    val fileInfo: FileMeta = FileMeta(),
     var favourite: MutableList<String> = mutableListOf(),
     var subject: String = "",
     val likes: MutableList<String> = mutableListOf(),
 )
 
-data class FileInfo(
+data class FileMeta(
     var fileName: String = "",
     var fileMime: String = "",
     var fileUploadPath: String = "",
     var fileDescription: String = "",
     var uploadedBy: String = ""
 )
+
+

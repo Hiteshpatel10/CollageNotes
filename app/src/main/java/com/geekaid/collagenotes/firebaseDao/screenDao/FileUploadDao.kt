@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.util.noteRef
+import com.geekaid.collagenotes.util.noteStorageRef
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -18,27 +20,20 @@ fun fileUploadDao(
     navController: NavHostController
 ) {
 
-    val storage = Firebase.storage
-    val storageRef = storage.reference
+    val storageRef = Firebase.storage.reference
     val firebaseFirestore = Firebase.firestore
 
-    val locationRef =
-        storageRef.child("courses").child(fileModel.course).child(fileModel.branch)
-            .child(fileModel.subject).child("notes")
-            .child(fileModel.fileInfo.fileUploadPath)
+    val locationRef = noteStorageRef(note = fileModel, storageRef = storageRef)
+    val firestoreRef = noteRef(note = fileModel, firestore = firebaseFirestore)
 
-    val firestoreRef = firebaseFirestore.collection("courses").document(fileModel.course)
-        .collection(fileModel.branch).document(fileModel.subject)
-        .collection("notes").document(fileModel.fileInfo.fileUploadPath)
-
+    noteRef(note = fileModel, firebaseFirestore)
     firestoreRef.get()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 if (task.result?.exists() == true) {
                     Toast.makeText(context, "File Already Exist", Toast.LENGTH_SHORT).show()
                 } else {
-                    firestoreRef
-                        .set(fileModel)
+                    firestoreRef.set(fileModel)
                         .addOnSuccessListener {
                             locationRef.putFile(uri).also {
                                 Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT).show()

@@ -6,6 +6,9 @@ import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.util.noteFavRef
+import com.geekaid.collagenotes.util.noteRef
+import com.geekaid.collagenotes.util.noteStorageRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
@@ -16,19 +19,15 @@ import java.io.File
 
 fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: DownloadManager) {
 
-    val storage = Firebase.storage
+    val storage = Firebase.storage.reference
     val currentUser = FirebaseAuth.getInstance().currentUser!!
-    val db = FirebaseFirestore.getInstance()
+    val firestore = FirebaseFirestore.getInstance()
 
-    val noteRef = db.collection("courses").document(note.course)
-        .collection(note.branch).document(note.subject)
-        .collection("notes").document(note.fileInfo.fileUploadPath)
+    val noteRef = noteRef(note = note, firestore = firestore)
+    val favNoteRef = noteFavRef(note = note, firestore = firestore, currentUser = currentUser)
+    val storageRef = noteStorageRef(note = note, storageRef = storage)
 
-    val favNoteRef = db.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document(note.fileInfo.fileUploadPath)
-
-    storage.reference.child("courses").child(note.course).child(note.branch).child(note.subject)
-        .child("notes").child(note.fileInfo.fileUploadPath).downloadUrl
+    storageRef.downloadUrl
         .addOnSuccessListener { uri ->
 
             val index: Int = (note.fileInfo.fileMime.lastIndexOf('/')).plus(1)

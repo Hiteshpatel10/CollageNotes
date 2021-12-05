@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
-import com.geekaid.collagenotes.model.FileInfo
+import com.geekaid.collagenotes.model.FileMeta
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
@@ -150,7 +150,7 @@ fun FileUploadComponent(
                             course = course,
                             subject = subject,
                             date = DateFormat.getDateInstance().format(Date()),
-                            fileInfo = FileInfo(
+                            fileInfo = FileMeta(
                                 fileMime = fileMime,
                                 fileName = fileName.toString(),
                                 fileUploadPath = "${auth.currentUser?.email}${fileName}",
