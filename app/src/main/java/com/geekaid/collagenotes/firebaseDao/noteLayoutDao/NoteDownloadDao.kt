@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import com.geekaid.collagenotes.R
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.noteFavRef
 import com.geekaid.collagenotes.util.noteRef
@@ -33,7 +34,7 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
             val index: Int = (note.fileInfo.fileMime.lastIndexOf('/')).plus(1)
             val path =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            val fileName = "${note.fileInfo.fileName}.${note.fileInfo.fileMime.substring(index)}"
+            val fileName = "${R.string.app_name}/${note.fileInfo.fileName}.${note.fileInfo.fileMime.substring(index)}"
             val file = "$path/$fileName"
 
             if (!File(file).exists()) {

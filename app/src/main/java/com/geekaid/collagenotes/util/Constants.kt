@@ -20,15 +20,16 @@ object Constants {
     )
 
 
-//    val cs = listOf(
-//        "Advanced Engineering Mathematics",
-//        "Technical Communication",
-//        "Managerial Economics and Financial Accounting",
-//        "Digital Electronics",
-//        "Data Structures and Algorithms",
-//        "Object Oriented Programming",
-//        "Software Engineering",
-//        "Data Structures and Algorithms Lab",
-//    )
+    val noteTypeList = listOf(
+        "Note",
+        "Question Paper"
+    )
+
+    val uploaderType = listOf(
+        "Student",
+        "Professor"
+    )
+
+
 
 }

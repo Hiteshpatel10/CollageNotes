@@ -27,6 +27,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
     var branchList: MutableState<ListFetch> = mutableStateOf(ListFetch())
     var subjectList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var noteTypeList: MutableState<ListFetch> = mutableStateOf(ListFetch())
 
     //function to get the user detail from firebase
     fun getDetails() {
@@ -53,5 +54,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     suspend fun getSubjectList(course: String, branch: String): ListFetch? {
         return repository.getSubjectList(course = course, branch = branch)
     }
+
+    suspend fun getNoteTypeList() = repository.getNoteTypeList()
 
 }

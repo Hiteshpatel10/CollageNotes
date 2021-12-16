@@ -56,7 +56,7 @@ class Repository {
     @ExperimentalCoroutinesApi
     fun gerFavouriteNotes() = callbackFlow {
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
-            .collection("Favourite")
+            .collection("Favourite").document("fav1").collection("notes")
 
         val snapshotListener = collection.addSnapshotListener { value, error ->
             if (error == null)
@@ -91,6 +91,12 @@ class Repository {
     suspend fun getSubjectList(course: String, branch: String): ListFetch? {
         val collection = firestore.collection("filterLists").document(course)
             .collection(branch).document("subjectList")
+
+        return collection.get().await().toObject(ListFetch::class.java)
+    }
+
+    suspend fun getNoteTypeList(): ListFetch?{
+        val collection = firestore.collection("filterLists").document("noteType")
 
         return collection.get().await().toObject(ListFetch::class.java)
     }

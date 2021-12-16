@@ -45,10 +45,13 @@ fun FileUploadComponent(
     val scope = rememberCoroutineScope()
     var course by remember { mutableStateOf("") }
     var branch by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
     var subject by remember { mutableStateOf("") }
+    var noteType by remember { mutableStateOf("") }
+    var fileDescription by remember { mutableStateOf("") }
     val filePath by remember { mutableStateOf("${uriResult.path}") }
     val fileMime by remember { mutableStateOf("$mime") }
+    val emptyCheck =
+        branch.isNotEmpty() && course.isNotEmpty() && subject.isNotEmpty() && noteType.isNotEmpty()
     val index by remember {
         mutableStateOf(
             uriResult.lastPathSegment?.lastIndexOf('/')?.plus(1).toString()
@@ -61,13 +64,14 @@ fun FileUploadComponent(
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
         LaunchedEffect(key1 = false) {
-            dashboardViewModel.courseList.value =
-                dashboardViewModel.getCourseLists()!!
+            dashboardViewModel.courseList.value = dashboardViewModel.getCourseLists()!!
+            dashboardViewModel.noteTypeList.value = dashboardViewModel.getNoteTypeList()!!
         }
 
         if (course.isNotEmpty())
             scope.launch {
-                dashboardViewModel.branchList.value = dashboardViewModel.getBranchList(course)!!
+                dashboardViewModel.branchList.value =
+                    dashboardViewModel.getBranchList(course)!!
             }
 
         if (course.isNotEmpty() && branch.isNotEmpty())
@@ -115,18 +119,26 @@ fun FileUploadComponent(
                         validateInput = validateInput
                     )
 
+                if (branch.isNotEmpty() && course.isNotEmpty() && subject.isNotEmpty())
+                    noteType = dropdownList(
+                        list = dashboardViewModel.noteTypeList.value.list,
+                        label = "Note Type",
+                        validateInput = validateInput
+                    )
+
             }
 
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text(text = "Description") },
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .fillMaxHeight(0.3f)
-                    .fillMaxWidth()
-            )
-            if (validateInput && description.isEmpty()) {
+            if (emptyCheck)
+                OutlinedTextField(
+                    value = fileDescription,
+                    onValueChange = { fileDescription = it },
+                    label = { Text(text = "Description") },
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxHeight(0.3f)
+                        .fillMaxWidth()
+                )
+            if (validateInput && fileDescription.isEmpty() && emptyCheck) {
                 Text(
                     text = "Description can't be empty",
                     color = Color.Red,
@@ -140,7 +152,7 @@ fun FileUploadComponent(
 
         Button(onClick = {
             validateInput = true
-            if (course.isNotEmpty() && subject.isNotEmpty() && branch.isNotEmpty()) {
+            if (fileDescription.isNotEmpty() && emptyCheck) {
                 scope.launch {
                     fileUploadDao(
                         uriResult,
@@ -149,12 +161,13 @@ fun FileUploadComponent(
                             branch = branch,
                             course = course,
                             subject = subject,
+                            noteType = noteType,
                             date = DateFormat.getDateInstance().format(Date()),
                             fileInfo = FileMeta(
                                 fileMime = fileMime,
                                 fileName = fileName.toString(),
                                 fileUploadPath = "${auth.currentUser?.email}${fileName}",
-                                fileDescription = description,
+                                fileDescription = fileDescription,
                                 uploadedBy = "${userDetails.firstName} ${userDetails.lastName}"
                             )
                         ),

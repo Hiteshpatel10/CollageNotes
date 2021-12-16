@@ -9,14 +9,13 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.model.FilterListsModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.ui.auth.AuthScreen
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -65,11 +64,13 @@ fun DashboardScreen(
         }
 
         else -> {
-            NoteLayout(
-                notes = dashboardViewModel.notesList.value,
-                context = context,
-                downloadManager = downloadManager
-            )
+//            NoteLayout(
+//                notes = dashboardViewModel.notesList.value,
+//                context = context,
+//                downloadManager = downloadManager
+//            )
+
+            UploaderDetailsScreen()
         }
     }
 
