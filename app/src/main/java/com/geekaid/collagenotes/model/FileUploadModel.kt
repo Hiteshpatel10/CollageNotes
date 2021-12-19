@@ -4,6 +4,7 @@ data class FileUploadModel(
     var branch: String = "",
     var course: String = "",
     var date: String = "",
+    var noteType: String = "",
     var downloadedTimes: Long = 0,
     val fileInfo: FileMeta = FileMeta(),
     var favourite: MutableList<String> = mutableListOf(),

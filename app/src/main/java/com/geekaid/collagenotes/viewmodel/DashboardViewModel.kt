@@ -4,10 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.model.ListFetch
-import com.geekaid.collagenotes.model.UserDetails
+import com.geekaid.collagenotes.model.*
 import com.geekaid.collagenotes.repo.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,12 +18,14 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var filter: MutableState<FilterModel> = mutableStateOf(FilterModel())
     var notesList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
-    var userDetails: MutableState<UserDetails> = mutableStateOf(UserDetails())
+    var userDetails: MutableState<UploaderDetailModel?> = mutableStateOf(UploaderDetailModel())
+    var userUploadList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf() )
 
     // to store lists fetch in filterScreen.kt
     var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
     var branchList: MutableState<ListFetch> = mutableStateOf(ListFetch())
     var subjectList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var noteTypeList: MutableState<ListFetch> = mutableStateOf(ListFetch())
 
     //function to get the user detail from firebase
     fun getDetails() {
@@ -43,15 +42,20 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     @ExperimentalCoroutinesApi
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
+    @ExperimentalCoroutinesApi
+    fun getUserUploadList() = repository.getUserUploadList()
+
     // functions to fetch filter list
     suspend fun getCourseLists() = repository.getCourseList()
 
-    suspend fun getBranchList(course: String): ListFetch ? {
+    suspend fun getBranchList(course: String): ListFetch? {
         return repository.getBranchList(course)
     }
 
     suspend fun getSubjectList(course: String, branch: String): ListFetch? {
         return repository.getSubjectList(course = course, branch = branch)
     }
+
+    suspend fun getNoteTypeList() = repository.getNoteTypeList()
 
 }

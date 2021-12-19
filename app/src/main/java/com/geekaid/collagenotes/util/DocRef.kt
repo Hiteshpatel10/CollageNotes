@@ -10,14 +10,14 @@ fun noteRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentRefere
 
     return firestore.collection("courses").document(note.course)
         .collection(note.branch).document(note.subject)
-        .collection("notes").document(note.fileInfo.fileUploadPath)
+        .collection(note.noteType).document(note.fileInfo.fileUploadPath)
 
 }
 
 fun noteStorageRef(note: FileUploadModel, storageRef: StorageReference): StorageReference {
 
     return storageRef.child("courses").child(note.course).child(note.branch)
-        .child(note.subject).child("notes").child(note.fileInfo.fileUploadPath)
+        .child(note.subject).child(note.noteType).child(note.fileInfo.fileUploadPath)
 }
 
 fun noteFavRef(
@@ -27,14 +27,15 @@ fun noteFavRef(
 ): DocumentReference {
 
     return firestore.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document(note.fileInfo.fileUploadPath)
+        .collection("Favourite").document("fav1")
+        .collection(note.noteType).document(note.fileInfo.fileUploadPath)
 }
 
 fun noteReportRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentReference {
 
     return firestore.collection("reportedCourses").document(note.course)
         .collection(note.branch).document(note.subject)
-        .collection("notes").document(note.fileInfo.fileUploadPath)
+        .collection(note.noteType).document(note.fileInfo.fileUploadPath)
 }
 
 fun noteReportReviewRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentReference {
@@ -42,3 +43,18 @@ fun noteReportReviewRef(note: FileUploadModel, firestore: FirebaseFirestore): Do
     return firestore.collection("reviewReported").document(note.course)
         .collection(note.branch).document(note.fileInfo.fileUploadPath + note.date)
 }
+
+fun userDetailRef(firestore: FirebaseFirestore, currentUser: FirebaseUser): DocumentReference {
+    return firestore.collection("Users").document(currentUser.email.toString())
+        .collection("UserData").document("UserInfo")
+}
+
+fun userUploadRef(note: FileUploadModel, firestore: FirebaseFirestore, currentUser: FirebaseUser): DocumentReference {
+    return firestore.collection("Users").document(currentUser.email.toString())
+        .collection("uploads").document(note.fileInfo.fileUploadPath)
+}
+
+fun userProfileRef(storageRef: StorageReference, currentUser: FirebaseUser): StorageReference{
+    return  storageRef.child("userProfile").child(currentUser.email.toString())
+}
+

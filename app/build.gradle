@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
 
     //implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta01'
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
@@ -100,6 +101,9 @@ dependencies {
 
     //Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //coil
+    implementation("io.coil-kt:coil-compose:1.4.0")
 }
 
 kapt {

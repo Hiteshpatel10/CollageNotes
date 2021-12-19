@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -16,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
 
 @Composable
-fun HeadingValueStyle(heading: String, value: String) {
+fun HeadingValueStyle(heading: String, value: String, isSpacer: Boolean) {
 
     var headingColor by remember { mutableStateOf(Color.Blue) }
     var valueColor by remember { mutableStateOf(Color.Blue) }
@@ -48,6 +49,10 @@ fun HeadingValueStyle(heading: String, value: String) {
                 },
                 modifier = Modifier.padding(bottom = 2.dp)
             )
+
+            if (isSpacer)
+                Spacer(modifier = Modifier.padding(6.dp))
+
         }
 
     }

@@ -5,10 +5,10 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.navigation.Screens
-import com.geekaid.collagenotes.util.noteRef
-import com.geekaid.collagenotes.util.noteStorageRef
-import com.google.firebase.firestore.ktx.firestore
+import com.geekaid.collagenotes.navigation.BottomNavScreen
+import com.geekaid.collagenotes.util.userUploadRef
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import timber.log.Timber
@@ -16,38 +16,55 @@ import timber.log.Timber
 fun fileUploadDao(
     uri: Uri,
     context: Context,
-    fileModel: FileUploadModel,
+    note: FileUploadModel,
     navController: NavHostController
 ) {
 
-    val storageRef = Firebase.storage.reference
-    val firebaseFirestore = Firebase.firestore
+    val storage = Firebase.storage.reference
+    val firestore = FirebaseFirestore.getInstance()
+    val currentUser = Firebase.auth.currentUser!!
 
-    val locationRef = noteStorageRef(note = fileModel, storageRef = storageRef)
-    val firestoreRef = noteRef(note = fileModel, firestore = firebaseFirestore)
+    Timber.i("-1")
+//    val locationRef = noteStorageRef(note = note, storageRef = storage)
+//    val firestoreRef = noteRef(note = note, firestore = firestore)
+    val locationRef = storage.child("courses").child(note.course).child(note.branch)
+        .child(note.subject).child(note.noteType).child(note.fileInfo.fileUploadPath)
 
-    noteRef(note = fileModel, firebaseFirestore)
+    val firestoreRef = firestore.collection("courses").document(note.course)
+        .collection(note.branch).document(note.subject)
+        .collection(note.noteType).document(note.fileInfo.fileUploadPath)
+
+    val userUploadRef = userUploadRef(note = note, firestore = firestore, currentUser = currentUser)
+
+    Timber.i("a")
     firestoreRef.get()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                Timber.i("b")
                 if (task.result?.exists() == true) {
                     Toast.makeText(context, "File Already Exist", Toast.LENGTH_SHORT).show()
                 } else {
-                    firestoreRef.set(fileModel)
-                        .addOnSuccessListener {
+                    Timber.i("c")
+                    firestoreRef.set(note)
+                        .addOnCompleteListener {
+                            Timber.i("d")
                             locationRef.putFile(uri).also {
-                                Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT)
+                                    .show()
                             }
-                            navController.navigate(Screens.DashboardNav.route)
+                            userUploadRef.set(note)
+
+                            navController.navigate(BottomNavScreen.DashboardNav.route)
                         }
                         .addOnFailureListener {
                             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                            Timber.i(it.message)
                         }
+
                 }
             }
         }
         .addOnFailureListener {
             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
         }
+
 }

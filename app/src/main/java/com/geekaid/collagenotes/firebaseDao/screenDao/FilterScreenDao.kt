@@ -18,7 +18,7 @@ fun filterScreenDao(filterModel: FilterModel, context: Context, navController: N
 
     db.collection("Users").document(auth.currentUser?.email.toString())
         .collection("UserData").document("FilterData").set(filterModel)
-        .addOnSuccessListener {
+        .addOnCompleteListener {
             navController.navigate(BottomNavScreen.DashboardNav.route)
         }
         .addOnFailureListener {

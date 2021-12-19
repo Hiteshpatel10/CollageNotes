@@ -7,7 +7,6 @@ import com.geekaid.collagenotes.model.ReportModel
 import com.geekaid.collagenotes.util.noteReportRef
 import com.geekaid.collagenotes.util.noteReportReviewRef
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -23,11 +22,16 @@ fun reportDao(note: FileUploadModel, context: Context) {
         .addOnSuccessListener { document ->
             if (document.exists()) {
                 val doc = document.toObject(ReportModel::class.java)
-                if (doc?.reportedBy?.size!! > 0) {
-                    reviewRef.set(note)
-                }
-                reportRef.update("reportedBy", FieldValue.arrayUnion(currentUser?.email))
-                Toast.makeText(context, "Already Reported", Toast.LENGTH_SHORT).show()
+
+                if (doc?.reportedBy?.size!! > 0) { reviewRef.set(note) }
+
+                val find = doc.reportedBy.find { user-> currentUser?.email.equals(user) }
+
+                if(find.isNullOrEmpty())
+                    Toast.makeText(context, "Reported", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(context, "Already Reported", Toast.LENGTH_SHORT).show()
+
             } else {
                 val reportedBy: MutableList<String> = mutableListOf()
                 reportedBy.add(currentUser?.email.toString())

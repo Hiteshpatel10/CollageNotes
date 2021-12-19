@@ -5,10 +5,12 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import com.geekaid.collagenotes.R
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.noteFavRef
 import com.geekaid.collagenotes.util.noteRef
 import com.geekaid.collagenotes.util.noteStorageRef
+import com.geekaid.collagenotes.util.userUploadRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
@@ -26,6 +28,7 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
     val noteRef = noteRef(note = note, firestore = firestore)
     val favNoteRef = noteFavRef(note = note, firestore = firestore, currentUser = currentUser)
     val storageRef = noteStorageRef(note = note, storageRef = storage)
+    val userUploadRef = userUploadRef(note = note, firestore = firestore, currentUser = currentUser)
 
     storageRef.downloadUrl
         .addOnSuccessListener { uri ->
@@ -33,12 +36,22 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
             val index: Int = (note.fileInfo.fileMime.lastIndexOf('/')).plus(1)
             val path =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            val fileName = "${note.fileInfo.fileName}.${note.fileInfo.fileMime.substring(index)}"
+            val fileName = "${R.string.app_name}/${note.fileInfo.fileName}.${
+                note.fileInfo.fileMime.substring(index)
+            }"
             val file = "$path/$fileName"
 
             if (!File(file).exists()) {
                 Toast.makeText(context, "Download started", Toast.LENGTH_LONG).show()
-                downloadFile(uri, note, noteRef, favNoteRef, fileName, downloadManager)
+                downloadFile(
+                    uri,
+                    note,
+                    noteRef,
+                    favNoteRef,
+                    userUploadRef,
+                    fileName,
+                    downloadManager
+                )
             } else {
                 Toast.makeText(context, "File already exists", Toast.LENGTH_SHORT).show()
             }
@@ -50,6 +63,7 @@ fun downloadFile(
     note: FileUploadModel,
     noteRef: DocumentReference,
     favNoteRef: DocumentReference,
+    userUploadRef: DocumentReference,
     fileName: String,
     downloadManager: DownloadManager
 ) {
@@ -58,6 +72,7 @@ fun downloadFile(
     db.runBatch { batch ->
         batch.update(noteRef, "downloadedTimes", FieldValue.increment(1))
         batch.update(favNoteRef, "downloadedTimes", FieldValue.increment(1))
+        batch.update(userUploadRef, "downloadedTimes", FieldValue.increment(1))
     }
 
     val request = DownloadManager.Request(uri)

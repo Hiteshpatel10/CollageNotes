@@ -9,9 +9,9 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.model.FilterListsModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.ui.auth.AuthScreen
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -43,6 +43,8 @@ fun DashboardScreen(
             }
     }
 
+    dashboardViewModel.getDetails()
+
     when {
         auth.currentUser == null -> navController.navigate(Screens.SplashNav.route)
 
@@ -70,6 +72,7 @@ fun DashboardScreen(
                 context = context,
                 downloadManager = downloadManager
             )
+
         }
     }
 
