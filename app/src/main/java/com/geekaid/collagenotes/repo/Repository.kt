@@ -1,8 +1,7 @@
 package com.geekaid.collagenotes.repo
 
-import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.model.ListFetch
-import com.geekaid.collagenotes.model.UserDetails
+import com.geekaid.collagenotes.model.*
+import com.google.android.datatransport.runtime.scheduling.jobscheduling.Uploader
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -68,11 +67,26 @@ class Repository {
         }
     }
 
-    suspend fun getUserDetails(): UserDetails {
+    @ExperimentalCoroutinesApi
+    fun getUserUploadList() = callbackFlow {
+        val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
+            .collection("uploads")
+
+        val snapshotListener = collection.addSnapshotListener { value, error ->
+            if (error == null)
+                trySend(value)
+        }
+
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+    suspend fun getUserDetails(): UploaderDetailModel? {
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
             .collection("UserData").document("UserInfo")
 
-        return collection.get().await().toObject(UserDetails::class.java)!!
+        return collection.get().await().toObject(UploaderDetailModel::class.java)
     }
 
     suspend fun getCourseList(): ListFetch? {
@@ -80,6 +94,7 @@ class Repository {
 
         return collection.get().await().toObject(ListFetch::class.java)
     }
+
 
     suspend fun getBranchList(course: String): ListFetch? {
         val collection = firestore.collection("filterLists").document(course)

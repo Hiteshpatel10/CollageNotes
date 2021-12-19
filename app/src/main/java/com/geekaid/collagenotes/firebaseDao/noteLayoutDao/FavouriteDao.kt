@@ -3,6 +3,7 @@ package com.geekaid.collagenotes.firebaseDao.noteLayoutDao
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.util.noteFavRef
 import com.geekaid.collagenotes.util.noteRef
+import com.geekaid.collagenotes.util.userUploadRef
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore

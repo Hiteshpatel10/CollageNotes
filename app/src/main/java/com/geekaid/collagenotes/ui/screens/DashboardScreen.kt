@@ -16,6 +16,7 @@ import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -42,6 +43,8 @@ fun DashboardScreen(
             }
     }
 
+    dashboardViewModel.getDetails()
+
     when {
         auth.currentUser == null -> navController.navigate(Screens.SplashNav.route)
 
@@ -64,13 +67,12 @@ fun DashboardScreen(
         }
 
         else -> {
-//            NoteLayout(
-//                notes = dashboardViewModel.notesList.value,
-//                context = context,
-//                downloadManager = downloadManager
-//            )
+            NoteLayout(
+                notes = dashboardViewModel.notesList.value,
+                context = context,
+                downloadManager = downloadManager
+            )
 
-            UploaderDetailsScreen()
         }
     }
 

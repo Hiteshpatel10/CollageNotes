@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import com.geekaid.collagenotes.util.userUploadRef
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -18,10 +20,9 @@ fun fileUploadDao(
     navController: NavHostController
 ) {
 
-    Timber.i(note.toString())
-
     val storage = Firebase.storage.reference
     val firestore = FirebaseFirestore.getInstance()
+    val currentUser = Firebase.auth.currentUser!!
 
     Timber.i("-1")
 //    val locationRef = noteStorageRef(note = note, storageRef = storage)
@@ -33,6 +34,8 @@ fun fileUploadDao(
         .collection(note.branch).document(note.subject)
         .collection(note.noteType).document(note.fileInfo.fileUploadPath)
 
+    val userUploadRef = userUploadRef(note = note, firestore = firestore, currentUser = currentUser)
+
     Timber.i("a")
     firestoreRef.get()
         .addOnCompleteListener { task ->
@@ -43,12 +46,13 @@ fun fileUploadDao(
                 } else {
                     Timber.i("c")
                     firestoreRef.set(note)
-                        .addOnSuccessListener {
+                        .addOnCompleteListener {
                             Timber.i("d")
                             locationRef.putFile(uri).also {
                                 Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT)
                                     .show()
                             }
+                            userUploadRef.set(note)
 
                             navController.navigate(BottomNavScreen.DashboardNav.route)
                         }

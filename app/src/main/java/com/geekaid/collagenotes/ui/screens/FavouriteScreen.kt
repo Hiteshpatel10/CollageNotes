@@ -31,6 +31,8 @@ fun FavouriteScreen(
 
     when {
 
+        true -> UserProfileScreen(dashboardViewModel = dashboardViewModel)
+
         dashboardViewModel.favouriteList.value.isEmpty() -> {
             NoNotesFound(
                 buttonText = "Add Notes To Fav",

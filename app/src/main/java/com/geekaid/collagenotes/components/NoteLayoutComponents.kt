@@ -32,18 +32,26 @@ fun NoteDetails(note: FileUploadModel, isExpanded: Boolean) {
     ) {
 
         if (isExpanded) {
-            HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime)
-            HeadingValueStyle(heading = "Course", value = note.course)
-            HeadingValueStyle(heading = "Branch", value = note.branch)
-            HeadingValueStyle(heading = "Subject", value = note.subject)
-            HeadingValueStyle(heading = "Upload Date", value = note.date)
-            HeadingValueStyle(heading = "Description", value = note.fileInfo.fileDescription)
+            HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime, isSpacer = true)
+            HeadingValueStyle(heading = "Course", value = note.course, isSpacer = true)
+            HeadingValueStyle(heading = "Branch", value = note.branch, isSpacer = true)
+            HeadingValueStyle(heading = "Subject", value = note.subject, isSpacer = true)
+            HeadingValueStyle(heading = "Upload Date", value = note.date, isSpacer = true)
+            HeadingValueStyle(
+                heading = "Description",
+                value = note.fileInfo.fileDescription,
+                isSpacer = true
+            )
             Spacer(modifier = Modifier.padding(24.dp))
         } else {
-            HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime)
-            HeadingValueStyle(heading = "Subject", value = note.subject)
-            HeadingValueStyle(heading = "Upload Date", value = note.date)
-            HeadingValueStyle(heading = "Description", value = note.fileInfo.fileDescription)
+            HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime, isSpacer = true)
+            HeadingValueStyle(heading = "Subject", value = note.subject, isSpacer = true)
+            HeadingValueStyle(heading = "Upload Date", value = note.date, isSpacer = true)
+            HeadingValueStyle(
+                heading = "Description",
+                value = note.fileInfo.fileDescription,
+                isSpacer = true
+            )
         }
     }
 }

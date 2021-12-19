@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.screenDao.fileUploadDao
 import com.geekaid.collagenotes.model.FileMeta
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.model.UploaderDetailModel
 import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
@@ -32,7 +33,7 @@ fun FileUploadComponent(
     noteUri: String,
     context: Context,
     navController: NavHostController,
-    userDetails: UserDetails,
+    userDetails: UploaderDetailModel,
     dashboardViewModel: DashboardViewModel,
 ) {
 

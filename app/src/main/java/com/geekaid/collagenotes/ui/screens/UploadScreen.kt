@@ -7,7 +7,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.FileSelectComponent
 import com.geekaid.collagenotes.components.FileUploadComponent
-import com.geekaid.collagenotes.model.UserDetails
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -18,25 +17,29 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
     val context = LocalContext.current
     var bool by remember { mutableStateOf(true) }
     var noteUri by remember { mutableStateOf("") }
-    var userDetails by remember { mutableStateOf(UserDetails()) }
+    val userDetails by remember { mutableStateOf(dashboardViewModel.userDetails) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         bool = false
         noteUri = uri.toString()
     }
 
-    dashboardViewModel.getDetails()
-    userDetails = dashboardViewModel.userDetails.value
+    when {
 
-    if (bool) {
-        FileSelectComponent(launcher = launcher)
-    } else {
-        FileUploadComponent(
-            noteUri = noteUri,
-            userDetails = userDetails,
-            context = context,
-            dashboardViewModel = dashboardViewModel,
-            navController = navController
-        )
+        userDetails.value == null -> UploaderDetailsScreen()
+
+        bool -> {
+            FileSelectComponent(launcher = launcher)
+        }
+
+        else -> {
+            FileUploadComponent(
+                noteUri = noteUri,
+                userDetails = userDetails.value!!,
+                context = context,
+                dashboardViewModel = dashboardViewModel,
+                navController = navController
+            )
+        }
     }
 
 }

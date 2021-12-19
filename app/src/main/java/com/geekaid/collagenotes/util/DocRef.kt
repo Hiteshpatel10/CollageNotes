@@ -5,7 +5,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
-import timber.log.Timber
 
 fun noteRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentReference {
 
@@ -17,12 +16,6 @@ fun noteRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentRefere
 
 fun noteStorageRef(note: FileUploadModel, storageRef: StorageReference): StorageReference {
 
-    try {
-        return storageRef.child("courses").child(note.course).child(note.branch)
-            .child(note.subject).child(note.noteType).child(note.fileInfo.fileUploadPath)
-    } catch (e: Exception) {
-        Timber.i(e.message)
-    }
     return storageRef.child("courses").child(note.course).child(note.branch)
         .child(note.subject).child(note.noteType).child(note.fileInfo.fileUploadPath)
 }
@@ -50,3 +43,18 @@ fun noteReportReviewRef(note: FileUploadModel, firestore: FirebaseFirestore): Do
     return firestore.collection("reviewReported").document(note.course)
         .collection(note.branch).document(note.fileInfo.fileUploadPath + note.date)
 }
+
+fun userDetailRef(firestore: FirebaseFirestore, currentUser: FirebaseUser): DocumentReference {
+    return firestore.collection("Users").document(currentUser.email.toString())
+        .collection("UserData").document("UserInfo")
+}
+
+fun userUploadRef(note: FileUploadModel, firestore: FirebaseFirestore, currentUser: FirebaseUser): DocumentReference {
+    return firestore.collection("Users").document(currentUser.email.toString())
+        .collection("uploads").document(note.fileInfo.fileUploadPath)
+}
+
+fun userProfileRef(storageRef: StorageReference, currentUser: FirebaseUser): StorageReference{
+    return  storageRef.child("userProfile").child(currentUser.email.toString())
+}
+
