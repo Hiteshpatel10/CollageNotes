@@ -3,21 +3,28 @@ package com.geekaid.collagenotes.components
 import android.app.DownloadManager
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Report
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.twotone.FileDownload
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.*
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -92,7 +99,12 @@ fun NoteSidebar(note: FileUploadModel, context: Context) {
 }
 
 @Composable
-fun Vote(note: FileUploadModel, context: Context, downloadManager: DownloadManager) {
+fun Vote(
+    note: FileUploadModel,
+    context: Context,
+    downloadManager: DownloadManager,
+    navController: NavHostController
+) {
 
     val currentUser = Firebase.auth.currentUser!!
     var downloadIconTint by remember { mutableStateOf(false) }
@@ -132,8 +144,11 @@ fun Vote(note: FileUploadModel, context: Context, downloadManager: DownloadManag
             )
         }
 
-        Text(
-            text = "UPLOADED BY : ${note.fileInfo.uploadedBy}",
+        ClickableText(
+            text = AnnotatedString("UPLOADED BY : ${note.fileInfo.uploadedBy}"),
+            onClick = {
+                navController.navigate("${Screens.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
+            },
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 4.dp)
         )

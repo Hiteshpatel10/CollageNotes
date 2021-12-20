@@ -28,7 +28,8 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
     val noteRef = noteRef(note = note, firestore = firestore)
     val favNoteRef = noteFavRef(note = note, firestore = firestore, currentUser = currentUser)
     val storageRef = noteStorageRef(note = note, storageRef = storage)
-    val userUploadRef = userUploadRef(note = note, firestore = firestore, currentUser = currentUser)
+    val userUploadRef =
+        userUploadRef(note = note, firestore = firestore, email = currentUser.email.toString())
 
     storageRef.downloadUrl
         .addOnSuccessListener { uri ->

@@ -169,7 +169,8 @@ fun FileUploadComponent(
                                 fileName = fileName.toString(),
                                 fileUploadPath = "${auth.currentUser?.email}${fileName}",
                                 fileDescription = fileDescription,
-                                uploadedBy = "${userDetails.firstName} ${userDetails.lastName}"
+                                uploadedBy = "${userDetails.firstName} ${userDetails.lastName}",
+                                uploaderEmail = auth.currentUser?.email.toString()
                             )
                         ),
                         navController = navController

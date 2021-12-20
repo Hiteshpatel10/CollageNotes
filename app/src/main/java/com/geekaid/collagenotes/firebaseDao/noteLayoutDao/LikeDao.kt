@@ -16,7 +16,7 @@ fun likeDao(note: FileUploadModel) {
 
     val noteRef = noteRef(note = note, firestore = firestore)
     val favNoteRef = noteFavRef(note = note, firestore = firestore, currentUser = currentUser)
-    val userUploadRef = userUploadRef(note = note, firestore = firestore, currentUser = currentUser)
+    val userUploadRef = userUploadRef(note = note, firestore = firestore, email = currentUser.email.toString())
 
     if (note.likes.contains(currentUser.email)) {
         firestore.runBatch { batch ->

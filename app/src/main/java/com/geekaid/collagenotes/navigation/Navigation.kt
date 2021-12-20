@@ -5,8 +5,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.geekaid.collagenotes.ui.auth.EmailVerificationScreen
 import com.geekaid.collagenotes.ui.auth.ForgotPassword
 import com.geekaid.collagenotes.ui.auth.SignInScreen
@@ -29,7 +31,7 @@ fun Navigation(
 
     NavHost(navController = navController, startDestination = Screens.SplashNav.route) {
 
-        composable(Screens.SplashNav.route){
+        composable(Screens.SplashNav.route) {
             SplashScreen(navController = navController)
         }
 
@@ -56,6 +58,12 @@ fun Navigation(
                 navController = navController
             )
         }
+        composable(
+            "${Screens.UserProfileScreenNav.route}/{uploaderEmail}", arguments = listOf(
+                navArgument("uploaderEmail") { type = NavType.StringType })
+        ) { backStackEntry ->
+            UserProfileScreen(dashboardViewModel = dashboardViewModel, email = backStackEntry.arguments?.getString("uploaderEmail"))
+        }
 
         //Authentication Screen Navigation
         composable(Screens.SignInNav.route) {
@@ -65,10 +73,10 @@ fun Navigation(
             SignUpScreen(navController = navController, authViewModel = authViewModel)
         }
         composable(Screens.ForgotPasswordNav.route) {
-            ForgotPassword(navController = navController,  authViewModel = authViewModel)
+            ForgotPassword(navController = navController, authViewModel = authViewModel)
         }
         composable(Screens.EmailVerificationNav.route) {
-            EmailVerificationScreen(navController = navController,  authViewModel = authViewModel)
+            EmailVerificationScreen(navController = navController, authViewModel = authViewModel)
         }
 
     }

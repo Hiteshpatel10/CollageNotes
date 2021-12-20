@@ -17,6 +17,7 @@ fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri?>) {
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
+
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -29,7 +30,7 @@ fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri?>) {
 
             Constants.rulesList.forEachIndexed { index, rule ->
                 Text(
-                    text = "${index+1}. $rule",
+                    text = "${index + 1}. $rule",
                     style = MaterialTheme.typography.body2
                 )
                 Spacer(modifier = Modifier.padding(2.dp))

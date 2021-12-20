@@ -45,7 +45,7 @@ fun UploaderDetailsScreen() {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         imageUri = uri
     }
-    val currentUsr = Firebase.auth.currentUser!!
+
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 

@@ -1,7 +1,10 @@
 package com.geekaid.collagenotes.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,23 +14,36 @@ import com.geekaid.collagenotes.components.HeadingValueStyle
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @Composable
-fun UserProfileScreen(dashboardViewModel: DashboardViewModel) {
+fun UserProfileScreen(dashboardViewModel: DashboardViewModel, email: String?) {
 
-    val userDetail by remember { mutableStateOf(dashboardViewModel.userDetails.value) }
     var likes by remember { mutableStateOf("0") }
     var downloads by remember { mutableStateOf("0") }
     var notes by remember { mutableStateOf("0") }
     var isListFetched by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
-    dashboardViewModel.getUserUploadList()
-        .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)?.let { list ->
-            isListFetched = false
-            dashboardViewModel.userUploadList.value = list
-            isListFetched = true
+    email?.let {
+        dashboardViewModel.getUserUploadList(email = it)
+            .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)
+            ?.let { list ->
+                isListFetched = false
+                dashboardViewModel.userUploadList.value = list
+                isListFetched = true
+            }
+
+        SideEffect {
+            scope.launch {
+                dashboardViewModel.uploaderDetails.value =
+                    dashboardViewModel.getDetails(email = email)
+                Timber.i(dashboardViewModel.uploaderDetails.value.toString())
+            }
         }
+    }
 
     Column(
         modifier = Modifier
@@ -45,17 +61,21 @@ fun UserProfileScreen(dashboardViewModel: DashboardViewModel) {
             }
         }
 
-
         Column(
             modifier = Modifier
                 .padding(top = 32.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CoilImage(imageUri = userDetail?.profileUri)
+            CoilImage(imageUri = dashboardViewModel.uploaderDetails.value?.profileUri)
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = "${dashboardViewModel.userDetails.value!!.firstName} ${dashboardViewModel.userDetails.value!!.firstName}")
+            Text(text = "${dashboardViewModel.uploaderDetails.value?.firstName} ${dashboardViewModel.uploaderDetails.value?.lastName}")
+            Box(contentAlignment = Alignment.TopEnd) {
+                Image(Icons.Filled.Edit, contentDescription = "Edit Profile")
+            }
         }
+
+
 
         Row(
             modifier = Modifier
@@ -87,25 +107,25 @@ fun UserProfileScreen(dashboardViewModel: DashboardViewModel) {
 
         HeadingValueStyle(
             heading = "Type",
-            value = dashboardViewModel.userDetails.value?.uploaderType.toString(),
+            value = dashboardViewModel.uploaderDetails.value?.uploaderType.toString(),
             isSpacer = true
         )
 
         HeadingValueStyle(
             heading = "Qualification",
-            value = dashboardViewModel.userDetails.value?.qualification.toString(),
+            value = dashboardViewModel.uploaderDetails.value?.qualification.toString(),
             isSpacer = true
         )
 
         HeadingValueStyle(
             heading = "Institution Associated With",
-            value = dashboardViewModel.userDetails.value?.institutionAssociatedWith.toString(),
+            value = dashboardViewModel.uploaderDetails.value?.institutionAssociatedWith.toString(),
             isSpacer = true
         )
 
         HeadingValueStyle(
             heading = "About",
-            value = dashboardViewModel.userDetails.value?.about.toString(),
+            value = dashboardViewModel.uploaderDetails.value?.about.toString(),
             isSpacer = true
         )
     }

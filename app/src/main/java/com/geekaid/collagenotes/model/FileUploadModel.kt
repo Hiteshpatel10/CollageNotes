@@ -17,7 +17,8 @@ data class FileMeta(
     var fileMime: String = "",
     var fileUploadPath: String = "",
     var fileDescription: String = "",
-    var uploadedBy: String = ""
+    var uploadedBy: String = "",
+    var uploaderEmail: String = ""
 )
 
 
