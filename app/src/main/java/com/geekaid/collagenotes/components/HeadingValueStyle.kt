@@ -51,7 +51,7 @@ fun HeadingValueStyle(heading: String, value: String, isSpacer: Boolean) {
             )
 
             if (isSpacer)
-                Spacer(modifier = Modifier.padding(6.dp))
+                Spacer(modifier = Modifier.padding(8.dp))
 
         }
 

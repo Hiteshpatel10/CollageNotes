@@ -26,7 +26,8 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
 
     when {
 
-        dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null -> UploaderDetailsScreen()
+        dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null ->
+            UploaderDetailsScreen(navController = navController)
 
         bool -> FileSelectComponent(launcher = launcher)
 

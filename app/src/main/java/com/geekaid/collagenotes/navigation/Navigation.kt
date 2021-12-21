@@ -62,7 +62,14 @@ fun Navigation(
             "${Screens.UserProfileScreenNav.route}/{uploaderEmail}", arguments = listOf(
                 navArgument("uploaderEmail") { type = NavType.StringType })
         ) { backStackEntry ->
-            UserProfileScreen(dashboardViewModel = dashboardViewModel, email = backStackEntry.arguments?.getString("uploaderEmail"))
+            UserProfileScreen(
+                email = backStackEntry.arguments?.getString("uploaderEmail"),
+                dashboardViewModel = dashboardViewModel,
+                navController = navController
+            )
+        }
+        composable(Screens.UserProfileEditScreenNav.route) {
+            UserProfileEditScreen(dashboardViewModel = dashboardViewModel, navController = navController)
         }
 
         //Authentication Screen Navigation

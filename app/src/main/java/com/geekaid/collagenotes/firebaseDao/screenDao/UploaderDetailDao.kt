@@ -30,7 +30,7 @@ fun uploaderDetailDao(uploaderDetailModel: UploaderDetailModel, imageUri: Uri?, 
 
     if (imageUri != null)
         userProfileRef.putFile(imageUri)
-            .addOnSuccessListener { task ->
+            .addOnSuccessListener {
                 userProfileRef.downloadUrl
                     .addOnSuccessListener {
                         userDetailRef.update("profileUri",it.toString())

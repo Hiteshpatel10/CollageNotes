@@ -52,7 +52,6 @@ fun DashboardScreen(
         scope.launch {
             dashboardViewModel.userDetails.value =
                 dashboardViewModel.getDetails(email = auth.currentUser?.email.toString())
-            Timber.i( dashboardViewModel.userDetails.value.toString())
         }
     }
 

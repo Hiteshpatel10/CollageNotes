@@ -1,37 +1,48 @@
 package com.geekaid.collagenotes.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.CoilImage
 import com.geekaid.collagenotes.components.HeadingValueStyle
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @Composable
-fun UserProfileScreen(dashboardViewModel: DashboardViewModel, email: String?) {
+fun UserProfileScreen(
+    email: String?,
+    dashboardViewModel: DashboardViewModel,
+    navController: NavHostController
+) {
 
     var likes by remember { mutableStateOf("0") }
     var downloads by remember { mutableStateOf("0") }
     var notes by remember { mutableStateOf("0") }
     var isListFetched by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val currentUser = Firebase.auth.currentUser!!
 
     email?.let {
         dashboardViewModel.getUserUploadList(email = it)
             .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)
             ?.let { list ->
                 isListFetched = false
+                dashboardViewModel.userUploadList.value = listOf()
                 dashboardViewModel.userUploadList.value = list
                 isListFetched = true
             }
@@ -40,7 +51,6 @@ fun UserProfileScreen(dashboardViewModel: DashboardViewModel, email: String?) {
             scope.launch {
                 dashboardViewModel.uploaderDetails.value =
                     dashboardViewModel.getDetails(email = email)
-                Timber.i(dashboardViewModel.uploaderDetails.value.toString())
             }
         }
     }
@@ -67,15 +77,31 @@ fun UserProfileScreen(dashboardViewModel: DashboardViewModel, email: String?) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CoilImage(imageUri = dashboardViewModel.uploaderDetails.value?.profileUri)
+
+            if (dashboardViewModel.uploaderDetails.value?.profileUri?.isNotEmpty() == true)
+                CoilImage(imageUri = dashboardViewModel.uploaderDetails.value?.profileUri.toString())
+            else
+                Image(
+                    Icons.Filled.Face, contentDescription = "No Profile Image",
+                    modifier = Modifier.size(100.dp)
+                )
+
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = "${dashboardViewModel.uploaderDetails.value?.firstName} ${dashboardViewModel.uploaderDetails.value?.lastName}")
-            Box(contentAlignment = Alignment.TopEnd) {
-                Image(Icons.Filled.Edit, contentDescription = "Edit Profile")
-            }
+
+            Text(text = "${dashboardViewModel.uploaderDetails.value?.firstName?.uppercase()} ${dashboardViewModel.uploaderDetails.value?.lastName?.uppercase()}")
+
+            if (email == currentUser.email)
+                Image(
+                    Icons.Filled.Edit,
+                    contentDescription = "Edit Profile",
+                    modifier = Modifier.clickable(
+                        enabled = true,
+                        onClickLabel = "Clickable image",
+                        onClick = {
+                            navController.navigate(Screens.UserProfileEditScreenNav.route)
+                        }
+                    ))
         }
-
-
 
         Row(
             modifier = Modifier
