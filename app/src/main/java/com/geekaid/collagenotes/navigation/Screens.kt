@@ -22,6 +22,8 @@ sealed class Screens(val route: String) {
     object DownloadedScreenNav : Screens(R.string.DownloadedNotesNav.toString())
     object UploadScreenNav : Screens(R.string.UploadNav.toString())
     object FavouriteScreenNav : Screens(R.string.FavouriteNav.toString())
+    object UserProfileScreenNav : Screens(R.string.UserProfileNav.toString())
+    object UserProfileEditScreenNav : Screens(R.string.UserProfileEditNav.toString())
 
 }
 

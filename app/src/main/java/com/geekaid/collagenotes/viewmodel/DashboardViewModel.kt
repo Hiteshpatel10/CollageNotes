@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geekaid.collagenotes.model.*
 import com.geekaid.collagenotes.repo.Repository
+import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +21,8 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var notesList: MutableState<MutableList<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favouriteList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
     var userDetails: MutableState<UploaderDetailModel?> = mutableStateOf(UploaderDetailModel())
-    var userUploadList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf() )
+    var uploaderDetails: MutableState<UploaderDetailModel?> = mutableStateOf(UploaderDetailModel())
+    var userUploadList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
 
     // to store lists fetch in filterScreen.kt
     var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
@@ -28,8 +31,8 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var noteTypeList: MutableState<ListFetch> = mutableStateOf(ListFetch())
 
     //function to get the user detail from firebase
-    fun getDetails() {
-        viewModelScope.launch { userDetails.value = repository.getUserDetails() }
+    suspend fun getDetails(email: String): UploaderDetailModel? {
+        return repository.getUserDetails(email = email)
     }
 
     // functions to get data from firebase
@@ -43,7 +46,9 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     fun getFavouriteNotes() = repository.gerFavouriteNotes()
 
     @ExperimentalCoroutinesApi
-    fun getUserUploadList() = repository.getUserUploadList()
+    fun getUserUploadList(email: String): Flow<QuerySnapshot?> {
+        return repository.getUserUploadList(email = email)
+    }
 
     // functions to fetch filter list
     suspend fun getCourseLists() = repository.getCourseList()

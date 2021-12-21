@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.util
 
+import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 
 object Constants {

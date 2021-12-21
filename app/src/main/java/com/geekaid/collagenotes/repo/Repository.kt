@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.repo
 
+import android.provider.ContactsContract
 import com.geekaid.collagenotes.model.*
 import com.google.android.datatransport.runtime.scheduling.jobscheduling.Uploader
 import com.google.firebase.auth.ktx.auth
@@ -68,8 +69,8 @@ class Repository {
     }
 
     @ExperimentalCoroutinesApi
-    fun getUserUploadList() = callbackFlow {
-        val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
+    fun getUserUploadList(email: String) = callbackFlow {
+        val collection = firestore.collection("Users").document(email)
             .collection("uploads")
 
         val snapshotListener = collection.addSnapshotListener { value, error ->
@@ -82,8 +83,8 @@ class Repository {
         }
     }
 
-    suspend fun getUserDetails(): UploaderDetailModel? {
-        val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
+    suspend fun getUserDetails(email: String): UploaderDetailModel? {
+        val collection = firestore.collection("Users").document(email)
             .collection("UserData").document("UserInfo")
 
         return collection.get().await().toObject(UploaderDetailModel::class.java)

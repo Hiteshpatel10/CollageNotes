@@ -10,6 +10,8 @@
     <string name="DownloadedNotesNav">DownloadedNotesNav</string>
     <string name="UploadNav">UploadNav</string>
     <string name="FavouriteNav">FavouriteNav</string>
+    <string name="UserProfileNav">UserProfileNav</string>
+    <string name="UserProfileEditNav">UserProfileEditNav</string>
 
     //Authentication
     <string name="SignInNav">SignInNav</string>

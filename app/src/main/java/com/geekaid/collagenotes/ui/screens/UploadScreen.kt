@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.FileSelectComponent
 import com.geekaid.collagenotes.components.FileUploadComponent
+import com.geekaid.collagenotes.model.UploaderDetailModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -25,11 +26,10 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
 
     when {
 
-        userDetails.value == null -> UploaderDetailsScreen()
+        dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null ->
+            UploaderDetailsScreen(navController = navController)
 
-        bool -> {
-            FileSelectComponent(launcher = launcher)
-        }
+        bool -> FileSelectComponent(launcher = launcher)
 
         else -> {
             FileUploadComponent(

@@ -12,11 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.FileUploadModel
 
 @ExperimentalMaterialApi
 @Composable
-fun NoteLayout(notes: List<FileUploadModel>, context: Context, downloadManager: DownloadManager) {
+fun NoteLayout(
+    notes: List<FileUploadModel>,
+    context: Context,
+    downloadManager: DownloadManager,
+    navController: NavHostController
+) {
 
     val constraintSet = ConstraintSet {
         val noteDetails = createRefFor("noteDetails")
@@ -46,7 +52,7 @@ fun NoteLayout(notes: List<FileUploadModel>, context: Context, downloadManager: 
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note, isExpanded = isExpanded)
                     NoteSidebar(note = note, context = context)
-                    Vote(note = note, context = context, downloadManager = downloadManager)
+                    Vote(note = note, context = context, downloadManager = downloadManager, navController = navController)
                 }
             }
         }

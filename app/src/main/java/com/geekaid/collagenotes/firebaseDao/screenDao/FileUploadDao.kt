@@ -34,7 +34,8 @@ fun fileUploadDao(
         .collection(note.branch).document(note.subject)
         .collection(note.noteType).document(note.fileInfo.fileUploadPath)
 
-    val userUploadRef = userUploadRef(note = note, firestore = firestore, currentUser = currentUser)
+    val userUploadRef =
+        userUploadRef(note = note, firestore = firestore, email = currentUser.email.toString())
 
     Timber.i("a")
     firestoreRef.get()

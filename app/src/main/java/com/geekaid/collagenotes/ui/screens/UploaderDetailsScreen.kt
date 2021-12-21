@@ -6,10 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -21,18 +18,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
+import com.geekaid.collagenotes.components.HeadingValueStyle
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.uploaderDetailDao
 import com.geekaid.collagenotes.model.UploaderDetailModel
+import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.util.Constants
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @Composable
-fun UploaderDetailsScreen() {
+fun UploaderDetailsScreen(navController: NavHostController) {
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -45,14 +42,13 @@ fun UploaderDetailsScreen() {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         imageUri = uri
     }
-    val currentUsr = Firebase.auth.currentUser!!
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+    Column(modifier = Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
 
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -98,42 +94,36 @@ fun UploaderDetailsScreen() {
                 modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.padding(8.dp))
 
-            if (imageUri != null)
-                Image(rememberImagePainter(imageUri),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clickable(
-                            enabled = true,
-                            onClickLabel = "Select Image",
-                            onClick = {
-                                Toast
-                                    .makeText(context, "Make", Toast.LENGTH_SHORT)
-                                    .show()
-                                launcher.launch("image/*")
-                            }
-                        )
-                        .fillMaxSize(0.6f))
+            Text(text = "Select Profile Picture")
 
-            if (imageUri == null)
-                Image(Icons.Filled.Face,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clickable(
-                            enabled = true,
-                            onClickLabel = "Select Image",
-                            onClick = {
-                                Toast
-                                    .makeText(context, "Make", Toast.LENGTH_SHORT)
-                                    .show()
-                                launcher.launch("image/*")
-                            }
-                        )
-                        .fillMaxSize(0.6f))
+            Box(modifier = Modifier.clickable { launcher.launch("image/*") }) {
+                if (imageUri != null) {
+                    Image(
+                        rememberImagePainter(imageUri),
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp)
+                    )
+                }
+                else
+                    Image(
+                        Icons.Filled.Face,
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp)
+                    )
+            }
 
-            Text(text = "Select Profile Image", textAlign = TextAlign.Center)
 
         }
+
+        HeadingValueStyle(
+            heading = "Note",
+            value = "First name and last name can't be edited once saved",
+            isSpacer = false,
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
 
         Button(onClick = {
             if (firstName.isEmpty() || lastName.isEmpty())
@@ -150,7 +140,9 @@ fun UploaderDetailsScreen() {
                     ),
                     imageUri = imageUri,
                     context = context
-                )
+                ).also {
+                    navController.navigate(Screens.DashboardNav.route)
+                }
         }, modifier = Modifier.padding(bottom = 64.dp)) {
             Text("Save")
         }
