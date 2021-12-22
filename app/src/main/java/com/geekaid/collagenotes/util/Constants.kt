@@ -1,7 +1,7 @@
 package com.geekaid.collagenotes.util
 
-import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import timber.log.Timber
 
 object Constants {
 
@@ -21,16 +21,36 @@ object Constants {
     )
 
 
-    val noteTypeList = listOf(
-        "Note",
-        "Question Paper"
-    )
-
     val uploaderType = listOf(
         "Student",
         "Professor"
     )
 
-
+    val allScreenList = listOf(
+        BottomNavScreen.FilterNav,
+        BottomNavScreen.FavouriteScreenNav,
+        BottomNavScreen.DashboardNav,
+        BottomNavScreen.UploadScreenNav,
+        BottomNavScreen.UserProfileEditScreenNav,
+        BottomNavScreen.UserProfileScreenNav,
+        BottomNavScreen.UserProfileCreateNav
+    )
 
 }
+
+
+fun getTitle(route: String): String {
+
+    var routeTrim = route
+    if(route.lastIndexOf('/') > -1)
+        routeTrim = route.substring(0 until route.lastIndexOf('/'))
+
+    Constants.allScreenList.forEach { screen ->
+        if (screen.route == routeTrim)
+            return screen.title
+    }
+
+    return "Collage Notes"
+}
+
+

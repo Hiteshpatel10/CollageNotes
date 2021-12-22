@@ -15,12 +15,13 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.CoilImage
 import com.geekaid.collagenotes.components.HeadingValueStyle
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @Composable
@@ -30,6 +31,7 @@ fun UserProfileScreen(
     navController: NavHostController
 ) {
 
+    Timber.i(email)
     var likes by remember { mutableStateOf("0") }
     var downloads by remember { mutableStateOf("0") }
     var notes by remember { mutableStateOf("0") }
@@ -98,7 +100,7 @@ fun UserProfileScreen(
                         enabled = true,
                         onClickLabel = "Clickable image",
                         onClick = {
-                            navController.navigate(Screens.UserProfileEditScreenNav.route)
+                            navController.navigate(BottomNavScreen.UserProfileEditScreenNav.route)
                         }
                     ))
         }

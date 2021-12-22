@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.*
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -145,9 +145,9 @@ fun Vote(
         }
 
         ClickableText(
-            text = AnnotatedString("UPLOADED BY : ${note.fileInfo.uploadedBy}"),
+            text = AnnotatedString("UPLOADED BY : ${note.fileInfo.uploadedBy.uppercase()}"),
             onClick = {
-                navController.navigate("${Screens.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
+                navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
             },
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 4.dp)

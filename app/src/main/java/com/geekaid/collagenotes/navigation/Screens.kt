@@ -22,16 +22,13 @@ sealed class Screens(val route: String) {
     object DownloadedScreenNav : Screens(R.string.DownloadedNotesNav.toString())
     object UploadScreenNav : Screens(R.string.UploadNav.toString())
     object FavouriteScreenNav : Screens(R.string.FavouriteNav.toString())
-    object UserProfileScreenNav : Screens(R.string.UserProfileNav.toString())
-    object UserProfileEditScreenNav : Screens(R.string.UserProfileEditNav.toString())
-
 }
 
 sealed class BottomNavScreen(val route: String, val title: String, val icon: ImageVector) {
     object DashboardNav :
         BottomNavScreen(
             route = R.string.DashboardNav.toString(),
-            title = "Notes",
+            title = "Dashboard",
             icon = Icons.Filled.Dashboard
         )
 
@@ -53,9 +50,21 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
         icon = Icons.Filled.Favorite
     )
 
-    object SignOutScreenNav : BottomNavScreen(
-        route = "SignOutNav",
-        title = "SignOut",
-        icon = Icons.Filled.Logout
+    object UserProfileScreenNav : BottomNavScreen(
+        route = R.string.UserProfileNav.toString(),
+        title = "Profile",
+        icon = Icons.Filled.Face
+    )
+
+    object UserProfileEditScreenNav : BottomNavScreen(
+        route = R.string.UserProfileEditNav.toString(),
+        title = "Profile Edit",
+        icon = Icons.Filled.Face
+    )
+
+    object UserProfileCreateNav : BottomNavScreen(
+        route = R.string.UserProfileCreateNav.toString(),
+        title = "Profile Create",
+        icon = Icons.Filled.Face
     )
 }

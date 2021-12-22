@@ -41,7 +41,6 @@ fun FileUploadComponent(
 
     val uriResult: Uri = Uri.parse(noteUri)
     val mime = context.contentResolver.getType(uriResult)
-    uriResult.lastPathSegment?.lastIndexOf('/')?.and(1)
 
     val scope = rememberCoroutineScope()
     var course by remember { mutableStateOf("") }
