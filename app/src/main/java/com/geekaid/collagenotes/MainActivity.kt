@@ -15,6 +15,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.components.BottomNav
+import com.geekaid.collagenotes.components.TopBarNav
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
@@ -43,6 +45,11 @@ class MainActivity : ComponentActivity() {
 
                 Surface(color = MaterialTheme.colors.background) {
                     Scaffold(
+                        topBar = {
+                            if (bottomNavVisibility(navController = navController)) {
+                                TopBarNav(navController = navController)
+                            }
+                        },
                         bottomBar = {
                             if (bottomNavVisibility(navController = navController)) {
                                 BottomNav(navController)

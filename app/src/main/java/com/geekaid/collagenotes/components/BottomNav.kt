@@ -2,22 +2,20 @@ package com.geekaid.collagenotes.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.navigation.BottomNavScreen
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.geekaid.collagenotes.util.Constants
 
 
-@ExperimentalMaterialApi
-@ExperimentalCoroutinesApi
 @Composable
 fun BottomNav(navController: NavHostController) {
 
-    var alertBoxShow by remember { mutableStateOf(false) }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -29,32 +27,7 @@ fun BottomNav(navController: NavHostController) {
                 navController = navController
             )
         }
-
-        BottomNavigationItem(
-
-            label = {
-                Text(text = BottomNavScreen.SignOutScreenNav.title)
-            },
-
-            icon = {
-                Icon(
-                    imageVector = BottomNavScreen.SignOutScreenNav.icon,
-                    contentDescription = BottomNavScreen.SignOutScreenNav.title
-                )
-            },
-
-            selected = alertBoxShow,
-
-            unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-
-            onClick = {
-                alertBoxShow = true
-            }
-        )
     }
-
-    if (alertBoxShow)
-        alertBoxShow = signOutAlertDialog(isShow = alertBoxShow)
 }
 
 @Composable

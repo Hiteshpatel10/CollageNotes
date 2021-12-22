@@ -29,6 +29,7 @@ fun Navigation(
 
     val authViewModel: AuthViewModel = viewModel()
 
+
     NavHost(navController = navController, startDestination = Screens.SplashNav.route) {
 
         composable(Screens.SplashNav.route) {
@@ -58,8 +59,13 @@ fun Navigation(
                 navController = navController
             )
         }
+
+        composable(BottomNavScreen.UserProfileCreateNav.route) {
+            UserProfileCreate(navController = navController)
+        }
+
         composable(
-            "${Screens.UserProfileScreenNav.route}/{uploaderEmail}", arguments = listOf(
+            "${BottomNavScreen.UserProfileScreenNav.route}/{uploaderEmail}", arguments = listOf(
                 navArgument("uploaderEmail") { type = NavType.StringType })
         ) { backStackEntry ->
             UserProfileScreen(
@@ -68,9 +74,14 @@ fun Navigation(
                 navController = navController
             )
         }
-        composable(Screens.UserProfileEditScreenNav.route) {
-            UserProfileEditScreen(dashboardViewModel = dashboardViewModel, navController = navController)
+
+        composable(BottomNavScreen.UserProfileEditScreenNav.route) {
+            UserProfileEditScreen(
+                dashboardViewModel = dashboardViewModel,
+                navController = navController
+            )
         }
+
 
         //Authentication Screen Navigation
         composable(Screens.SignInNav.route) {

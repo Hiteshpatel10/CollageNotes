@@ -32,7 +32,9 @@ fun signOutAlertDialog(isShow: Boolean): Boolean {
 
     if (!openDialog) return false
 
-    AlertDialog(onDismissRequest = { openDialog = false },
+    AlertDialog(
+
+        onDismissRequest = { openDialog = false },
 
         text = {
             Text(

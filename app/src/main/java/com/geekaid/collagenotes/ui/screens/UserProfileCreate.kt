@@ -29,7 +29,7 @@ import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.util.Constants
 
 @Composable
-fun UploaderDetailsScreen(navController: NavHostController) {
+fun UserProfileCreate(navController: NavHostController) {
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
