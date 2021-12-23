@@ -30,6 +30,10 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var subjectList: MutableState<ListFetch> = mutableStateOf(ListFetch())
     var noteTypeList: MutableState<ListFetch> = mutableStateOf(ListFetch())
 
+    //
+    var notesType: MutableState<String> = mutableStateOf("notes")
+    var orderBy: MutableState<String> = mutableStateOf("date")
+
     //function to get the user detail from firebase
     suspend fun getDetails(email: String): UploaderDetailModel? {
         return repository.getUserDetails(email = email)
@@ -40,10 +44,15 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     fun getFilter() = repository.getFilter()
 
     @ExperimentalCoroutinesApi
-    fun getNotes() = repository.getNotes(filter = filter.value)
+    fun getNotes() = repository.getNotes(
+        filter = filter.value,
+        notesType = notesType.value,
+        orderBy = orderBy.value
+    )
 
     @ExperimentalCoroutinesApi
-    fun getFavouriteNotes() = repository.gerFavouriteNotes()
+    fun getFavouriteNotes() =
+        repository.getFavouriteNotes(notesType = notesType.value, orderBy = orderBy.value)
 
     @ExperimentalCoroutinesApi
     fun getUserUploadList(email: String): Flow<QuerySnapshot?> {

@@ -12,14 +12,12 @@ import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
-import com.geekaid.collagenotes.model.UploaderDetailModel
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -71,7 +69,7 @@ fun DashboardScreen(
         dashboardViewModel.notesList.value.isEmpty() -> {
             NoNotesFound(
                 buttonText = "Change Filter",
-                displayText = "No Notes Found",
+                displayText = "No ${dashboardViewModel.notesType.value} found",
                 navController = navController,
                 buttonDisplay = true
             )

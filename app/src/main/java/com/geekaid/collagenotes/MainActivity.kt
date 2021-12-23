@@ -16,7 +16,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.components.BottomNav
 import com.geekaid.collagenotes.components.TopBarNav
-import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
@@ -32,7 +31,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class MainActivity : ComponentActivity() {
     val auth = Firebase.auth
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         topBar = {
                             if (bottomNavVisibility(navController = navController)) {
-                                TopBarNav(navController = navController)
+                                TopBarNav(dashboardViewModel = dashboardViewModel, navController = navController)
                             }
                         },
                         bottomBar = {
@@ -80,5 +78,4 @@ fun bottomNavVisibility(navController: NavController): Boolean {
     }
     return isBottomNavVisible
 }
-
 
