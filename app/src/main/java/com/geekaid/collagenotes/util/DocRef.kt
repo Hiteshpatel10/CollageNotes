@@ -22,12 +22,13 @@ fun noteStorageRef(note: FileUploadModel, storageRef: StorageReference): Storage
 
 fun noteFavRef(
     note: FileUploadModel,
+    favSpaceName: String = "fav1",
     firestore: FirebaseFirestore,
     currentUser: FirebaseUser
 ): DocumentReference {
 
     return firestore.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document("fav1")
+        .collection("Favourite").document(favSpaceName)
         .collection(note.noteType).document(note.fileInfo.fileUploadPath)
 }
 

@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.components
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
@@ -16,6 +17,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import com.geekaid.collagenotes.MainActivity
+import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.favouriteDao
+import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.util.Constants
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,8 +34,6 @@ fun signOutAlertDialog(isShow: Boolean): Boolean {
     var openDialog by remember { mutableStateOf(isShow) }
     val activity = (LocalLifecycleOwner.current as ComponentActivity)
     val context = LocalContext.current
-
-    if (!openDialog) return false
 
     AlertDialog(
 
@@ -67,6 +70,35 @@ fun signOutAlertDialog(isShow: Boolean): Boolean {
             }
         }
     )
+
+    return openDialog
+}
+
+@Composable
+fun favSpaceAlertBox(
+    showAlertBox: Boolean,
+    note: FileUploadModel,
+    dashboardViewModel: DashboardViewModel
+): Boolean {
+
+    var openDialog by remember { mutableStateOf(showAlertBox) }
+
+    if (!openDialog) return false
+
+    AlertDialog(
+        onDismissRequest = { openDialog = false },
+        text = { Text(text = "Favourite") },
+        buttons = {
+            Column {
+                Constants.favSpaces.forEach { favSpaceName ->
+                    Button(onClick = {
+                        favouriteDao(note = note, favSpaceName = favSpaceName)
+                    }) {
+                        Text(text = favSpaceName)
+                    }
+                }
+            }
+        })
 
     return openDialog
 }

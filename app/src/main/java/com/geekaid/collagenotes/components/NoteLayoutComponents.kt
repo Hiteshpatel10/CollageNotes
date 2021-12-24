@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.components
 
 import android.app.DownloadManager
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
@@ -25,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.*
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -63,9 +65,11 @@ fun NoteDetails(note: FileUploadModel, isExpanded: Boolean) {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
-fun NoteSidebar(note: FileUploadModel, context: Context) {
+fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: DashboardViewModel) {
     val currentUser = Firebase.auth.currentUser!!
+    var showAlertDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -76,9 +80,11 @@ fun NoteSidebar(note: FileUploadModel, context: Context) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
 
-        IconButton(onClick = {
-            favouriteDao(note = note)
-        }) {
+        IconButton(
+            onClick = {
+                showAlertDialog = true
+            },
+        ) {
             Icon(
                 Icons.Filled.Bookmark,
                 contentDescription = "Favourite",
@@ -94,6 +100,14 @@ fun NoteSidebar(note: FileUploadModel, context: Context) {
                 contentDescription = "Download",
             )
         }
+
+        if (showAlertDialog)
+            showAlertDialog = favSpaceAlertBox(
+                showAlertBox = showAlertDialog,
+                note = note,
+                dashboardViewModel = dashboardViewModel,
+            )
+
 
     }
 }

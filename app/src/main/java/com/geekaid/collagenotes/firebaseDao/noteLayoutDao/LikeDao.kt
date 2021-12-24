@@ -38,7 +38,7 @@ fun likeDao(note: FileUploadModel) {
             if (note.favourite.contains(currentUser.email))
                 batch.update(favNoteRef, "likes", FieldValue.arrayUnion(currentUser.email))
         }
-            .addOnFailureListener{
+            .addOnFailureListener {
                 Timber.i(it.message)
             }
     }

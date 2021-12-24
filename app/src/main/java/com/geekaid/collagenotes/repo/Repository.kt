@@ -54,9 +54,9 @@ class Repository {
     }
 
     @ExperimentalCoroutinesApi
-    fun getFavouriteNotes(notesType: String, orderBy: String) = callbackFlow {
+    fun getFavouriteNotes(notesType: String, orderBy: String, favouriteSpace: String) = callbackFlow {
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
-            .collection("Favourite").document("fav1").collection(notesType)
+            .collection("Favourite").document(favouriteSpace).collection(notesType)
             .orderBy(orderBy, Query.Direction.DESCENDING)
 
         val snapshotListener = collection.addSnapshotListener { value, error ->

@@ -36,6 +36,12 @@ object Constants {
         BottomNavScreen.UserProfileCreateNav
     )
 
+    val favSpaces = listOf(
+        "fav1",
+        "fav2",
+        "fav3"
+    )
+
 }
 
 

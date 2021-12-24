@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.ui.screens
 
 import android.app.DownloadManager
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -19,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
@@ -80,6 +82,7 @@ fun DashboardScreen(
                 notes = dashboardViewModel.notesList.value,
                 context = context,
                 downloadManager = downloadManager,
+                dashboardViewModel = dashboardViewModel,
                 navController = navController
             )
 
