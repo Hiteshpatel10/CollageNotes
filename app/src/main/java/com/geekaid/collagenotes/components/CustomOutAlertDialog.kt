@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.components
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
@@ -93,6 +95,7 @@ fun favSpaceAlertBox(
                 Constants.favSpaces.forEach { favSpaceName ->
                     Button(onClick = {
                         favouriteDao(note = note, favSpaceName = favSpaceName)
+                        openDialog = false
                     }) {
                         Text(text = favSpaceName)
                     }

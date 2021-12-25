@@ -26,7 +26,7 @@ fun noteFavRef(
     firestore: FirebaseFirestore,
     currentUser: FirebaseUser
 ): DocumentReference {
-
+    
     return firestore.collection("Users").document(currentUser.email.toString())
         .collection("Favourite").document(favSpaceName)
         .collection(note.noteType).document(note.fileInfo.fileUploadPath)

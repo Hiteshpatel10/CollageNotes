@@ -21,5 +21,3 @@ data class FileMeta(
     var uploadedBy: String = "",
     var uploaderEmail: String = ""
 )
-
-

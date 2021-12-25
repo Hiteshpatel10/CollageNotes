@@ -1,6 +1,7 @@
 package com.geekaid.collagenotes.firebaseDao.noteLayoutDao
 
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.util.noteFavRef
 import com.geekaid.collagenotes.util.noteRef
 import com.google.firebase.auth.ktx.auth
@@ -13,12 +14,18 @@ fun favouriteDao(note: FileUploadModel, favSpaceName: String) {
 
     val firestore = Firebase.firestore
     val currentUser = Firebase.auth.currentUser!!
-    val fav = note.favourite.indexOf("${currentUser.email}/${favSpaceName}")
+
+    var favSpace = ""
+    Constants.favSpaces.forEach { favName ->
+        if (note.favourite.contains("${currentUser.email}/${favName}")) {
+            favSpace = favName
+        }
+    }
 
     val noteRef = noteRef(note = note, firestore = firestore)
     val favouriteRef = noteFavRef(
         note = note,
-        favSpaceName = favSpaceName,
+        favSpaceName = if (favSpace.isNotEmpty()) favSpace else favSpaceName,
         firestore = firestore,
         currentUser = currentUser
     )
@@ -28,26 +35,26 @@ fun favouriteDao(note: FileUploadModel, favSpaceName: String) {
 
             if (document.exists()) {
                 favouriteRef.delete()
-                    .addOnFailureListener {
-                        Timber.i(it.message)
-                    }
-                noteRef.update("favourite", FieldValue.arrayRemove("${currentUser.email}/${favSpaceName}"))
-                    .addOnFailureListener {
-                        Timber.i(it.message)
-                    }
-            } else {
-                noteRef.update("favourite", FieldValue.arrayUnion("${currentUser.email}/${favSpaceName}"))
-                    .addOnFailureListener {
-                        Timber.i(it.message)
-                    }
+                if (favSpaceName.isNotEmpty())
+                    noteRef.update(
+                        "favourite",
+                        FieldValue.arrayRemove("${currentUser.email}/${favSpaceName}")
+                    )
+                else
+                    noteRef.update(
+                        "favourite",
+                        FieldValue.arrayRemove("${currentUser.email}/${favSpace}"))
 
-                note.favourite.add(currentUser.email.toString())
+            } else {
+                noteRef.update(
+                    "favourite",
+                    FieldValue.arrayUnion("${currentUser.email}/${favSpaceName}")
+                )
+
+                note.favourite.add("${currentUser.email}/${favSpaceName}")
                 favouriteRef.set(note)
-                    .addOnFailureListener {
-                        Timber.i(it.message)
-                    }
+
             }
         }
-
 }
 

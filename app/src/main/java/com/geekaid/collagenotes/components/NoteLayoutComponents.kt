@@ -71,6 +71,10 @@ fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: Das
     val currentUser = Firebase.auth.currentUser!!
     var showAlertDialog by remember { mutableStateOf(false) }
 
+    var bool by remember { mutableStateOf(false) }
+    bool = note.favourite.contains("${currentUser.email}/fav1") || note.favourite.contains("${currentUser.email}/fav2") || note.favourite.contains("${currentUser.email}/fav3")
+
+
     Column(
         modifier = Modifier
             .padding(2.dp)
@@ -82,13 +86,16 @@ fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: Das
 
         IconButton(
             onClick = {
-                showAlertDialog = true
+               if (bool)
+                   favouriteDao(note = note, favSpaceName = "")
+                else
+                   showAlertDialog = true
             },
         ) {
             Icon(
                 Icons.Filled.Bookmark,
                 contentDescription = "Favourite",
-                tint = if (note.favourite.contains(currentUser.email)) Color.Blue else Color.Black
+                tint = if (bool) Color.Blue else Color.Black
             )
         }
 
