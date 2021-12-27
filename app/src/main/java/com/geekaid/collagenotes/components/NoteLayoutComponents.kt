@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.*
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -72,7 +73,10 @@ fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: Das
     var showAlertDialog by remember { mutableStateOf(false) }
 
     var bool by remember { mutableStateOf(false) }
-    bool = note.favourite.contains("${currentUser.email}/fav1") || note.favourite.contains("${currentUser.email}/fav2") || note.favourite.contains("${currentUser.email}/fav3")
+    bool =
+        note.favourite.contains("${currentUser.email}/fav1") || note.favourite.contains("${currentUser.email}/fav2") || note.favourite.contains(
+            "${currentUser.email}/fav3"
+        )
 
 
     Column(
@@ -86,10 +90,16 @@ fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: Das
 
         IconButton(
             onClick = {
-               if (bool)
-                   favouriteDao(note = note, favSpaceName = "")
-                else
-                   showAlertDialog = true
+                if (bool) {
+                    var favSpace = ""
+                    Constants.favSpaces.forEach { favName ->
+                        if (note.favourite.contains("${currentUser.email}/${favName}")) {
+                            favSpace = favName
+                        }
+                    }
+                    favouriteDao(note = note, favSpaceName = favSpace)
+                } else
+                    showAlertDialog = true
             },
         ) {
             Icon(
@@ -111,8 +121,7 @@ fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: Das
         if (showAlertDialog)
             showAlertDialog = favSpaceAlertBox(
                 showAlertBox = showAlertDialog,
-                note = note,
-                dashboardViewModel = dashboardViewModel,
+                note = note
             )
 
 

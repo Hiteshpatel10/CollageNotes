@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.util.getTitle
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
@@ -32,13 +33,16 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
         actions = {
 
             if (topBarDropdownVisibility(navController = navController)) {
-                IconButton(onClick = { notesType = !notesType }) {
+                IconButton(onClick = {
+                    notesType = !notesType
+                }) {
                     Icon(Icons.Filled.FilterList, contentDescription = "more")
                 }
 
-                IconButton(onClick = { notesOrderBy = !notesOrderBy }) {
-                    Icon(Icons.Filled.SortByAlpha, contentDescription = "more")
-                }
+                if (navBackStackEntry?.destination?.route != BottomNavScreen.FavouriteScreenNav.route)
+                    IconButton(onClick = { notesOrderBy = !notesOrderBy }) {
+                        Icon(Icons.Filled.SortByAlpha, contentDescription = "more")
+                    }
             }
 
 
@@ -48,49 +52,25 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
 
             DropdownMenu(expanded = notesType, onDismissRequest = { notesType = false }) {
 
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.notesType.value = "notes"
-                    notesType = false
-                }) {
-                    Text(text = "Notes")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.notesType.value = "papers"
-                    notesType = false
-                }) {
-                    Text(text = "Papers")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.notesType.value = "assignments"
-                    notesType = false
-                }) {
-                    Text(text = "Assignment")
+                Constants.filterBy.forEach { filterBy ->
+                    DropdownMenuItem(onClick = {
+                        dashboardViewModel.notesType.value = filterBy.value
+                        notesType = false
+                    }) {
+                        Text(text = filterBy.string)
+                    }
                 }
             }
 
             DropdownMenu(expanded = notesOrderBy, onDismissRequest = { notesOrderBy = false }) {
 
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.orderBy.value = "date"
-                    notesOrderBy = false
-                }) {
-                    Text(text = "Date")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.orderBy.value = "likes"
-                    notesOrderBy = false
-                }) {
-                    Text(text = "Likes")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.orderBy.value = "Downloaded Times"
-                    notesOrderBy = false
-                }) {
-                    Text(text = "downloadedTimes")
+                Constants.orderBy.forEach { filterBy ->
+                    DropdownMenuItem(onClick = {
+                        dashboardViewModel.orderBy.value = filterBy.value
+                        notesOrderBy = false
+                    }) {
+                        Text(text = filterBy.string)
+                    }
                 }
             }
 
@@ -124,7 +104,7 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
             }
 
             if (alertBoxShow)
-                signOutAlertDialog(isShow = alertBoxShow)
+                alertBoxShow = signOutAlertDialog(isShow = alertBoxShow)
 
         }
     )

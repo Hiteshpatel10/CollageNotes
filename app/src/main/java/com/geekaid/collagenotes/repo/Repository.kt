@@ -1,6 +1,6 @@
 package com.geekaid.collagenotes.repo
 
-import android.app.DownloadManager
+import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.model.UploaderDetailModel
@@ -10,8 +10,13 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
@@ -54,20 +59,22 @@ class Repository {
     }
 
     @ExperimentalCoroutinesApi
-    fun getFavouriteNotes(notesType: String, orderBy: String, favouriteSpace: String) = callbackFlow {
-        val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
-            .collection("Favourite").document(favouriteSpace).collection(notesType)
-            .orderBy(orderBy, Query.Direction.DESCENDING)
+    fun getFavouriteNotes(notesType: String, orderBy: String, favouriteSpace: String) =
+        callbackFlow {
+            val collection =
+                firestore.collection("Users").document(auth.currentUser?.email.toString())
+                    .collection("Favourite").document(favouriteSpace).collection(notesType)
+                    .orderBy(orderBy, Query.Direction.DESCENDING)
 
-        val snapshotListener = collection.addSnapshotListener { value, error ->
-            if (error == null)
-                trySend(value)
-        }
+            val snapshotListener = collection.addSnapshotListener { value, error ->
+                if (error == null)
+                    trySend(value)
+            }
 
-        awaitClose {
-            snapshotListener.remove()
+            awaitClose {
+                snapshotListener.remove()
+            }
         }
-    }
 
     @ExperimentalCoroutinesApi
     fun getUserUploadList(email: String) = callbackFlow {
@@ -116,5 +123,64 @@ class Repository {
         val collection = firestore.collection("filterLists").document("noteType")
 
         return collection.get().await().toObject(ListFetch::class.java)
+    }
+
+    @ExperimentalCoroutinesApi
+    fun getFavNoteRef(favSpaceName: String, notesType: String) = callbackFlow {
+        val a = firestore.collection("Users").document(auth.currentUser?.email.toString())
+            .collection(favSpaceName).document(notesType)
+
+        val snapshotListener = a.addSnapshotListener { value, error ->
+            if (error == null) {
+
+                trySendBlocking(value)
+                    .onFailure {
+                        Timber.i(it)
+                    }
+            }
+
+        }
+
+        awaitClose {
+            snapshotListener.remove()
+        }
+    }
+
+
+//    @ExperimentalCoroutinesApi
+//    fun getFavNote(favNoteRefList: List<String>) = callbackFlow {
+//
+//        val favNotesList: MutableList<FileUploadModel> = mutableListOf()
+//
+//        favNoteRefList.forEach { noteRef ->
+//            firestore.document(noteRef).get()
+//                .addOnSuccessListener { note ->
+//                    note.toObject(FileUploadModel::class.java).let {
+//                        it?.let { it1 ->
+//                            favNotesList.add(it1)
+//                            trySend(favNotesList)
+//                        }
+//                    }
+//                }
+//        }
+//        Timber.i(favNoteRefList.toString())
+//    }
+
+    fun getFavNote(favNoteRefList: List<String>) {
+
+        val favNotesList: MutableList<FileUploadModel> = mutableListOf()
+
+        val list = flow<List<FileUploadModel>> {
+            favNoteRefList.forEach { noteRef ->
+                firestore.document(noteRef).get()
+                    .addOnSuccessListener { note ->
+                        note.toObject(FileUploadModel::class.java).let {
+                            it?.let { it1 -> favNotesList.add(it1) }
+                        }
+                    }
+
+            }
+            emit(favNotesList)
+        }
     }
 }

@@ -1,5 +1,9 @@
 package com.geekaid.collagenotes.model
 
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.local.ReferenceSet
+import java.lang.ref.Reference
+
 data class FilterModel(
     var course: String = "",
     var branch: String = "",
@@ -14,4 +18,8 @@ data class FilterListsModel(
 
 data class ListFetch(
     var list: List<String> = listOf()
+)
+
+data class ListFetch1(
+    var list: List<DocumentReference> = listOf()
 )

@@ -33,7 +33,6 @@ fun CoilImage(imageUri: String?) {
                 contentDescription = "Profile",
                 contentScale = ContentScale.Crop
             )
-            Timber.i(imageUri)
         }
     }
 }
