@@ -34,7 +34,7 @@ fun FavouriteScreen(
         dashboardViewModel.favouriteList.value.isEmpty() -> {
             NoNotesFound(
                 buttonText = "Add Notes To Fav",
-                displayText = "No favourite notes found",
+                displayText = "No favourite ${dashboardViewModel.notesType.value} found",
                 navController = navController,
                 buttonDisplay = false
             )

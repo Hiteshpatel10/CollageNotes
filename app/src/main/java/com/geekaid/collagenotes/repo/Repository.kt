@@ -1,17 +1,17 @@
 package com.geekaid.collagenotes.repo
 
-import android.provider.ContactsContract
-import com.geekaid.collagenotes.model.*
-import com.google.android.datatransport.runtime.scheduling.jobscheduling.Uploader
+import android.app.DownloadManager
+import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.ListFetch
+import com.geekaid.collagenotes.model.UploaderDetailModel
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
@@ -37,11 +37,11 @@ class Repository {
     }
 
     @ExperimentalCoroutinesApi
-    fun getNotes(filter: FilterModel) = callbackFlow {
+    fun getNotes(filter: FilterModel, notesType: String, orderBy: String) = callbackFlow {
 
         val noteRef = firestore.collection("courses").document(filter.course)
             .collection(filter.branch).document(filter.subject)
-            .collection("notes")
+            .collection(notesType).orderBy(orderBy, Query.Direction.DESCENDING)
 
         val snapshotListener = noteRef.addSnapshotListener { value, error ->
             if (error == null)
@@ -54,9 +54,10 @@ class Repository {
     }
 
     @ExperimentalCoroutinesApi
-    fun gerFavouriteNotes() = callbackFlow {
+    fun getFavouriteNotes(notesType: String, orderBy: String) = callbackFlow {
         val collection = firestore.collection("Users").document(auth.currentUser?.email.toString())
-            .collection("Favourite").document("fav1").collection("notes")
+            .collection("Favourite").document("fav1").collection(notesType)
+            .orderBy(orderBy, Query.Direction.DESCENDING)
 
         val snapshotListener = collection.addSnapshotListener { value, error ->
             if (error == null)
@@ -111,7 +112,7 @@ class Repository {
         return collection.get().await().toObject(ListFetch::class.java)
     }
 
-    suspend fun getNoteTypeList(): ListFetch?{
+    suspend fun getNoteTypeList(): ListFetch? {
         val collection = firestore.collection("filterLists").document("noteType")
 
         return collection.get().await().toObject(ListFetch::class.java)
