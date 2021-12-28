@@ -84,7 +84,7 @@ fun UserProfileEditScreen(
                             }
                         ))
                 Spacer(modifier = Modifier.padding(16.dp))
-                Text(text = "${dashboardViewModel.uploaderDetails.value?.firstName?.uppercase()} ${dashboardViewModel.uploaderDetails.value?.lastName?.uppercase()      }")
+                Text(text = "${dashboardViewModel.uploaderDetails.value?.firstName?.uppercase()} ${dashboardViewModel.uploaderDetails.value?.lastName?.uppercase()}")
             }
 
             uploaderType =
@@ -125,6 +125,7 @@ fun UserProfileEditScreen(
                     uploaderType = uploaderType,
                     qualification = qualification,
                     about = about,
+                    profileUri = imageUri.toString(),
                     institutionAssociatedWith = institution
                 ),
                 imageUri = imageUri,

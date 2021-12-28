@@ -1,24 +1,32 @@
 package com.geekaid.collagenotes.ui.screens
 
 import android.app.DownloadManager
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.R
 import com.geekaid.collagenotes.components.NoNotesFound
 import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.FilterModel
+import com.geekaid.collagenotes.model.ListFetch
+import com.geekaid.collagenotes.model.ListFetch1
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
@@ -60,7 +68,8 @@ fun DashboardScreen(
         dashboardViewModel.filter.value.course.isEmpty() -> {
             NoNotesFound(
                 buttonText = "Add Filter",
-                displayText = "Please add filter",
+                displayText = "\n No Filter Found \nPlease Add filter",
+                painter = painterResource(id = R.drawable.error),
                 navController = navController,
                 buttonDisplay = true
             )
@@ -70,6 +79,7 @@ fun DashboardScreen(
             NoNotesFound(
                 buttonText = "Change Filter",
                 displayText = "No ${dashboardViewModel.notesType.value} found",
+                painter = painterResource(id = R.drawable.empty),
                 navController = navController,
                 buttonDisplay = true
             )
@@ -80,6 +90,7 @@ fun DashboardScreen(
                 notes = dashboardViewModel.notesList.value,
                 context = context,
                 downloadManager = downloadManager,
+                dashboardViewModel = dashboardViewModel,
                 navController = navController
             )
 

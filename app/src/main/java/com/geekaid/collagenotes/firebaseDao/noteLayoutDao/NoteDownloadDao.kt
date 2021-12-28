@@ -7,10 +7,7 @@ import android.os.Environment
 import android.widget.Toast
 import com.geekaid.collagenotes.R
 import com.geekaid.collagenotes.model.FileUploadModel
-import com.geekaid.collagenotes.util.noteFavRef
-import com.geekaid.collagenotes.util.noteRef
-import com.geekaid.collagenotes.util.noteStorageRef
-import com.geekaid.collagenotes.util.userUploadRef
+import com.geekaid.collagenotes.util.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
@@ -26,12 +23,23 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
     val storage = Firebase.storage.reference
     val currentUser = FirebaseAuth.getInstance().currentUser!!
     val firestore = FirebaseFirestore.getInstance()
+    var favSpace = ""
+    Constants.favSpaces.forEach { favName ->
+        if (note.favourite.contains("${currentUser.email}/${favName}")) {
+            favSpace = favName
+        }
+    }
 
     val noteRef = noteRef(note = note, firestore = firestore)
-    val favNoteRef = noteFavRef(note = note, firestore = firestore, currentUser = currentUser)
     val storageRef = noteStorageRef(note = note, storageRef = storage)
     val userUploadRef =
         userUploadRef(note = note, firestore = firestore, email = note.fileInfo.uploaderEmail)
+    val favNoteRef = noteFavRef(
+        note = note,
+        favSpaceName = if (favSpace.isNotEmpty()) favSpace else "fav1",
+        firestore = firestore,
+        currentUser = currentUser
+    )
 
     storageRef.downloadUrl
         .addOnSuccessListener { uri ->

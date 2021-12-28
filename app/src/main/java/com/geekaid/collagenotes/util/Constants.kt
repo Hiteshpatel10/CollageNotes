@@ -1,5 +1,6 @@
 package com.geekaid.collagenotes.util
 
+import com.geekaid.collagenotes.model.StringValuePair
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 import timber.log.Timber
 
@@ -15,8 +16,8 @@ object Constants {
 
     val screen = listOf(
         BottomNavScreen.FilterNav,
-        BottomNavScreen.FavouriteScreenNav,
         BottomNavScreen.DashboardNav,
+        BottomNavScreen.FavouriteScreenNav,
         BottomNavScreen.UploadScreenNav,
     )
 
@@ -34,6 +35,30 @@ object Constants {
         BottomNavScreen.UserProfileEditScreenNav,
         BottomNavScreen.UserProfileScreenNav,
         BottomNavScreen.UserProfileCreateNav
+    )
+
+    val favSpaces = listOf(
+        "fav1",
+        "fav2",
+        "fav3"
+    )
+
+    val filterBy :List<StringValuePair> = listOf(
+        StringValuePair("Notes","notes"),
+        StringValuePair("Papers","papers"),
+        StringValuePair("Assignments","assignments"),
+    )
+
+    val orderBy :List<StringValuePair> = listOf(
+        StringValuePair("Date","date"),
+        StringValuePair("Likes","likes"),
+        StringValuePair("Downloaded","downloadedTimes"),
+    )
+
+  val orderByBy = listOf(
+        "date",
+        "papers",
+        "assignments"
     )
 
 }

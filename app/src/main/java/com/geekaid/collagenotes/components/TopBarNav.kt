@@ -1,24 +1,21 @@
 package com.geekaid.collagenotes.components
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.geekaid.collagenotes.navigation.BottomNavScreen
-import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.util.getTitle
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalFoundationApi
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
@@ -35,19 +32,17 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
         title = { Text(getTitle(navBackStackEntry?.destination?.route.toString())) },
         actions = {
 
-            if (topBarDropdownVisibility(navController = navController))
-                IconButton(onClick = { notesType = !notesType }) {
-                    if (notesType)
-                        Icon(Icons.Filled.ArrowDropUp, contentDescription = "more")
-                    else
-                        Icon(Icons.Filled.ArrowDropDown, contentDescription = "more")
+            if (topBarDropdownVisibility(navController = navController)) {
+                IconButton(onClick = {
+                    notesType = !notesType
+                }) {
+                    Icon(Icons.Filled.FilterList, contentDescription = "more")
                 }
 
-            IconButton(onClick = { notesOrderBy = !notesOrderBy }) {
-                if (notesOrderBy)
-                    Icon(Icons.Filled.ArrowDropUp, contentDescription = "more")
-                else
-                    Icon(Icons.Filled.ArrowDropDown, contentDescription = "more")
+                if (navBackStackEntry?.destination?.route != BottomNavScreen.FavouriteScreenNav.route)
+                    IconButton(onClick = { notesOrderBy = !notesOrderBy }) {
+                        Icon(Icons.Filled.SortByAlpha, contentDescription = "more")
+                    }
             }
 
 
@@ -57,49 +52,25 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
 
             DropdownMenu(expanded = notesType, onDismissRequest = { notesType = false }) {
 
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.notesType.value = "notes"
-                    notesType = false
-                }) {
-                    Text(text = "notes")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.notesType.value = "papers"
-                    notesType = false
-                }) {
-                    Text(text = "papers")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.notesType.value = "assignments"
-                    notesType = false
-                }) {
-                    Text(text = "assignment")
+                Constants.filterBy.forEach { filterBy ->
+                    DropdownMenuItem(onClick = {
+                        dashboardViewModel.notesType.value = filterBy.value
+                        notesType = false
+                    }) {
+                        Text(text = filterBy.string)
+                    }
                 }
             }
 
             DropdownMenu(expanded = notesOrderBy, onDismissRequest = { notesOrderBy = false }) {
 
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.orderBy.value = "date"
-                    notesOrderBy = false
-                }) {
-                    Text(text = "date")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.orderBy.value = "likes"
-                    notesOrderBy = false
-                }) {
-                    Text(text = "likes")
-                }
-
-                DropdownMenuItem(onClick = {
-                    dashboardViewModel.orderBy.value = "downloadedTimes"
-                    notesOrderBy = false
-                }) {
-                    Text(text = "downloadedTimes")
+                Constants.orderBy.forEach { filterBy ->
+                    DropdownMenuItem(onClick = {
+                        dashboardViewModel.orderBy.value = filterBy.value
+                        notesOrderBy = false
+                    }) {
+                        Text(text = filterBy.string)
+                    }
                 }
             }
 
@@ -113,27 +84,28 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
                         navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${auth.currentUser?.email.toString()}")
                         showMenu = false
                     }) {
-                    Row {
-                        Icon(Icons.Filled.Face, contentDescription = "profile")
-                        Spacer(modifier = Modifier.padding(4.dp))
-                        Text(text = "Profile")
-                    }
+                    TextIcon(
+                        textString = "Profile",
+                        imageVector = Icons.Filled.Face,
+                        iconBefore = true
+                    )
                 }
 
                 DropdownMenuItem(onClick = {
                     alertBoxShow = true
                     showMenu = false
                 }) {
-                    Row {
-                        Icon(Icons.Filled.Logout, contentDescription = "profile")
-                        Spacer(modifier = Modifier.padding(4.dp))
-                        Text(text = "Sign Out")
-                    }
+                    TextIcon(
+                        textString = "Sign Out",
+                        imageVector = Icons.Filled.Logout,
+                        iconBefore = true
+                    )
                 }
             }
 
             if (alertBoxShow)
                 alertBoxShow = signOutAlertDialog(isShow = alertBoxShow)
+
         }
     )
 }
@@ -146,8 +118,8 @@ fun topBarDropdownVisibility(navController: NavController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     isTopBarDropdownVisible = when (navBackStackEntry?.destination?.route) {
-        Screens.DashboardNav.route -> true
-        Screens.FavouriteScreenNav.route -> true
+        BottomNavScreen.DashboardNav.route -> true
+        BottomNavScreen.FavouriteScreenNav.route -> true
         else -> false
     }
 

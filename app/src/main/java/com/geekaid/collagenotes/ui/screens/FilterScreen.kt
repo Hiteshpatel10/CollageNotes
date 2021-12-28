@@ -15,13 +15,17 @@ import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collagenotes.model.FilterModel
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
+@ExperimentalCoroutinesApi
 @Composable
 fun FilterScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
 
     var course by remember { mutableStateOf("") }
     var branch by remember { mutableStateOf("") }
@@ -47,7 +51,8 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
 
             if (course.isNotEmpty() && branch.isNotEmpty())
                 scope.launch {
-                    dashboardViewModel.subjectList.value = dashboardViewModel.getSubjectList(course, branch)!!
+                    dashboardViewModel.subjectList.value =
+                        dashboardViewModel.getSubjectList(course, branch)!!
                 }
 
             course = dropdownList(

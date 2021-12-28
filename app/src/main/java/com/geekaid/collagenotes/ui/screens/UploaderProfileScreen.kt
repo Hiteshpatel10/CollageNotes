@@ -3,6 +3,7 @@ package com.geekaid.collagenotes.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -156,5 +157,9 @@ fun UserProfileScreen(
             value = dashboardViewModel.uploaderDetails.value?.about.toString(),
             isSpacer = true
         )
+    }
+
+    LazyColumn{
+
     }
 }

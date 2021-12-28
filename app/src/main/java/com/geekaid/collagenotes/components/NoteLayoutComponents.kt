@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.components
 
 import android.app.DownloadManager
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
@@ -25,6 +26,8 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.firebaseDao.noteLayoutDao.*
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.navigation.BottomNavScreen
+import com.geekaid.collagenotes.util.Constants
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -63,9 +66,18 @@ fun NoteDetails(note: FileUploadModel, isExpanded: Boolean) {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
-fun NoteSidebar(note: FileUploadModel, context: Context) {
+fun NoteSidebar(note: FileUploadModel, context: Context, dashboardViewModel: DashboardViewModel) {
     val currentUser = Firebase.auth.currentUser!!
+    var showAlertDialog by remember { mutableStateOf(false) }
+
+    var bool by remember { mutableStateOf(false) }
+    bool =
+        note.favourite.contains("${currentUser.email}/fav1") || note.favourite.contains("${currentUser.email}/fav2") || note.favourite.contains(
+            "${currentUser.email}/fav3"
+        )
+
 
     Column(
         modifier = Modifier
@@ -76,13 +88,24 @@ fun NoteSidebar(note: FileUploadModel, context: Context) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
 
-        IconButton(onClick = {
-            favouriteDao(note = note)
-        }) {
+        IconButton(
+            onClick = {
+                if (bool) {
+                    var favSpace = ""
+                    Constants.favSpaces.forEach { favName ->
+                        if (note.favourite.contains("${currentUser.email}/${favName}")) {
+                            favSpace = favName
+                        }
+                    }
+                    favouriteDao(note = note, favSpaceName = favSpace)
+                } else
+                    showAlertDialog = true
+            },
+        ) {
             Icon(
                 Icons.Filled.Bookmark,
                 contentDescription = "Favourite",
-                tint = if (note.favourite.contains(currentUser.email)) Color.Blue else Color.Black
+                tint = if (bool) Color.Blue else Color.Black
             )
         }
 
@@ -94,6 +117,13 @@ fun NoteSidebar(note: FileUploadModel, context: Context) {
                 contentDescription = "Download",
             )
         }
+
+        if (showAlertDialog)
+            showAlertDialog = favSpaceAlertBox(
+                showAlertBox = showAlertDialog,
+                note = note
+            )
+
 
     }
 }

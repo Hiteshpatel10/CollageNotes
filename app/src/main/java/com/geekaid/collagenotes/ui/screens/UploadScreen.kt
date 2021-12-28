@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.components.FileSelectComponent
 import com.geekaid.collagenotes.components.FileUploadComponent
 import com.geekaid.collagenotes.model.UploaderDetailModel
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -21,6 +22,8 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
     val userDetails by remember { mutableStateOf(dashboardViewModel.userDetails) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         bool = false
+        if (uri == null)
+            navController.navigate(BottomNavScreen.UploadScreenNav.route)
         noteUri = uri.toString()
     }
 

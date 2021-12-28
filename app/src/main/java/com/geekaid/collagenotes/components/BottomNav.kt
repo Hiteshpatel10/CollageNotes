@@ -11,10 +11,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.util.Constants
 
-
 @Composable
 fun BottomNav(navController: NavHostController) {
-
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

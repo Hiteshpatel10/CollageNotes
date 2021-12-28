@@ -14,6 +14,11 @@ fun noteRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentRefere
 
 }
 
+fun noteRefPath(note: FileUploadModel, firestore: FirebaseFirestore): String {
+
+    return "courses/${note.course}/${note.branch}/${note.subject}/${note.noteType}/${note.fileInfo.fileUploadPath}"
+}
+
 fun noteStorageRef(note: FileUploadModel, storageRef: StorageReference): StorageReference {
 
     return storageRef.child("courses").child(note.course).child(note.branch)
@@ -22,13 +27,13 @@ fun noteStorageRef(note: FileUploadModel, storageRef: StorageReference): Storage
 
 fun noteFavRef(
     note: FileUploadModel,
+    favSpaceName: String = "fav1",
     firestore: FirebaseFirestore,
     currentUser: FirebaseUser
 ): DocumentReference {
 
     return firestore.collection("Users").document(currentUser.email.toString())
-        .collection("Favourite").document("fav1")
-        .collection(note.noteType).document(note.fileInfo.fileUploadPath)
+        .collection(favSpaceName).document(note.noteType)
 }
 
 fun noteReportRef(note: FileUploadModel, firestore: FirebaseFirestore): DocumentReference {
@@ -49,12 +54,16 @@ fun userDetailRef(firestore: FirebaseFirestore, currentUser: FirebaseUser): Docu
         .collection("UserData").document("UserInfo")
 }
 
-fun userUploadRef(note: FileUploadModel, firestore: FirebaseFirestore, email: String): DocumentReference {
+fun userUploadRef(
+    note: FileUploadModel,
+    firestore: FirebaseFirestore,
+    email: String
+): DocumentReference {
     return firestore.collection("Users").document(email)
         .collection("uploads").document(note.fileInfo.fileUploadPath)
 }
 
-fun userProfileRef(storageRef: StorageReference, currentUser: FirebaseUser): StorageReference{
-    return  storageRef.child("userProfile").child(currentUser.email.toString())
+fun userProfileRef(storageRef: StorageReference, currentUser: FirebaseUser): StorageReference {
+    return storageRef.child("userProfile").child(currentUser.email.toString())
 }
 

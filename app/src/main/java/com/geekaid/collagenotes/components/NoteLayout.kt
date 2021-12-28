@@ -2,6 +2,7 @@ package com.geekaid.collagenotes.components
 
 import android.app.DownloadManager
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,13 +15,16 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.FileUploadModel
+import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun NoteLayout(
     notes: List<FileUploadModel>,
     context: Context,
     downloadManager: DownloadManager,
+    dashboardViewModel: DashboardViewModel,
     navController: NavHostController
 ) {
 
@@ -51,7 +55,7 @@ fun NoteLayout(
             Card(modifier = Modifier.padding(4.dp), onClick = { isExpanded = !isExpanded }) {
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note, isExpanded = isExpanded)
-                    NoteSidebar(note = note, context = context)
+                    NoteSidebar(note = note, context = context, dashboardViewModel = dashboardViewModel)
                     Vote(note = note, context = context, downloadManager = downloadManager, navController = navController)
                 }
             }

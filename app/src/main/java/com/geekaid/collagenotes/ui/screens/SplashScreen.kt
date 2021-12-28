@@ -7,13 +7,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import com.geekaid.collagenotes.R
 import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -29,14 +31,14 @@ fun SplashScreen(navController: NavController) {
         scale.animateTo(
             targetValue = 4f,
             animationSpec = tween(
-                durationMillis = 500,
+                durationMillis = 600,
                 easing = {
                     OvershootInterpolator(2f).getInterpolation(it)
                 }
             )
         )
 
-        when{
+        when {
             currentUser == null -> nextScreen = Screens.SignInNav.route
 
             !currentUser.isEmailVerified -> nextScreen = Screens.EmailVerificationNav.route
@@ -44,14 +46,14 @@ fun SplashScreen(navController: NavController) {
             currentUser.isEmailVerified -> nextScreen = Screens.DashboardNav.route
         }
 
-        navController.navigate(nextScreen){
+        navController.navigate(nextScreen) {
             navController.popBackStack()
         }
     }
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Icon(
-            Icons.Filled.Notes,
+            Icons.Filled.Book,
             contentDescription = "Splash Icon",
             tint = Color.Red,
             modifier = Modifier.scale(scale.value)

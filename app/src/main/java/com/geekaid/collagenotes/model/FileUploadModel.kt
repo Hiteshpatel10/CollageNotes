@@ -6,6 +6,7 @@ data class FileUploadModel(
     var date: String = "",
     var noteType: String = "",
     var downloadedTimes: Long = 0,
+    var favSpaceName: String = "",
     val fileInfo: FileMeta = FileMeta(),
     var favourite: MutableList<String> = mutableListOf(),
     var subject: String = "",
@@ -20,5 +21,3 @@ data class FileMeta(
     var uploadedBy: String = "",
     var uploaderEmail: String = ""
 )
-
-
