@@ -7,15 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Notes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import com.geekaid.collagenotes.R
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Screens
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -43,7 +42,7 @@ fun SplashScreen(navController: NavController) {
 
             !currentUser.isEmailVerified -> nextScreen = Screens.EmailVerificationNav.route
 
-            currentUser.isEmailVerified -> nextScreen = Screens.DashboardNav.route
+            currentUser.isEmailVerified -> nextScreen = BottomNavScreen.DashboardNav.route
         }
 
         navController.navigate(nextScreen) {
@@ -53,7 +52,7 @@ fun SplashScreen(navController: NavController) {
 
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Icon(
-            Icons.Filled.Book,
+            Icons.Filled.Notes,
             contentDescription = "Splash Icon",
             tint = Color.Red,
             modifier = Modifier.scale(scale.value)

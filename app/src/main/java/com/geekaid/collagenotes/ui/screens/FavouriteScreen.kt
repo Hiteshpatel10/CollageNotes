@@ -9,8 +9,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.R
 import com.geekaid.collagenotes.components.NoNotesFound
-import com.geekaid.collagenotes.components.NoteLayout
 import com.geekaid.collagenotes.components.ProgressBar
+import com.geekaid.collagenotes.components.noteLayoutComponents.NoteLayout
 import com.geekaid.collagenotes.model.FileUploadModel
 import com.geekaid.collagenotes.model.ListFetch
 import com.geekaid.collagenotes.navigation.BottomNavScreen

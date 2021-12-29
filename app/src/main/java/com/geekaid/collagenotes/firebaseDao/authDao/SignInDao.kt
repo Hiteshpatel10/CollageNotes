@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.SignInModel
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -53,7 +54,7 @@ fun signInUser(
                 if (task.isSuccessful) {
                     authViewModel.displayProgressBar.value = false
                     Toast.makeText(context, "SignIn Successfully", Toast.LENGTH_SHORT).show()
-                    navController.navigate(Screens.DashboardNav.route) {
+                    navController.navigate(BottomNavScreen.DashboardNav.route) {
                         navController.popBackStack()
                     }
                 }
