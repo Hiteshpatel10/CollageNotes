@@ -38,14 +38,14 @@ fun Navigation(
             SplashScreen(navController = navController)
         }
 
-        composable(Screens.DashboardNav.route) {
+        composable(BottomNavScreen.DashboardNav.route) {
             DashboardScreen(
                 downloadManager = downloadManager,
                 dashboardViewModel = dashboardViewModel,
                 navController = navController
             )
         }
-        composable(Screens.FilterNav.route) {
+        composable(BottomNavScreen.FilterNav.route) {
             FilterScreen(navController = navController, dashboardViewModel = dashboardViewModel)
         }
         composable(Screens.DownloadedScreenNav.route) {
@@ -54,7 +54,7 @@ fun Navigation(
         composable(Screens.UploadScreenNav.route) {
             UploadScreen(navController = navController, dashboardViewModel = dashboardViewModel)
         }
-        composable(Screens.FavouriteScreenNav.route) {
+        composable(BottomNavScreen.FavouriteScreenNav.route) {
             FavouriteScreen(
                 downloadManager = downloadManager,
                 dashboardViewModel = dashboardViewModel,

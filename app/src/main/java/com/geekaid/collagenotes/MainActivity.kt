@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.geekaid.collagenotes.components.BottomNav
 import com.geekaid.collagenotes.components.TopBarNav
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Navigation
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
@@ -35,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val dashboardViewModel: DashboardViewModel by viewModels()
 
@@ -47,7 +49,10 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         topBar = {
                             if (bottomNavVisibility(navController = navController)) {
-                                TopBarNav(dashboardViewModel = dashboardViewModel, navController = navController)
+                                TopBarNav(
+                                    dashboardViewModel = dashboardViewModel,
+                                    navController = navController
+                                )
                             }
                         },
                         bottomBar = {
@@ -76,7 +81,7 @@ fun bottomNavVisibility(navController: NavController): Boolean {
 
     when (navBackStackEntry?.destination?.route) {
         Screens.SplashNav.route -> isBottomNavVisible = false
-        Screens.DashboardNav.route -> isBottomNavVisible = true
+        BottomNavScreen.DashboardNav.route -> isBottomNavVisible = true
     }
     return isBottomNavVisible
 }

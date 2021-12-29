@@ -25,7 +25,7 @@ import com.geekaid.collagenotes.components.HeadingValueStyle
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.uploaderDetailDao
 import com.geekaid.collagenotes.model.UploaderDetailModel
-import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.util.Constants
 
 @Composable
@@ -113,8 +113,6 @@ fun UserProfileCreate(navController: NavHostController) {
                         modifier = Modifier.size(100.dp)
                     )
             }
-
-
         }
 
         HeadingValueStyle(
@@ -141,7 +139,7 @@ fun UserProfileCreate(navController: NavHostController) {
                     imageUri = imageUri,
                     context = context
                 ).also {
-                    navController.navigate(Screens.DashboardNav.route)
+                    navController.navigate(BottomNavScreen.DashboardNav.route)
                 }
         }, modifier = Modifier.padding(bottom = 64.dp)) {
             Text("Save")

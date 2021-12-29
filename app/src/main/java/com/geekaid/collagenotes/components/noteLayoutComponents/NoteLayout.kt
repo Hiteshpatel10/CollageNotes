@@ -1,4 +1,4 @@
-package com.geekaid.collagenotes.components
+package com.geekaid.collagenotes.components.noteLayoutComponents
 
 import android.app.DownloadManager
 import android.content.Context
@@ -55,8 +55,8 @@ fun NoteLayout(
             Card(modifier = Modifier.padding(4.dp), onClick = { isExpanded = !isExpanded }) {
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note, isExpanded = isExpanded)
-                    NoteSidebar(note = note, context = context, dashboardViewModel = dashboardViewModel)
-                    Vote(note = note, context = context, downloadManager = downloadManager, navController = navController)
+                    NoteSideBar(note = note, context = context, dashboardViewModel = dashboardViewModel)
+                    NoteBottomBar(note = note, context = context, downloadManager = downloadManager, navController = navController)
                 }
             }
         }

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavHostController
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Screens
 
 @Composable
@@ -37,13 +38,13 @@ fun NoNotesFound(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(painter = painter, contentDescription ="" )
+            Image(painter = painter, contentDescription ="image" )
             Text(text = displayText, style = MaterialTheme.typography.h5)
         }
 
         if (buttonDisplay) {
             Button(
-                onClick = { navController.navigate(Screens.FilterNav.route) },
+                onClick = { navController.navigate(BottomNavScreen.FilterNav.route) },
                 modifier = Modifier.padding(bottom = 64.dp)
             ) {
                 Text(text = buttonText)

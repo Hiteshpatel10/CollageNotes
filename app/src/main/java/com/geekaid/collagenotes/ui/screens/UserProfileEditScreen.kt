@@ -25,7 +25,7 @@ import com.geekaid.collagenotes.components.CoilImage
 import com.geekaid.collagenotes.components.dropdownList
 import com.geekaid.collagenotes.firebaseDao.screenDao.uploaderDetailDao
 import com.geekaid.collagenotes.model.UploaderDetailModel
-import com.geekaid.collagenotes.navigation.Screens
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.util.Constants
 import com.geekaid.collagenotes.viewmodel.DashboardViewModel
 
@@ -131,7 +131,7 @@ fun UserProfileEditScreen(
                 imageUri = imageUri,
                 context = context
             ).also {
-                navController.navigate(Screens.DashboardNav.route)
+                navController.navigate(BottomNavScreen.DashboardNav.route)
             }
         }, modifier = Modifier.padding(bottom = 64.dp)) {
             Text("Save")

@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collagenotes.model.SignUpModel
+import com.geekaid.collagenotes.navigation.BottomNavScreen
 import com.geekaid.collagenotes.navigation.Screens
 import com.geekaid.collagenotes.viewmodel.AuthViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -81,7 +82,7 @@ fun registerUser(
                    storageRef.set(credential.userDetails)
 
                 if (auth.currentUser!!.isEmailVerified) {
-                    navController.navigate(Screens.DashboardNav.route)
+                    navController.navigate(BottomNavScreen.DashboardNav.route)
                 } else {
                     navController.navigate(Screens.EmailVerificationNav.route)
                 }
