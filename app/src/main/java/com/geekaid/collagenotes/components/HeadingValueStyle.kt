@@ -1,13 +1,11 @@
 package com.geekaid.collagenotes.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -19,12 +17,6 @@ import com.geekaid.collagenotes.ui.theme.CollageNotesTheme
 @Composable
 fun HeadingValueStyle(heading: String, value: String, isSpacer: Boolean) {
 
-    var headingColor by remember { mutableStateOf(Color.Blue) }
-    var valueColor by remember { mutableStateOf(Color.Blue) }
-
-    headingColor = if (isSystemInDarkTheme()) Color.White else Color.Black
-    valueColor = if (isSystemInDarkTheme()) Color.White else Color.DarkGray
-
     CollageNotesTheme {
         Surface {
             Text(
@@ -32,16 +24,14 @@ fun HeadingValueStyle(heading: String, value: String, isSpacer: Boolean) {
                     withStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.SemiBold,
-                            fontFamily = FontFamily.SansSerif,
-                            color = headingColor
+                            fontFamily = FontFamily.SansSerif
                         )
                     ) {
                         append("$heading : ")
                     }
                     withStyle(
                         style = SpanStyle(
-                            fontWeight = FontWeight.Normal,
-                            color = valueColor
+                            fontWeight = FontWeight.Normal
                         )
                     ) {
                         append(value)

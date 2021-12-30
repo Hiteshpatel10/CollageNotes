@@ -13,6 +13,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -37,7 +38,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val dashboardViewModel: DashboardViewModel by viewModels()
 
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
             CollageNotesTheme {
                 val navController = rememberNavController()
 
-                Surface(color = MaterialTheme.colors.background) {
+                Surface {
                     Scaffold(
                         topBar = {
                             if (bottomNavVisibility(navController = navController)) {
