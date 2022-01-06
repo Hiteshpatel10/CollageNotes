@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "972672133160",
-    "project_id": "collage-notes-6ad3e",
-    "storage_bucket": "collage-notes-6ad3e.appspot.com"
+    "project_number": "63935730913",
+    "project_id": "college-notes-10",
+    "storage_bucket": "college-notes-10.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:972672133160:android:01db909421503f05efed1d",
+        "mobilesdk_app_id": "1:63935730913:android:afbead6ea3da6e2c4393a0",
         "android_client_info": {
-          "package_name": "com.geekaid.collagenotes"
+          "package_name": "com.geekaid.collegenotes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "972672133160-5oj1iiapkkvojefbcd7tfpotuvmf7k75.apps.googleusercontent.com",
+          "client_id": "63935730913-jigp3d605o4c5vad4vo15n856ok4ciku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.geekaid.collegenotes",
+            "certificate_hash": "cd63552732a22b9545f092572ba5795a8b57e3cd"
+          }
+        },
+        {
+          "client_id": "63935730913-i6kbm9qt37mklrmu34qqmbhgkupefmie.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyClq7pbiBNNY4GjQCRm9Shmnkg7osB3YTY"
+          "current_key": "AIzaSyAqBtCGgKrZQ1V3t4RXhn8Pv7VdQ7fUYCc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "972672133160-5oj1iiapkkvojefbcd7tfpotuvmf7k75.apps.googleusercontent.com",
+              "client_id": "63935730913-i6kbm9qt37mklrmu34qqmbhgkupefmie.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
