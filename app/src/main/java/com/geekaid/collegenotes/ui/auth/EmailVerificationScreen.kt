@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collegenotes.components.AppIconName
 import com.geekaid.collegenotes.components.ProgressBar
 import com.geekaid.collegenotes.firebaseDao.authDao.emailVerificationDao
 import com.geekaid.collegenotes.viewmodel.AuthViewModel
@@ -26,9 +27,11 @@ fun EmailVerificationScreen(navController: NavHostController, authViewModel: Aut
 
     Column(
         modifier = Modifier
-            .padding(top = 240.dp)
+            .padding(top = 60.dp)
             .padding(10.dp)
     ) {
+
+        AppIconName()
 
         Text(
             text = auth.currentUser?.email.toString(),

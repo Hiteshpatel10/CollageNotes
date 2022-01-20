@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.geekaid.collegenotes.components.AppIconName
 import com.geekaid.collegenotes.components.ProgressBar
 import com.geekaid.collegenotes.firebaseDao.authDao.forgotPasswordDao
 import com.geekaid.collegenotes.viewmodel.AuthViewModel
@@ -29,9 +30,12 @@ fun ForgotPassword(navController: NavHostController, authViewModel: AuthViewMode
 
     Column(
         modifier = Modifier
-            .padding(top = 180.dp)
+            .padding(top = 60.dp)
             .padding(10.dp)
     ) {
+
+        AppIconName()
+
         Text(
             text = "Forgot Password",
             modifier = Modifier

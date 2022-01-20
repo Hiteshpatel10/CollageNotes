@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Password
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collegenotes.components.AppIconName
 import com.geekaid.collegenotes.components.ProgressBar
 import com.geekaid.collegenotes.components.passwordVisible
 import com.geekaid.collegenotes.firebaseDao.authDao.registerUser
@@ -41,9 +43,12 @@ fun SignUpScreen(navController: NavHostController, authViewModel: AuthViewModel)
 
     Column(
         modifier = Modifier
-            .padding(top = 180.dp)
+            .padding(top = 60.dp)
             .padding(10.dp)
     ) {
+
+        AppIconName()
+
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -118,7 +123,7 @@ fun SignUpScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 modifier = Modifier
                     .padding(4.dp)
             ) {
-                Text(text = "Already have an account?")
+                Text(text = "Already have an account?", modifier = Modifier.alpha(0.7f))
                 ClickableText(
                     text = AnnotatedString(" Log In"),
                     onClick = {

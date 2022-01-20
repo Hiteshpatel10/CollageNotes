@@ -67,17 +67,15 @@ fun registerUser(
                     }
                 }
                 Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                authViewModel.displayProgressBar.value = false
-                Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
-            .addOnCompleteListener {
                 if (auth.currentUser!!.isEmailVerified) {
                     navController.navigate(BottomNavScreen.DashboardNav.route)
                 } else {
                     navController.navigate(Screens.EmailVerificationNav.route)
                 }
+            }
+            .addOnFailureListener {
+                authViewModel.displayProgressBar.value = false
+                Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
