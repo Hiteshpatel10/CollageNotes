@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#-keep class com.geekaid.collegenotes.model.FileUploadModel.*
+#-keep class com.geekaid.collegenotes.model.FilterModel.*
+#-keep class com.geekaid.collegenotes.model.ReportModel.*
+#-keep class com.geekaid.collegenotes.model.UploaderDetailModel.*
+#-keep class com.geekaid.collegenotes.model.UserDetails.*
+#-keep class com.geekaid.collegenotes.model.StringValuePair.*

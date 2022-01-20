@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Collage Notes</string>
+    <string name="app_name">College Notes</string>
 
     //SplashScreen
     <string name="SplashNav">splashNav</string>
@@ -10,6 +10,7 @@
     <string name="DownloadedNotesNav">DownloadedNotesNav</string>
     <string name="UploadNav">UploadNav</string>
     <string name="FavouriteNav">FavouriteNav</string>
+    <string name="AboutNav">AboutNav</string>
 
     //Profile
     <string name="UserProfileNav">UserProfileNav</string>
