@@ -9,7 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.geekaid.collegenotes.model.UploaderDetailModel
 import com.geekaid.collegenotes.navigation.BottomNavScreen
+import com.geekaid.collegenotes.ui.screens.UserProfileCreate
 import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.util.getTitle
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
@@ -84,7 +86,10 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
 
                 DropdownMenuItem(
                     onClick = {
-                        navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${auth.currentUser?.email.toString()}")
+                        if (dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null)
+                            navController.navigate(BottomNavScreen.UserProfileCreateNav.route)
+                        else
+                            navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${auth.currentUser?.email.toString()}")
                         showMenu = false
                     }) {
                     TextIcon(

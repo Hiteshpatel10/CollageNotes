@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collegenotes.model.ListFetch
 import com.geekaid.collegenotes.model.SignUpModel
-import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.navigation.Screens
 import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.viewmodel.AuthViewModel
@@ -60,18 +59,18 @@ fun registerUser(
         auth.createUserWithEmailAndPassword(credential.email, credential.password)
             .addOnSuccessListener {
                 authViewModel.displayProgressBar.value = false
+
                 Constants.favSpaces.forEach { favSpaceName ->
                     Constants.filterBy.forEach { filterBy ->
                         firestore.collection("users").document(auth.currentUser?.email.toString())
                             .collection(favSpaceName).document(filterBy.value).set(ListFetch())
                     }
                 }
+
                 Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
-                if (auth.currentUser!!.isEmailVerified) {
-                    navController.navigate(BottomNavScreen.DashboardNav.route)
-                } else {
-                    navController.navigate(Screens.EmailVerificationNav.route)
-                }
+
+                navController.navigate(Screens.EmailVerificationNav.route)
+
             }
             .addOnFailureListener {
                 authViewModel.displayProgressBar.value = false
