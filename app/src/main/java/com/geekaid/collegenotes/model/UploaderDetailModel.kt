@@ -11,4 +11,9 @@ data class UploaderDetailModel(
     var institutionAssociatedWith: String = "",
     var profileUri: String = "",
     var about: String = "",
+
+    //Social
+    var instagram: String = "",
+    var youtube: String = "",
+    var twitter: String = "",
 )
