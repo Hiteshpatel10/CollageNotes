@@ -2,11 +2,12 @@ package com.geekaid.collegenotes.ui.screens
 
 import android.net.Uri
 import androidx.compose.foundation.Image
-import com.geekaid.collegenotes.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,11 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import com.geekaid.collegenotes.components.BottomNav
+import com.geekaid.collegenotes.R
 import com.geekaid.collegenotes.firebaseDao.screenDao.uploaderDetailDao
 import com.geekaid.collegenotes.model.UploaderDetailModel
 import com.geekaid.collegenotes.navigation.BottomNavScreen
-import com.geekaid.collegenotes.navigation.Screens
 
 @Composable
 fun UserSocialMediaLinks(
@@ -32,9 +32,9 @@ fun UserSocialMediaLinks(
     navController: NavHostController
 ) {
 
-    var instagram by remember { mutableStateOf("") }
-    var youtube by remember { mutableStateOf("") }
-    var twitter by remember { mutableStateOf("") }
+    var instagram by remember { mutableStateOf(uploaderDetailModel.instagram) }
+    var youtube by remember { mutableStateOf(uploaderDetailModel.youtube) }
+    var twitter by remember { mutableStateOf(uploaderDetailModel.twitter) }
     val context = LocalContext.current
 
 
@@ -60,7 +60,7 @@ fun UserSocialMediaLinks(
             OutlinedTextField(
                 value = instagram,
                 onValueChange = { instagram = it },
-                label = { Text(text = "Instagram") },
+                label = { Text(text = "Instagram Username") },
                 leadingIcon = {
                     Image(
                         painter = rememberImagePainter(R.drawable.instagram_icon),
@@ -75,7 +75,7 @@ fun UserSocialMediaLinks(
             OutlinedTextField(
                 value = youtube,
                 onValueChange = { youtube = it },
-                label = { Text(text = "Youtube") },
+                label = { Text(text = "Youtube Channel Link") },
                 leadingIcon = {
                     Image(
                         painter = rememberImagePainter(R.drawable.youtube_icon),
@@ -91,7 +91,7 @@ fun UserSocialMediaLinks(
             OutlinedTextField(
                 value = twitter,
                 onValueChange = { twitter = it },
-                label = { Text(text = "Twitter") },
+                label = { Text(text = "Twitter Username") },
                 leadingIcon = {
                     Image(
                         painter = rememberImagePainter(R.drawable.twitter_icon),
@@ -116,7 +116,7 @@ fun UserSocialMediaLinks(
                 imageUri = imageUri,
                 context = context
             ).also {
-                navController.navigate(BottomNavScreen.UploadScreenNav.route)
+                navController.navigate(BottomNavScreen.DashboardNav.route)
             }
         }, modifier = modifier.padding(64.dp)) {
             Text(text = "Save")
