@@ -1,9 +1,13 @@
 package com.geekaid.collegenotes.ui.screens
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -11,20 +15,26 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
+import coil.compose.rememberImagePainter
+import com.geekaid.collegenotes.R
 import com.geekaid.collegenotes.components.CoilImage
 import com.geekaid.collegenotes.components.HeadingValueStyle
+import com.geekaid.collegenotes.components.userProfileComponents.ProfileTopBar
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.navigation.BottomNavScreen
-import com.geekaid.collegenotes.util.userUploadRef
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import timber.log.Timber
+
 
 @ExperimentalCoroutinesApi
 @Composable
@@ -41,6 +51,8 @@ fun UserProfileScreen(
     val scope = rememberCoroutineScope()
     val currentUser = Firebase.auth.currentUser!!
     val firestore = Firebase.firestore
+
+    val context = LocalContext.current
 
     email?.let { it ->
         dashboardViewModel.getUserUploadList(email = it)
@@ -83,29 +95,10 @@ fun UserProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            if (dashboardViewModel.uploaderDetails.value?.profileUri?.isNotEmpty() == true)
-                CoilImage(imageUri = dashboardViewModel.uploaderDetails.value?.profileUri.toString())
-            else
-                Image(
-                    Icons.Filled.Face, contentDescription = "No Profile Image",
-                    modifier = Modifier.size(100.dp)
-                )
 
-            Spacer(modifier = Modifier.padding(8.dp))
+            ProfileTopBar(uploaderDetails = dashboardViewModel.uploaderDetails.value, email = email, navController = navController)
 
-            Text(text = "${dashboardViewModel.uploaderDetails.value?.firstName?.uppercase()} ${dashboardViewModel.uploaderDetails.value?.lastName?.uppercase()}")
 
-            if (email == currentUser.email)
-                Image(
-                    Icons.Filled.Edit,
-                    contentDescription = "Edit Profile",
-                    modifier = Modifier.clickable(
-                        enabled = true,
-                        onClickLabel = "Clickable image",
-                        onClick = {
-                            navController.navigate(BottomNavScreen.UserProfileEditScreenNav.route)
-                        }
-                    ))
         }
 
         Row(

@@ -52,6 +52,12 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
         icon = Icons.Filled.Face
     )
 
+    object UserSocialMediaLinks : BottomNavScreen(
+        route = R.string.UserSocialMediaLinksNav.toString(),
+        title = "Social Media Links",
+        icon = Icons.Filled.Facebook
+    )
+
     object UserProfileEditScreenNav : BottomNavScreen(
         route = R.string.UserProfileEditNav.toString(),
         title = "Profile Edit",

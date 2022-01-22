@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -18,14 +19,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import com.geekaid.collegenotes.components.HeadingValueStyle
 import com.geekaid.collegenotes.components.dropdownList
-import com.geekaid.collegenotes.firebaseDao.screenDao.uploaderDetailDao
 import com.geekaid.collegenotes.model.UploaderDetailModel
-import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.util.Constants
 
 @Composable
@@ -38,6 +37,8 @@ fun UserProfileCreate(navController: NavHostController) {
     var institution by remember { mutableStateOf("") }
     var about by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var saveButtonClicked by remember { mutableStateOf(false) }
+    var saveAlertDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         imageUri = uri
@@ -105,45 +106,77 @@ fun UserProfileCreate(navController: NavHostController) {
                         contentDescription = null,
                         modifier = Modifier.size(100.dp)
                     )
-                }
-                else
+                } else
                     Image(
                         Icons.Filled.Face,
                         contentDescription = null,
                         modifier = Modifier.size(100.dp)
                     )
             }
+
+            if (saveAlertDialog)
+                AlertDialog(
+                    onDismissRequest = { saveAlertDialog = false },
+                    text = {
+                        Text(
+                            text = "First name and last name can't be edited once saved",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    buttons = {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .padding(bottom = 12.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Row {
+                                Button(
+                                    onClick = { saveAlertDialog = false },
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Text(text = "Edit Details")
+                                }
+                                Button(
+                                    onClick = {
+                                        saveButtonClicked = true
+                                        saveAlertDialog = false
+                                    },
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    Text(text = "Proceed")
+                                }
+                            }
+                        }
+                    }
+                )
         }
 
-        HeadingValueStyle(
-            heading = "Note",
-            value = "First name and last name can't be edited once saved",
-            isSpacer = false,
-        )
-
-        Spacer(modifier = Modifier.padding(8.dp))
+        if (saveButtonClicked)
+            UserSocialMediaLinks(
+                uploaderDetailModel = UploaderDetailModel(
+                    firstName = firstName,
+                    lastName = lastName,
+                    uploaderType = uploaderType,
+                    qualification = qualification,
+                    about = about,
+                    institutionAssociatedWith = institution
+                ),
+                imageUri = imageUri,
+                navController = navController
+            )
 
         Button(onClick = {
             if (firstName.isEmpty() || lastName.isEmpty())
                 Toast.makeText(context, "Name Can't Be Empty", Toast.LENGTH_SHORT).show()
             else
-                uploaderDetailDao(
-                    UploaderDetailModel(
-                        firstName = firstName,
-                        lastName = lastName,
-                        uploaderType = uploaderType,
-                        qualification = qualification,
-                        about = about,
-                        institutionAssociatedWith = institution
-                    ),
-                    imageUri = imageUri,
-                    context = context
-                ).also {
-                    navController.navigate(BottomNavScreen.DashboardNav.route)
-                }
+                saveAlertDialog = true
+
         }, modifier = Modifier.padding(bottom = 64.dp)) {
             Text("Save")
         }
 
     }
 }
+

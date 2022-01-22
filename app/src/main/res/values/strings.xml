@@ -17,6 +17,7 @@
     <string name="UserProfileEditNav">UserProfileEditNav</string>
     <string name="UploaderProfileNav">UploaderProfileNav</string>
     <string name="UserProfileCreateNav">UserProfileCreateNav</string>
+    <string name="UserSocialMediaLinksNav">UserSocialMedialLinksNav</string>
 
     //Authentication
     <string name="SignInNav">SignInNav</string>

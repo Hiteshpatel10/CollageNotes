@@ -23,9 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.geekaid.collegenotes.components.CoilImage
 import com.geekaid.collegenotes.components.dropdownList
-import com.geekaid.collegenotes.firebaseDao.screenDao.uploaderDetailDao
 import com.geekaid.collegenotes.model.UploaderDetailModel
-import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 
@@ -41,6 +39,7 @@ fun UserProfileEditScreen(
     var about by remember { mutableStateOf(dashboardViewModel.userDetails.value?.about.toString()) }
     val userDetail by remember { mutableStateOf(dashboardViewModel.userDetails.value) }
     var imageUri by remember { mutableStateOf<Uri?>(Uri.parse(dashboardViewModel.userDetails.value?.profileUri.toString())) }
+    var socialMediaLinks by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         imageUri = uri
@@ -117,25 +116,45 @@ fun UserProfileEditScreen(
             )
         }
 
-        Button(onClick = {
-            uploaderDetailDao(
-                UploaderDetailModel(
+        if (socialMediaLinks)
+            UserSocialMediaLinks(
+                uploaderDetailModel = UploaderDetailModel(
                     firstName = userDetail?.firstName!!,
                     lastName = userDetail?.lastName!!,
                     uploaderType = uploaderType,
                     qualification = qualification,
                     about = about,
                     profileUri = imageUri.toString(),
-                    institutionAssociatedWith = institution
+                    institutionAssociatedWith = institution,
+                    instagram = userDetail?.instagram.toString(),
+                    youtube = userDetail?.youtube.toString(),
+                    twitter = userDetail?.twitter.toString()
                 ),
                 imageUri = imageUri,
-                context = context
-            ).also {
-                navController.navigate(BottomNavScreen.DashboardNav.route)
-            }
+                navController = navController
+            )
+
+        Button(onClick = {
+            socialMediaLinks = true
         }, modifier = Modifier.padding(bottom = 64.dp)) {
-            Text("Save")
+            Text("Next")
         }
 
     }
 }
+//
+//uploaderDetailDao(
+//UploaderDetailModel(
+//firstName = userDetail?.firstName!!,
+//lastName = userDetail?.lastName!!,
+//uploaderType = uploaderType,
+//qualification = qualification,
+//about = about,
+//profileUri = imageUri.toString(),
+//institutionAssociatedWith = institution
+//),
+//imageUri = imageUri,
+//context = context
+//).also {
+//    navController.navigate(BottomNavScreen.DashboardNav.route)
+//}
