@@ -35,8 +35,8 @@ fun UserSocialMediaLinks(
     var instagram by remember { mutableStateOf(uploaderDetailModel.instagram) }
     var youtube by remember { mutableStateOf(uploaderDetailModel.youtube) }
     var twitter by remember { mutableStateOf(uploaderDetailModel.twitter) }
+    var linkedIn by remember { mutableStateOf(uploaderDetailModel.linkedIn) }
     val context = LocalContext.current
-
 
     Column(modifier = Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -103,6 +103,20 @@ fun UserSocialMediaLinks(
                     .padding(vertical = 4.dp)
             )
 
+            OutlinedTextField(
+                value = linkedIn,
+                onValueChange = { linkedIn = it },
+                label = { Text(text = "LinkedIn Profile Link") },
+                leadingIcon = {
+                    Image(
+                        painter = rememberImagePainter(R.drawable.linkedin_icon),
+                        contentDescription = ""
+                    )
+                },
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            )
         }
 
         Button(onClick = {
@@ -110,6 +124,7 @@ fun UserSocialMediaLinks(
             uploaderDetailModel.instagram = instagram
             uploaderDetailModel.youtube = youtube
             uploaderDetailModel.twitter = twitter
+            uploaderDetailModel.linkedIn = linkedIn
 
             uploaderDetailDao(
                 uploaderDetailModel = uploaderDetailModel,

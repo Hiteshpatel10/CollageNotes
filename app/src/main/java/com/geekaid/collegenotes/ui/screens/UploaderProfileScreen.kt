@@ -28,8 +28,8 @@ fun UserProfileScreen(
     var likes by remember { mutableStateOf("0") }
     var downloads by remember { mutableStateOf("0") }
     var notes by remember { mutableStateOf("0") }
-    var isListFetched by remember { mutableStateOf(true) }
-    var isLoading by remember { mutableStateOf(false) }
+    var isListFetched by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
 
     email?.let { it ->

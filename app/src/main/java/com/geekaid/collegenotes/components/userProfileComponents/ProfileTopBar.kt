@@ -124,6 +124,21 @@ fun ProfileTopBar(
                                 contentDescription = "Instagram profile link"
                             )
                         }
+
+                    if (uploaderDetails?.linkedIn?.isNotEmpty() == true)
+                        IconButton(onClick = {
+                            socialMediaLinkOpenIntent(
+                                context = context,
+                                intentUri = uploaderDetails.linkedIn,
+                                packageName = "com.linkedin.android",
+                                webLink = uploaderDetails.linkedIn
+                            )
+                        }) {
+                            Image(
+                                painter = rememberImagePainter(R.drawable.linkedin_icon),
+                                contentDescription = "Instagram profile link"
+                            )
+                        }
                 }
             }
         }
