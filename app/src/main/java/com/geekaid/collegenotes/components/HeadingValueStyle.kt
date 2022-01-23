@@ -15,36 +15,36 @@ import androidx.compose.ui.unit.dp
 import com.geekaid.collegenotes.ui.theme.CollageNotesTheme
 
 @Composable
-fun HeadingValueStyle(heading: String, value: String, isSpacer: Boolean, maxLines: Boolean = false) {
+fun HeadingValueStyle(
+    heading: String,
+    value: String,
+    isSpacer: Boolean = false,
+    maxLines: Boolean = false
+) {
 
-    CollageNotesTheme {
-        Surface {
-            Text(
-                buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.SemiBold,
-                            fontFamily = FontFamily.SansSerif
-                        )
-                    ) {
-                        append("$heading : ")
-                    }
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Normal
-                        )
-                    ) {
-                        append(value)
-                    }
-                },
-                maxLines = if (maxLines) 1 else 5,
-                modifier = Modifier.padding(bottom = 2.dp)
-            )
+    Text(
+        buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily.SansSerif
+                )
+            ) {
+                append("$heading : ")
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Normal
+                )
+            ) {
+                append(value)
+            }
+        },
+        maxLines = if (maxLines) 1 else 5,
+        modifier = Modifier.padding(bottom = 2.dp)
+    )
 
-            if (isSpacer)
-                Spacer(modifier = Modifier.padding(8.dp))
+    if (isSpacer)
+        Spacer(modifier = Modifier.padding(4.dp))
 
-        }
-
-    }
 }
