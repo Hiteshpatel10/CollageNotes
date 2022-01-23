@@ -12,11 +12,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 
 @Composable
 fun CoilImage(imageUri: String?) {
     Box(
-        modifier = Modifier.size(100.dp).clip(CircleShape),
+        modifier = Modifier
+            .size(100.dp)
+            .clip(CircleShape),
     ) {
         if (imageUri.isNullOrEmpty())
             Image(
@@ -25,7 +28,10 @@ fun CoilImage(imageUri: String?) {
                 contentScale = ContentScale.Crop
             )
         else {
-            val painter = rememberImagePainter(data = imageUri)
+            val painter = rememberImagePainter(data = imageUri, builder = {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            })
 
             Image(
                 painter = painter,

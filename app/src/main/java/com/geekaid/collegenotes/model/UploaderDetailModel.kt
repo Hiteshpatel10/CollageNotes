@@ -16,4 +16,5 @@ data class UploaderDetailModel(
     var instagram: String = "",
     var youtube: String = "",
     var twitter: String = "",
+    var linkedIn: String = "",
 )

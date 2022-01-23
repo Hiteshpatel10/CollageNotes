@@ -40,6 +40,9 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var orderBy: MutableState<String> = mutableStateOf("date")
     var favouriteSpace: MutableState<String> = mutableStateOf("fav1")
 
+    //Loading Screen Controller
+    var isDetailsLoading: MutableState<Boolean> = mutableStateOf(value = false)
+
     //function to get the user detail from firebase
     suspend fun getDetails(email: String): UploaderDetailModel? {
         return repository.getUserDetails(email = email)

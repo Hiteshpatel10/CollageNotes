@@ -128,7 +128,8 @@ fun UserProfileEditScreen(
                     institutionAssociatedWith = institution,
                     instagram = userDetail?.instagram.toString(),
                     youtube = userDetail?.youtube.toString(),
-                    twitter = userDetail?.twitter.toString()
+                    twitter = userDetail?.twitter.toString(),
+                    linkedIn = userDetail?.linkedIn.toString()
                 ),
                 imageUri = imageUri,
                 navController = navController

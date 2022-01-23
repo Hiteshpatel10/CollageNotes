@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 fun socialMediaLinkOpenIntent(
@@ -23,6 +24,10 @@ fun socialMediaLinkOpenIntent(
     try {
         ContextCompat.startActivity(context, appIntent, null)
     } catch (e: ActivityNotFoundException) {
-        ContextCompat.startActivity(context, webIntent, null)
+        try {
+            ContextCompat.startActivity(context, webIntent, null)
+        } catch (e: Exception) {
+            Toast.makeText(context, "some error occurred", Toast.LENGTH_SHORT).show()
+        }
     }
 }
