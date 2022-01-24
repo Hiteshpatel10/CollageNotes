@@ -1,5 +1,6 @@
 package com.geekaid.collegenotes.components
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -7,11 +8,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.geekaid.collegenotes.model.UploaderDetailModel
 import com.geekaid.collegenotes.navigation.BottomNavScreen
-import com.geekaid.collegenotes.ui.screens.UserProfileCreate
 import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.util.getTitle
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
@@ -31,6 +32,7 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
     var notesType by remember { mutableStateOf(false) }
     var notesOrderBy by remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val context = LocalContext.current
 
     TopAppBar(
         title = { Text(getTitle(navBackStackEntry?.destination?.route.toString())) },
@@ -86,7 +88,9 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
 
                 DropdownMenuItem(
                     onClick = {
-                        if (dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null)
+                        if (dashboardViewModel.isGetDetailsFetching.value)
+                            Toast.makeText(context, "poor internet connection", Toast.LENGTH_SHORT).show()
+                        else if (dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null)
                             navController.navigate(BottomNavScreen.UserProfileCreateNav.route)
                         else
                             navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${auth.currentUser?.email.toString()}")

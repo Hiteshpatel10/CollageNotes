@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,11 +42,25 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var favouriteSpace: MutableState<String> = mutableStateOf("fav1")
 
     //Loading Screen Controller
-    var isDetailsLoading: MutableState<Boolean> = mutableStateOf(value = false)
+    var isGetDetailsFetching: MutableState<Boolean> = mutableStateOf(value = false)
+    var isGetUploaderDetailsFetching: MutableState<Boolean> = mutableStateOf(value = false)
 
     //function to get the user detail from firebase
-    suspend fun getDetails(email: String): UploaderDetailModel? {
-        return repository.getUserDetails(email = email)
+    suspend fun getDetails(email: String) {
+        isGetDetailsFetching.value = true
+        Timber.i(isGetDetailsFetching.value.toString())
+        userDetails.value = repository.getUserDetails(email = email)
+        Timber.i(userDetails.value.toString())
+        isGetDetailsFetching.value = false
+        Timber.i(isGetDetailsFetching.value.toString())
+    }
+
+    suspend fun getUploaderDetails(email: String){
+        isGetUploaderDetailsFetching.value = true
+        Timber.i(isGetUploaderDetailsFetching.value.toString())
+        uploaderDetails.value = repository.getUserDetails(email = email)
+        Timber.i(uploaderDetails.value.toString())
+        isGetUploaderDetailsFetching.value = false
     }
 
     // functions to get data from firebase

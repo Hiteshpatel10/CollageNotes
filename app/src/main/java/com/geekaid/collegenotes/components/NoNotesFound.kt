@@ -31,7 +31,7 @@ fun NoNotesFound(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(painter = painter, contentDescription ="image" )
+            Image(painter = painter, contentDescription ="image", modifier = Modifier.size(150.dp) )
             Text(text = displayText, style = MaterialTheme.typography.h5)
         }
 

@@ -29,10 +29,17 @@ fun UserProfileScreen(
     var downloads by remember { mutableStateOf("0") }
     var notes by remember { mutableStateOf("0") }
     var isListFetched by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
 
+
     email?.let { it ->
+
+        LaunchedEffect(key1 = Unit) {
+            scope.launch {
+                dashboardViewModel.getUploaderDetails(email = email)
+            }
+        }
+
         dashboardViewModel.getUserUploadList(email = it)
             .collectAsState(initial = null).value?.toObjects(FileUploadModel::class.java)
             ?.let { list ->
@@ -41,14 +48,6 @@ fun UserProfileScreen(
                 dashboardViewModel.userUploadList.value = list
                 isListFetched = true
             }
-
-        SideEffect {
-            scope.launch {
-                dashboardViewModel.uploaderDetails.value =
-                    dashboardViewModel.getDetails(email = email)
-            }
-        }
-        isLoading = false
     }
 
     Column(
@@ -57,8 +56,8 @@ fun UserProfileScreen(
             .fillMaxWidth()
     ) {
 
-        if (isLoading)
-            ProgressBar(isDisplay = isLoading)
+        if (dashboardViewModel.isGetUploaderDetailsFetching.value)
+            ProgressBar(isDisplay = dashboardViewModel.isGetUploaderDetailsFetching.value)
 
         if (isListFetched) {
             likes = "0"
