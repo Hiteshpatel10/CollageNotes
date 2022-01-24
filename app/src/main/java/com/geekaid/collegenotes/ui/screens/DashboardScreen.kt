@@ -3,10 +3,7 @@ package com.geekaid.collegenotes.ui.screens
 import android.app.DownloadManager
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
@@ -49,10 +46,9 @@ fun DashboardScreen(
             }
     }
 
-    SideEffect {
+    LaunchedEffect(key1 = Unit ) {
         scope.launch {
-            dashboardViewModel.userDetails.value =
-                dashboardViewModel.getDetails(email = auth.currentUser?.email.toString())
+            dashboardViewModel.getDetails(email = auth.currentUser?.email.toString())
         }
     }
 

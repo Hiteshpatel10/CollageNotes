@@ -1,5 +1,6 @@
 package com.geekaid.collegenotes.ui.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -49,7 +50,7 @@ fun ForgotPassword(navController: NavHostController, authViewModel: AuthViewMode
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "Email") },
-            leadingIcon = { Image(imageVector = Icons.Filled.Email, contentDescription = "Email")},
+            leadingIcon = { Image(imageVector = Icons.Filled.Email, contentDescription = "Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,8 +63,12 @@ fun ForgotPassword(navController: NavHostController, authViewModel: AuthViewMode
 
         Button(
             onClick = {
-                authViewModel.displayProgressBar.value = true
-                forgotPasswordDao(email, context, navController,  authViewModel = authViewModel)
+                if (email.isEmpty())
+                    Toast.makeText(context,"Email can't be empty",Toast.LENGTH_SHORT).show()
+                else {
+                    authViewModel.displayProgressBar.value = true
+                    forgotPasswordDao(email, context, navController, authViewModel = authViewModel)
+                }
             },
             contentPadding = PaddingValues(14.dp),
             modifier = Modifier

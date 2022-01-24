@@ -13,9 +13,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.geekaid.collegenotes.R
 
 @Composable
 fun CoilImage(imageUri: String?) {
+
     Box(
         modifier = Modifier
             .size(100.dp)
@@ -30,6 +32,7 @@ fun CoilImage(imageUri: String?) {
         else {
             val painter = rememberImagePainter(data = imageUri, builder = {
                 crossfade(true)
+                placeholder(R.drawable.profile_placeholder)
                 transformations(CircleCropTransformation())
             })
 
