@@ -49,11 +49,12 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
                     IconButton(onClick = { notesOrderBy = !notesOrderBy }) {
                         Icon(Icons.Filled.SortByAlpha, contentDescription = "more")
                     }
-            }
 
 
-            IconButton(onClick = { showMenu = !showMenu }) {
-                Icon(Icons.Filled.MoreVert, contentDescription = "more")
+                IconButton(onClick = { showMenu = !showMenu }) {
+                    Icon(Icons.Filled.MoreVert, contentDescription = "more")
+                }
+
             }
 
             DropdownMenu(expanded = notesType, onDismissRequest = { notesType = false }) {
@@ -137,12 +138,15 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
 @Composable
 fun topBarDropdownVisibility(navController: NavController): Boolean {
 
+    val auth = Firebase.auth
+
     var isTopBarDropdownVisible by remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     isTopBarDropdownVisible = when (navBackStackEntry?.destination?.route) {
         BottomNavScreen.DashboardNav.route -> true
         BottomNavScreen.FavouriteScreenNav.route -> true
+        "${BottomNavScreen.UserProfileScreenNav.route}/${auth.currentUser?.email.toString()}" -> false
         else -> false
     }
 

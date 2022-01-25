@@ -28,4 +28,9 @@
     //Share string
     <string name="share_message">Collage Notes \n Branch: %s, \nCourse: %s, \nsubject: %s, \ndownloadLink: %s</string>
 
+    //Admob ad Id's
+    <string name="ad_id_banner">ca-app-pub-3017813434968451/7179902312</string>
+    <string name="ad_id_submit_interstitial">ca-app-pub-3017813434968451/5614305671</string>
+    <string name="ad_id_download_interstitial">ca-app-pub-3017813434968451/9745122372</string>
+
 </resources>

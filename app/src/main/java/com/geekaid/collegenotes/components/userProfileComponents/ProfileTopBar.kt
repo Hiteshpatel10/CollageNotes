@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
@@ -24,6 +24,7 @@ import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.util.socialMediaLinkOpenIntent
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 @Composable
 fun ProfileTopBar(
@@ -73,6 +74,12 @@ fun ProfileTopBar(
 
                     Spacer(modifier = Modifier.padding(4.dp))
 
+                    Timber.i("dfghsajkrf ${uploaderDetails?.verified.toString()}")
+                    if (uploaderDetails?.verified == true)
+                        Image(
+                            painter = painterResource(id = R.drawable.verified_icon),
+                            contentDescription = "verified"
+                        )
 
                 }
 

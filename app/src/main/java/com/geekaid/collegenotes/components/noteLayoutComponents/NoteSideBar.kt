@@ -1,5 +1,6 @@
 package com.geekaid.collegenotes.components.noteLayoutComponents
 
+import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -13,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.geekaid.collegenotes.components.InterstitialAdShow
 import com.geekaid.collegenotes.components.favSpaceAlertBox
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.favouriteDao
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.reportDao
@@ -29,6 +32,8 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun NoteSideBar(note: FileUploadModel, context: Context, dashboardViewModel: DashboardViewModel) {
     val currentUser = Firebase.auth.currentUser!!
+
+
     var showAlertDialog by remember { mutableStateOf(false) }
     dashboardViewModel.notesType
     var bool by remember { mutableStateOf(false) }
@@ -43,7 +48,9 @@ fun NoteSideBar(note: FileUploadModel, context: Context, dashboardViewModel: Das
             .padding(2.dp)
             .layoutId("noteSidebar")
     ) {
-        IconButton(onClick = { shareDao(note = note, context = context) }) {
+        IconButton(onClick = {
+            shareDao(note = note, context = context)
+        }) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
         }
 
@@ -95,7 +102,12 @@ fun NoteSideBar(note: FileUploadModel, context: Context, dashboardViewModel: Das
                     )
                 },
                 buttons = {
-                    Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(bottom = 12.dp).fillMaxWidth()) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(bottom = 12.dp)
+                            .fillMaxWidth()
+                    ) {
                         Row {
                             Button(
                                 onClick = { reportDao(note = note, context = context) },
@@ -112,6 +124,7 @@ fun NoteSideBar(note: FileUploadModel, context: Context, dashboardViewModel: Das
                             }
                         }
                     }
-                }, modifier = Modifier.fillMaxWidth(0.8f))
+                }, modifier = Modifier.fillMaxWidth(0.8f)
+            )
     }
 }

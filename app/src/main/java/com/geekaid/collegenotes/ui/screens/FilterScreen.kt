@@ -1,5 +1,6 @@
 package com.geekaid.collegenotes.ui.screens
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,17 +12,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collegenotes.R
+import com.geekaid.collegenotes.components.BannerAdComposable
+import com.geekaid.collegenotes.components.InterstitialAdShow
 import com.geekaid.collegenotes.components.dropdownList
 import com.geekaid.collegenotes.firebaseDao.screenDao.filterScreenDao
 import com.geekaid.collegenotes.model.FilterModel
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @Composable
 fun FilterScreen(navController: NavHostController, dashboardViewModel: DashboardViewModel) {
 
+    val activity = LocalContext.current as Activity
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -76,6 +82,17 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
                     defaultValue = dashboardViewModel.filter.value.subject,
                     validateInput = validateInput
                 )
+        }
+
+        BannerAdComposable()
+
+        if (validateInput) {
+            Timber.i("dhfjads")
+            InterstitialAdShow.showInterstitialAd(
+                activity = activity,
+                adUnitId = context.getString(R.string.ad_id_submit_interstitial),
+                dashboardViewModel = dashboardViewModel
+            )
         }
 
         Button(

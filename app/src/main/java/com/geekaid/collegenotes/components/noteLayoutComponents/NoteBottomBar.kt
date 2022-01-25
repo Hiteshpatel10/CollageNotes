@@ -1,5 +1,7 @@
 package com.geekaid.collegenotes.components.noteLayoutComponents
 
+import com.geekaid.collegenotes.R
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import androidx.compose.foundation.layout.Row
@@ -17,13 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.geekaid.collegenotes.components.InterstitialAdShow
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.likeDao
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.noteDownloadDao
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.navigation.BottomNavScreen
+import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -32,10 +38,13 @@ fun NoteBottomBar(
     note: FileUploadModel,
     context: Context,
     downloadManager: DownloadManager,
-    navController: NavHostController
+    navController: NavHostController,
+    dashboardViewModel: DashboardViewModel
 ) {
 
     val currentUser = Firebase.auth.currentUser!!
+    val activity = LocalContext.current as Activity
+
     var downloadIconTint by remember { mutableStateOf(false) }
 
     Row(
@@ -63,6 +72,11 @@ fun NoteBottomBar(
         )
 
         IconButton(onClick = {
+            InterstitialAdShow.showInterstitialAd(
+                activity = activity,
+                adUnitId = context.getString(R.string.DownloadedNotesNav),
+                dashboardViewModel = dashboardViewModel
+            )
             noteDownloadDao(note = note, context = context, downloadManager = downloadManager)
             downloadIconTint = true
         }) {

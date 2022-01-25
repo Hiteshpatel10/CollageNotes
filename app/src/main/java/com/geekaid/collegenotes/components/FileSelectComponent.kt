@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.geekaid.collegenotes.util.Constants
+import com.google.android.gms.ads.AdSize
 
 @Composable
 fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri?>) {
@@ -36,6 +37,8 @@ fun FileSelectComponent(launcher: ManagedActivityResultLauncher<String, Uri?>) {
             }
 
         }
+
+        BannerAdComposable(bannerAdSize = AdSize.BANNER)
 
         Button(
             onClick = { launcher.launch("*/*") },
