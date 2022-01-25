@@ -56,7 +56,7 @@ fun NoteLayout(
                 ConstraintLayout(constraintSet = constraintSet) {
                     NoteDetails(note = note, isExpanded = isExpanded)
                     NoteSideBar(note = note, context = context, dashboardViewModel = dashboardViewModel)
-                    NoteBottomBar(note = note, context = context, downloadManager = downloadManager, navController = navController)
+                    NoteBottomBar(note = note, context = context, downloadManager = downloadManager, navController = navController, dashboardViewModel = dashboardViewModel)
                 }
             }
         }

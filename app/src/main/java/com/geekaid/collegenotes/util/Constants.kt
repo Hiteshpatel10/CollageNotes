@@ -9,7 +9,8 @@ object Constants {
         "Select the file you want to upload",
         "Upload the file with appropriate name",
         "Select the course, branch and subject of notes uploaded",
-        "provide a appropriate description for the file uploaded",
+        "Provide a appropriate description for the file uploaded",
+        "you can only upload notes in .pdf format",
         "Do not upload inappropriate content",
     )
 

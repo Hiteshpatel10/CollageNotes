@@ -129,7 +129,8 @@ fun UserProfileEditScreen(
                     instagram = userDetail?.instagram.toString(),
                     youtube = userDetail?.youtube.toString(),
                     twitter = userDetail?.twitter.toString(),
-                    linkedIn = userDetail?.linkedIn.toString()
+                    linkedIn = userDetail?.linkedIn.toString(),
+                    verified = userDetail?.verified!!
                 ),
                 imageUri = imageUri,
                 navController = navController
@@ -143,19 +144,3 @@ fun UserProfileEditScreen(
 
     }
 }
-//
-//uploaderDetailDao(
-//UploaderDetailModel(
-//firstName = userDetail?.firstName!!,
-//lastName = userDetail?.lastName!!,
-//uploaderType = uploaderType,
-//qualification = qualification,
-//about = about,
-//profileUri = imageUri.toString(),
-//institutionAssociatedWith = institution
-//),
-//imageUri = imageUri,
-//context = context
-//).also {
-//    navController.navigate(BottomNavScreen.DashboardNav.route)
-//}

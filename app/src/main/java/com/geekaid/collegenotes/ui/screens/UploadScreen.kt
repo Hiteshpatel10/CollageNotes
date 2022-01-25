@@ -34,11 +34,6 @@ fun UploadScreen(navController: NavHostController, dashboardViewModel: Dashboard
     val scope = rememberCoroutineScope()
     val auth = Firebase.auth
 
-//    LaunchedEffect(key1 = true) {
-//        scope.launch {
-//            dashboardViewModel.getDetails(email = auth.currentUser?.email.toString())
-//        }
-//    }
 
     when {
 

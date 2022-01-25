@@ -8,6 +8,7 @@ import com.geekaid.collegenotes.model.FilterModel
 import com.geekaid.collegenotes.model.ListFetch
 import com.geekaid.collegenotes.model.UploaderDetailModel
 import com.geekaid.collegenotes.repo.Repository
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -45,6 +46,10 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var isGetDetailsFetching: MutableState<Boolean> = mutableStateOf(value = false)
     var isGetUploaderDetailsFetching: MutableState<Boolean> = mutableStateOf(value = false)
 
+    //add
+    var mInterstitialAdSubmit: InterstitialAd? = null
+    var mInterstitialAdDownload: InterstitialAd? = null
+
     //function to get the user detail from firebase
     suspend fun getDetails(email: String) {
         isGetDetailsFetching.value = true
@@ -55,7 +60,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
         Timber.i(isGetDetailsFetching.value.toString())
     }
 
-    suspend fun getUploaderDetails(email: String){
+    suspend fun getUploaderDetails(email: String) {
         isGetUploaderDetailsFetching.value = true
         Timber.i(isGetUploaderDetailsFetching.value.toString())
         uploaderDetails.value = repository.getUserDetails(email = email)
