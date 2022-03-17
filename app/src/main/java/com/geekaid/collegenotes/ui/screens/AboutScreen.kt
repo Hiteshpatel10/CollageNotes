@@ -18,6 +18,8 @@ import com.geekaid.collegenotes.util.socialMediaLinkOpenIntent
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.TextField
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 
@@ -73,6 +75,7 @@ fun AboutScreen() {
                         Timber.i(e.message)
                     }
                 })
+
             }
         }
     }

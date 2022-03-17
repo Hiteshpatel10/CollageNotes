@@ -16,8 +16,10 @@ import com.geekaid.collegenotes.model.ListFetch
 import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalPermissionsApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi

@@ -70,6 +70,7 @@ fun dropdownList(
                     }
                 }
         )
+
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -85,6 +86,7 @@ fun dropdownList(
                 }
             }
         }
+
         if (isError) {
             Text(
                 text = "$label can't be empty",

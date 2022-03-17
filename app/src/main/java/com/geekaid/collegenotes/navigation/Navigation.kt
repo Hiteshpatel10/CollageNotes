@@ -17,8 +17,10 @@ import com.geekaid.collegenotes.ui.auth.SignUpScreen
 import com.geekaid.collegenotes.ui.screens.*
 import com.geekaid.collegenotes.viewmodel.AuthViewModel
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalPermissionsApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi

@@ -15,11 +15,13 @@ import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.model.FilterModel
 import com.geekaid.collegenotes.navigation.Screens
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@ExperimentalPermissionsApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi

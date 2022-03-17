@@ -2,6 +2,7 @@ package com.geekaid.collegenotes.components
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import timber.log.Timber
 @Composable
 fun BannerAdComposable(bannerAdSize: AdSize = AdSize.LARGE_BANNER) {
 
+    Log.i("admobtest","called")
     AndroidView(
         modifier = Modifier
             .fillMaxWidth()
@@ -27,11 +29,12 @@ fun BannerAdComposable(bannerAdSize: AdSize = AdSize.LARGE_BANNER) {
         factory = { context ->
             AdView(context).apply {
                 adSize = bannerAdSize
-                adUnitId = context.getString(R.string.ad_id_banner)
+                adUnitId = "ca-app-pub-3017813434968451/7179902312"
                 loadAd(AdRequest.Builder().build())
             }
         }
     )
+    Log.i("admobtest","called again")
 
 }
 
@@ -44,11 +47,10 @@ object InterstitialAdShow {
         adUnitId: String
     ) {
 
-        if (adUnitId == activity.getString(R.string.ad_id_submit_interstitial)) {
+        if (adUnitId == "ca-app-pub-3017813434968451/7179902312") {
             if (dashboardViewModel.mInterstitialAdSubmit != null)
                 dashboardViewModel.mInterstitialAdSubmit?.show(activity)
 
-            Timber.i("submit")
             loadInterstitialSubmit(
                 context = activity,
                 dashboardViewModel = dashboardViewModel,
@@ -58,7 +60,6 @@ object InterstitialAdShow {
             if (dashboardViewModel.mInterstitialAdDownload != null)
                 dashboardViewModel.mInterstitialAdDownload?.show(activity)
 
-            Timber.i("download")
             loadInterstitialDownload(
                 context = activity,
                 dashboardViewModel = dashboardViewModel,

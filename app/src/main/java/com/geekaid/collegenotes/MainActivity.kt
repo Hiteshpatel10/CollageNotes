@@ -14,20 +14,22 @@ import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.geekaid.collegenotes.components.*
+import com.geekaid.collegenotes.components.BottomNav
+import com.geekaid.collegenotes.components.TopBarNav
+import com.geekaid.collegenotes.components.loadInterstitialDownload
+import com.geekaid.collegenotes.components.loadInterstitialSubmit
 import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.navigation.Navigation
 import com.geekaid.collegenotes.navigation.Screens
 import com.geekaid.collegenotes.ui.theme.CollageNotesTheme
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.lang.RuntimeException
-import java.text.DateFormat
-import java.util.*
+import timber.log.Timber
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
@@ -36,6 +38,7 @@ import java.util.*
 class MainActivity : ComponentActivity() {
     val auth = Firebase.auth
 
+    @ExperimentalPermissionsApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
@@ -45,13 +48,13 @@ class MainActivity : ComponentActivity() {
 
         loadInterstitialDownload(
             context = this,
-            adUnitId = getString(R.string.ad_id_download_interstitial),
+            adUnitId = "ca-app-pub-3017813434968451/9745122372",
             dashboardViewModel = dashboardViewModel
         )
 
         loadInterstitialSubmit(
             context = this,
-            adUnitId = getString(R.string.ad_id_submit_interstitial),
+            adUnitId = "ca-app-pub-3017813434968451/5614305671",
             dashboardViewModel = dashboardViewModel
         )
 

@@ -87,10 +87,9 @@ fun FilterScreen(navController: NavHostController, dashboardViewModel: Dashboard
         BannerAdComposable()
 
         if (validateInput) {
-            Timber.i("dhfjads")
             InterstitialAdShow.showInterstitialAd(
                 activity = activity,
-                adUnitId = context.getString(R.string.ad_id_submit_interstitial),
+                adUnitId = "ca-app-pub-3017813434968451/5614305671",
                 dashboardViewModel = dashboardViewModel
             )
         }

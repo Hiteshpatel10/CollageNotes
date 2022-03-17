@@ -16,7 +16,9 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavHostController
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
+@ExperimentalPermissionsApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
