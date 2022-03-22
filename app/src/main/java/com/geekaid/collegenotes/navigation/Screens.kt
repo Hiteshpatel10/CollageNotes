@@ -68,11 +68,12 @@ sealed class BottomNavScreen(val route: String, val title: String, val icon: Ima
         route = R.string.UserProfileCreateNav.toString(),
         title = "Profile Create",
         icon = Icons.Filled.Face
+    )
 
-
-    )object AboutNav : BottomNavScreen(
+    object AboutNav : BottomNavScreen(
         route = R.string.AboutNav.toString(),
         title = "About Us",
         icon = Icons.Filled.AccountCircle
     )
+
 }

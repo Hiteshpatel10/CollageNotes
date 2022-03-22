@@ -11,6 +11,7 @@
     <string name="UploadNav">UploadNav</string>
     <string name="FavouriteNav">FavouriteNav</string>
     <string name="AboutNav">AboutNav</string>
+    <string name="PdfViewerNav">PdfViewerNav</string>
 
     //Profile
     <string name="UserProfileNav">UserProfileNav</string>

@@ -1,10 +1,12 @@
 package com.geekaid.collegenotes.ui.screens
 
-import android.app.Activity
 import android.app.DownloadManager
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
@@ -34,7 +36,6 @@ fun DashboardScreen(
 
     val auth = Firebase.auth
     val context = LocalContext.current
-    val activity = LocalContext.current as Activity
     val scope = rememberCoroutineScope()
 
     dashboardViewModel.getFilter()

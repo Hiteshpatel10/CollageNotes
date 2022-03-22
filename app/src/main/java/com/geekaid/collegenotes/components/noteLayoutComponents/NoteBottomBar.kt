@@ -4,11 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
-import android.net.Uri
-import android.os.Environment
+import android.content.Intent
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
@@ -27,7 +25,9 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
+import com.geekaid.collegenotes.PdfActivity
 import com.geekaid.collegenotes.components.InterstitialAdShow
 import com.geekaid.collegenotes.components.permissionsComposable.isPermanentlyDenied
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.likeDao
@@ -38,14 +38,10 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import timber.log.Timber
 import java.io.File
-import android.content.ClipData
-
-import android.content.Intent
-import com.geekaid.collegenotes.navigation.BottomNavScreen
 
 
+@ExperimentalFoundationApi
 @ExperimentalPermissionsApi
 @Composable
 fun NoteBottomBar(
@@ -56,11 +52,10 @@ fun NoteBottomBar(
     dashboardViewModel: DashboardViewModel
 ) {
 
-    val context = LocalContext.current
     val currentUser = Firebase.auth.currentUser!!
     val activity = LocalContext.current as Activity
     val permissionState =
-        rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
     var permissionStateSnackBar by remember { mutableStateOf(false) }
 
     var downloadIconTint by remember { mutableStateOf(false) }
@@ -116,7 +111,21 @@ fun NoteBottomBar(
         ClickableText(
             text = AnnotatedString("BY : ${note.fileInfo.uploadedBy.uppercase()}"),
             onClick = {
-                navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
+
+                val fileName = "${context.getExternalFilesDir(null)}/${note.fileInfo.fileName}.pdf"
+
+//                navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
+                if (File(fileName).exists()) {
+                    startActivity(
+                        context,
+                        Intent(context, PdfActivity::class.java).putExtra(
+                            "fileName",
+                            note.fileInfo.fileName
+                        ), null
+                    )
+                } else
+                    Toast.makeText(context, "Note Not Downloaded", Toast.LENGTH_LONG).show()
+
             },
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 4.dp)

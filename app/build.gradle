@@ -109,6 +109,10 @@ dependencies {
 
     //Permission Handling
     implementation "com.google.accompanist:accompanist-permissions:0.21.1-beta"
+
+
+    implementation("io.github.petretiandrea:android-pdf-viewer:4.0.0")
+
 }
 
 kapt {

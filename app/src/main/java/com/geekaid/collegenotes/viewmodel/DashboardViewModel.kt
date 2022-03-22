@@ -1,5 +1,6 @@
 package com.geekaid.collegenotes.viewmodel
 
+import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,7 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var uploaderDetails: MutableState<UploaderDetailModel?> = mutableStateOf(UploaderDetailModel())
     var userUploadList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favDocRefList: MutableState<ListFetch> = mutableStateOf(ListFetch())
+    var pdfUri: MutableState<String> = mutableStateOf("")
 
     //To store lists fetch in filterScreen.kt
     var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
