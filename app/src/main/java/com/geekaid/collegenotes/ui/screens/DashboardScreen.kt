@@ -1,9 +1,8 @@
 package com.geekaid.collegenotes.ui.screens
 
-import android.app.Activity
 import android.app.DownloadManager
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -13,7 +12,9 @@ import com.geekaid.collegenotes.components.NoNotesFound
 import com.geekaid.collegenotes.components.noteLayoutComponents.NoteLayout
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.model.FilterModel
+import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.navigation.Screens
+import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.firebase.auth.ktx.auth
@@ -34,8 +35,8 @@ fun DashboardScreen(
 
     val auth = Firebase.auth
     val context = LocalContext.current
-    val activity = LocalContext.current as Activity
     val scope = rememberCoroutineScope()
+    var favTabIndex by remember { mutableStateOf(Constants.filterBy.indexOf(dashboardViewModel.notesType.value)) }
 
     dashboardViewModel.getFilter()
         .collectAsState(initial = null).value?.toObject(FilterModel::class.java)?.let { filter ->
@@ -50,47 +51,66 @@ fun DashboardScreen(
             }
     }
 
-    LaunchedEffect(key1 = Unit ) {
+    LaunchedEffect(key1 = Unit) {
         scope.launch {
             dashboardViewModel.getDetails(email = auth.currentUser?.email.toString())
         }
     }
 
 
-    when {
-        auth.currentUser == null -> navController.navigate(Screens.SplashNav.route)
+    Scaffold(
+        topBar = {
+            TabRow(selectedTabIndex = favTabIndex) {
+                Constants.filterBy.forEachIndexed { index, string ->
+                    Tab(
+                        selected = index == favTabIndex,
+                        onClick = {
+                            dashboardViewModel.notesType.value = string
+                            favTabIndex = Constants.filterBy.indexOf(string)
+                        },
+                        text = { Text(text = string) },
+                        selectedContentColor = MaterialTheme.colors.onPrimary,
+                        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
+                    )
+                }
+            }
+        }) {
 
-        dashboardViewModel.filter.value.course.isEmpty() -> {
-            NoNotesFound(
-                buttonText = "Add Filter",
-                displayText = "\n No Filter Found \nPlease Add filter",
-                painter = painterResource(id = R.drawable.error),
-                navController = navController,
-                buttonDisplay = true
-            )
+        when {
+            auth.currentUser == null -> navController.navigate(Screens.SplashNav.route)
+
+            dashboardViewModel.filter.value.course.isEmpty() -> {
+                NoNotesFound(
+                    buttonText = "Add Filter",
+                    displayText = "\n No Filter Found \nPlease Add filter",
+                    painter = painterResource(id = R.drawable.error),
+                    navController = navController,
+                    buttonDisplay = true
+                )
+            }
+
+            dashboardViewModel.notesList.value.isEmpty() -> {
+                NoNotesFound(
+                    buttonText = "Change Filter",
+                    displayText = "No ${dashboardViewModel.notesType.value} found",
+                    painter = painterResource(id = R.drawable.empty),
+                    navController = navController,
+                    buttonDisplay = true
+                )
+            }
+
+            else -> {
+                NoteLayout(
+                    notes = dashboardViewModel.notesList.value,
+                    context = context,
+                    downloadManager = downloadManager,
+                    dashboardViewModel = dashboardViewModel,
+                    navController = navController
+                )
+
+            }
         }
 
-        dashboardViewModel.notesList.value.isEmpty() -> {
-            NoNotesFound(
-                buttonText = "Change Filter",
-                displayText = "No ${dashboardViewModel.notesType.value} found",
-                painter = painterResource(id = R.drawable.empty),
-                navController = navController,
-                buttonDisplay = true
-            )
-        }
-
-        else -> {
-            NoteLayout(
-                notes = dashboardViewModel.notesList.value,
-                context = context,
-                downloadManager = downloadManager,
-                dashboardViewModel = dashboardViewModel,
-                navController = navController
-            )
-
-        }
     }
-
 }
 

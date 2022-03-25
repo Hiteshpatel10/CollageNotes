@@ -43,20 +43,22 @@ object Constants {
         "fav3"
     )
 
-    val filterBy :List<StringValuePair> = listOf(
-        StringValuePair("Notes","Notes"),
-        StringValuePair("Papers","Papers"),
-        StringValuePair("Assignments","Assignments"),
-        StringValuePair("Lab Record","Lab Record"),
+    val filterBy = listOf(
+        "Notes", "Papers", "Assignments", "Lab Record"
+//        StringValuePair("Notes","Notes"),
+//        StringValuePair("Papers","Papers"),
+//        StringValuePair("Assignments","Assignments"),
+//        StringValuePair("Lab Record","Lab Record"),
     )
 
-    val orderBy :List<StringValuePair> = listOf(
-        StringValuePair("Date","date"),
-        StringValuePair("Likes","likes"),
-        StringValuePair("Downloaded","downloadedTimes"),
+
+    val orderBy: List<StringValuePair> = listOf(
+        StringValuePair("Date", "date"),
+        StringValuePair("Likes", "likes"),
+        StringValuePair("Downloaded", "downloadedTimes"),
     )
 
-  val orderByBy = listOf(
+    val orderByBy = listOf(
         "date",
         "papers",
         "assignments"
@@ -68,7 +70,7 @@ object Constants {
 fun getTitle(route: String): String {
 
     var routeTrim = route
-    if(route.lastIndexOf('/') > -1)
+    if (route.lastIndexOf('/') > -1)
         routeTrim = route.substring(0 until route.lastIndexOf('/'))
 
     Constants.allScreenList.forEach { screen ->

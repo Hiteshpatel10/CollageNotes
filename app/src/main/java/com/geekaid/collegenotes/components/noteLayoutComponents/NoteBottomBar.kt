@@ -4,11 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
-import android.net.Uri
-import android.os.Environment
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
@@ -33,19 +30,15 @@ import com.geekaid.collegenotes.components.permissionsComposable.isPermanentlyDe
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.likeDao
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.noteDownloadDao
 import com.geekaid.collegenotes.model.FileUploadModel
+import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import timber.log.Timber
-import java.io.File
-import android.content.ClipData
-
-import android.content.Intent
-import com.geekaid.collegenotes.navigation.BottomNavScreen
 
 
+@ExperimentalFoundationApi
 @ExperimentalPermissionsApi
 @Composable
 fun NoteBottomBar(
@@ -56,11 +49,10 @@ fun NoteBottomBar(
     dashboardViewModel: DashboardViewModel
 ) {
 
-    val context = LocalContext.current
     val currentUser = Firebase.auth.currentUser!!
     val activity = LocalContext.current as Activity
     val permissionState =
-        rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        rememberPermissionState(permission = Manifest.permission.READ_EXTERNAL_STORAGE)
     var permissionStateSnackBar by remember { mutableStateOf(false) }
 
     var downloadIconTint by remember { mutableStateOf(false) }

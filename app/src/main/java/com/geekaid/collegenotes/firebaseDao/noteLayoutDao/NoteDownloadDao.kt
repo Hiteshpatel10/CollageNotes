@@ -3,7 +3,6 @@ package com.geekaid.collegenotes.firebaseDao.noteLayoutDao
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.widget.Toast
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.util.*
@@ -14,7 +13,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import timber.log.Timber
 import java.io.File
 
 fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: DownloadManager) {
@@ -35,7 +33,7 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
         userUploadRef(note = note, firestore = firestore, email = note.fileInfo.uploaderEmail)
     val favNoteRef = noteFavRef(
         note = note,
-        favSpaceName = if (favSpace.isNotEmpty()) favSpace else "fav1",
+        favSpaceName = favSpace.ifEmpty { "fav1" },
         firestore = firestore,
         currentUser = currentUser
     )
@@ -43,13 +41,8 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
     storageRef.downloadUrl
         .addOnSuccessListener { uri ->
 
-            val index: Int = (note.fileInfo.fileMime.lastIndexOf('/')).plus(1)
-            val path =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            val fileName = "Collage Notes/${note.fileInfo.fileName}.${
-                note.fileInfo.fileMime.substring(index)
-            }"
-            val file = "$path/$fileName"
+            val fileName = "${note.fileInfo.fileName}.pdf"
+            val file = "${context.getExternalFilesDir(null)}/$fileName"
 
             if (!File(file).exists()) {
                 Toast.makeText(context, "Download started", Toast.LENGTH_LONG).show()
@@ -60,7 +53,8 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
                     favNoteRef,
                     userUploadRef,
                     fileName,
-                    downloadManager
+                    downloadManager,
+                    context
                 )
             } else {
                 Toast.makeText(context, "File already exists", Toast.LENGTH_SHORT).show()
@@ -75,10 +69,20 @@ fun downloadFile(
     favNoteRef: DocumentReference,
     userUploadRef: DocumentReference,
     fileName: String,
-    downloadManager: DownloadManager
+    downloadManager: DownloadManager,
+    context: Context
 ) {
     val db = FirebaseFirestore.getInstance()
     val currentUser = Firebase.auth.currentUser!!
+
+    val request = DownloadManager.Request(uri)
+        .setTitle(note.fileInfo.fileName)
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        .setAllowedOverMetered(true)
+        .setDestinationInExternalFilesDir(context, null, fileName)
+
+    downloadManager.enqueue(request)
 
     db.runBatch { batch ->
         batch.update(noteRef, "downloadedTimes", FieldValue.increment(1))
@@ -86,17 +90,7 @@ fun downloadFile(
         if (note.favourite.contains(currentUser.email.toString()))
             batch.update(favNoteRef, "downloadedTimes", FieldValue.increment(1))
     }.addOnFailureListener {
-        Timber.i(it.message)
+        Toast.makeText(context, it.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
-    val request = DownloadManager.Request(uri)
-        .setTitle(note.fileInfo.fileName)
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        .setAllowedOverMetered(true)
-        .setDestinationInExternalPublicDir(
-            Environment.DIRECTORY_DOCUMENTS,
-            fileName
-        )
-    downloadManager.enqueue(request)
 }

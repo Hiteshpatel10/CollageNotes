@@ -63,7 +63,7 @@ fun registerUser(
                 Constants.favSpaces.forEach { favSpaceName ->
                     Constants.filterBy.forEach { filterBy ->
                         firestore.collection("users").document(auth.currentUser?.email.toString())
-                            .collection(favSpaceName).document(filterBy.value).set(ListFetch())
+                            .collection(favSpaceName).document(filterBy).set(ListFetch())
                     }
                 }
 
