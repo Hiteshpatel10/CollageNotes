@@ -1,23 +1,22 @@
 package com.geekaid.collegenotes.components.noteLayoutComponents
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.Report
-import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.geekaid.collegenotes.components.InterstitialAdShow
+import androidx.core.content.ContextCompat.startActivity
+import com.geekaid.collegenotes.PdfActivity
 import com.geekaid.collegenotes.components.favSpaceAlertBox
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.favouriteDao
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.reportDao
@@ -27,6 +26,7 @@ import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.io.File
 
 @ExperimentalFoundationApi
 @Composable
@@ -37,21 +37,46 @@ fun NoteSideBar(note: FileUploadModel, context: Context, dashboardViewModel: Das
     var showAlertDialog by remember { mutableStateOf(false) }
     dashboardViewModel.notesType
     var bool by remember { mutableStateOf(false) }
+    var moreBool by remember { mutableStateOf(false) }
     var reportAlertDialog by remember { mutableStateOf(false) }
     bool =
         note.favourite.contains("${currentUser.email}/fav1") || note.favourite.contains("${currentUser.email}/fav2") || note.favourite.contains(
             "${currentUser.email}/fav3"
         )
+    val fileName = "${context.getExternalFilesDir(null)}/${note.fileInfo.fileName}.pdf"
 
     Column(
         modifier = Modifier
             .padding(2.dp)
             .layoutId("noteSidebar")
     ) {
-        IconButton(onClick = {
-            shareDao(note = note, context = context)
-        }) {
-            Icon(Icons.Filled.Share, contentDescription = "Share")
+        IconButton(onClick = { moreBool = true }) {
+            Icon(Icons.Filled.MoreVert, contentDescription = "Share")
+            if (moreBool)
+                DropdownMenu(expanded = moreBool, onDismissRequest = { moreBool = false }) {
+
+                    DropdownMenuItem(onClick = {
+                        shareDao(note = note, context = context)
+                        moreBool = false
+                    }) {
+                        Row {
+                            Icon(Icons.Filled.Share, contentDescription = "Share")
+                            Spacer(modifier = Modifier.padding(4.dp))
+                            Text(text = "Share")
+                        }
+                    }
+
+                    DropdownMenuItem(onClick = {
+                        reportAlertDialog = true
+                        moreBool = false
+                    }) {
+                        Row {
+                            Icon(Icons.Filled.ReportProblem, contentDescription = "Share")
+                            Spacer(modifier = Modifier.padding(4.dp))
+                            Text(text = "Report")
+                        }
+                    }
+                }
         }
 
         IconButton(
@@ -76,11 +101,19 @@ fun NoteSideBar(note: FileUploadModel, context: Context, dashboardViewModel: Das
         }
 
         IconButton(onClick = {
-            reportAlertDialog = true
+            if (File(fileName).exists())
+                startActivity(
+                    context,
+                    Intent(context, PdfActivity::class.java).putExtra(
+                        "fileName",
+                        note.fileInfo.fileName
+                    ), null
+                )
+            else
+                Toast.makeText(context, "Download notes to open", Toast.LENGTH_SHORT).show()
         }) {
             Icon(
-                Icons.Filled.Report,
-                tint = Color.Red,
+                Icons.Filled.Launch,
                 contentDescription = "Report",
             )
         }

@@ -22,7 +22,6 @@ fun NoteDetails(note: FileUploadModel, isExpanded: Boolean) {
     ) {
 
         if (isExpanded) {
-            HeadingValueStyle(heading = "Format", value = note.fileInfo.fileMime)
             HeadingValueStyle(heading = "Course", value = note.course)
             HeadingValueStyle(heading = "Branch", value = note.branch)
             HeadingValueStyle(heading = "Subject", value = note.subject)

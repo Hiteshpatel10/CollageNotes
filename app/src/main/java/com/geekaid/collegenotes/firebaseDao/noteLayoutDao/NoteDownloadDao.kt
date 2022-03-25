@@ -3,13 +3,13 @@ package com.geekaid.collegenotes.firebaseDao.noteLayoutDao
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.widget.Toast
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.util.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -33,7 +33,7 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
         userUploadRef(note = note, firestore = firestore, email = note.fileInfo.uploaderEmail)
     val favNoteRef = noteFavRef(
         note = note,
-        favSpaceName = if (favSpace.isNotEmpty()) favSpace else "fav1",
+        favSpaceName = favSpace.ifEmpty { "fav1" },
         firestore = firestore,
         currentUser = currentUser
     )
@@ -84,13 +84,13 @@ fun downloadFile(
 
     downloadManager.enqueue(request)
 
-//    db.runBatch { batch ->
-//        batch.update(noteRef, "downloadedTimes", FieldValue.increment(1))
-//        batch.update(userUploadRef, "downloadedTimes", FieldValue.increment(1))
-//        if (note.favourite.contains(currentUser.email.toString()))
-//            batch.update(favNoteRef, "downloadedTimes", FieldValue.increment(1))
-//    }.addOnFailureListener {
-//        Timber.i(it.message)
-//    }
+    db.runBatch { batch ->
+        batch.update(noteRef, "downloadedTimes", FieldValue.increment(1))
+        batch.update(userUploadRef, "downloadedTimes", FieldValue.increment(1))
+        if (note.favourite.contains(currentUser.email.toString()))
+            batch.update(favNoteRef, "downloadedTimes", FieldValue.increment(1))
+    }.addOnFailureListener {
+        Toast.makeText(context, it.localizedMessage, Toast.LENGTH_SHORT).show()
+    }
 
 }

@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Row
@@ -25,20 +24,18 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
-import com.geekaid.collegenotes.PdfActivity
 import com.geekaid.collegenotes.components.InterstitialAdShow
 import com.geekaid.collegenotes.components.permissionsComposable.isPermanentlyDenied
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.likeDao
 import com.geekaid.collegenotes.firebaseDao.noteLayoutDao.noteDownloadDao
 import com.geekaid.collegenotes.model.FileUploadModel
+import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.io.File
 
 
 @ExperimentalFoundationApi
@@ -111,21 +108,7 @@ fun NoteBottomBar(
         ClickableText(
             text = AnnotatedString("BY : ${note.fileInfo.uploadedBy.uppercase()}"),
             onClick = {
-
-                val fileName = "${context.getExternalFilesDir(null)}/${note.fileInfo.fileName}.pdf"
-
-//                navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
-                if (File(fileName).exists()) {
-                    startActivity(
-                        context,
-                        Intent(context, PdfActivity::class.java).putExtra(
-                            "fileName",
-                            note.fileInfo.fileName
-                        ), null
-                    )
-                } else
-                    Toast.makeText(context, "Note Not Downloaded", Toast.LENGTH_LONG).show()
-
+                navController.navigate("${BottomNavScreen.UserProfileScreenNav.route}/${note.fileInfo.uploaderEmail}")
             },
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 4.dp)

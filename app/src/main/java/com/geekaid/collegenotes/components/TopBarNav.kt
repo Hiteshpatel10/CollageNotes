@@ -61,10 +61,10 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
 
                 Constants.filterBy.forEach { filterBy ->
                     DropdownMenuItem(onClick = {
-                        dashboardViewModel.notesType.value = filterBy.value
+                        dashboardViewModel.notesType.value = filterBy
                         notesType = false
                     }) {
-                        Text(text = filterBy.string)
+                        Text(text = filterBy)
                     }
                 }
             }
