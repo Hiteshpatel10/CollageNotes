@@ -1,10 +1,7 @@
 package com.geekaid.collegenotes.firebaseDao.noteLayoutDao
 
 import com.geekaid.collegenotes.model.FileUploadModel
-import com.geekaid.collegenotes.util.Constants
-import com.geekaid.collegenotes.util.noteFavRef
-import com.geekaid.collegenotes.util.noteRef
-import com.geekaid.collegenotes.util.userUploadRef
+import com.geekaid.collegenotes.util.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -23,22 +20,19 @@ fun likeDao(note: FileUploadModel) {
     val noteRef = noteRef(note = note, firestore = firestore)
     val userUploadRef =
         userUploadRef(note = note, firestore = firestore, email = note.fileInfo.uploaderEmail)
-    val favNoteRef = noteFavRef(
-        note = note,
-        firestore = firestore,
-        favSpaceName = if (favSpaceName.isNotEmpty()) favSpaceName else "fav1",
-        currentUser = currentUser
-    )
+    val userDetailRef = userDetailRef(firestore = firestore, currentUser = note.fileInfo.uploaderEmail)
 
     if (note.likes.contains(currentUser.email)) {
         firestore.runBatch { batch ->
             batch.update(noteRef, "likes", FieldValue.arrayRemove(currentUser.email))
             batch.update(userUploadRef, "likes", FieldValue.arrayRemove(currentUser.email))
+            batch.update(userDetailRef, "likes", FieldValue.increment(-1))
         }
     } else {
         firestore.runBatch { batch ->
             batch.update(noteRef, "likes", FieldValue.arrayUnion(currentUser.email))
             batch.update(userUploadRef, "likes", FieldValue.arrayUnion(currentUser.email))
+            batch.update(userDetailRef, "likes", FieldValue.increment(1))
         }
     }
 }

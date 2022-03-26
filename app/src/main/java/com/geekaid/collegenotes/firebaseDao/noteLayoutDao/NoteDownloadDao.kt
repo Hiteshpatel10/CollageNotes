@@ -37,6 +37,7 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
         firestore = firestore,
         currentUser = currentUser
     )
+    val userDetailRef = userDetailRef(firestore = firestore, currentUser = note.fileInfo.uploaderEmail)
 
     storageRef.downloadUrl
         .addOnSuccessListener { uri ->
@@ -47,14 +48,15 @@ fun noteDownloadDao(note: FileUploadModel, context: Context, downloadManager: Do
             if (!File(file).exists()) {
                 Toast.makeText(context, "Download started", Toast.LENGTH_LONG).show()
                 downloadFile(
-                    uri,
-                    note,
-                    noteRef,
-                    favNoteRef,
-                    userUploadRef,
-                    fileName,
-                    downloadManager,
-                    context
+                    uri = uri,
+                    note = note,
+                    noteRef = noteRef,
+                    favNoteRef = favNoteRef,
+                    userUploadRef = userUploadRef,
+                    userDetailRef = userDetailRef,
+                    fileName = fileName,
+                    downloadManager = downloadManager,
+                    context = context
                 )
             } else {
                 Toast.makeText(context, "File already exists", Toast.LENGTH_SHORT).show()
@@ -68,6 +70,7 @@ fun downloadFile(
     noteRef: DocumentReference,
     favNoteRef: DocumentReference,
     userUploadRef: DocumentReference,
+    userDetailRef: DocumentReference,
     fileName: String,
     downloadManager: DownloadManager,
     context: Context
@@ -87,10 +90,13 @@ fun downloadFile(
     db.runBatch { batch ->
         batch.update(noteRef, "downloadedTimes", FieldValue.increment(1))
         batch.update(userUploadRef, "downloadedTimes", FieldValue.increment(1))
+        batch.update(userDetailRef, "downloadedTimes", FieldValue.increment(1))
         if (note.favourite.contains(currentUser.email.toString()))
             batch.update(favNoteRef, "downloadedTimes", FieldValue.increment(1))
     }.addOnFailureListener {
         Toast.makeText(context, it.localizedMessage, Toast.LENGTH_SHORT).show()
     }
-
 }
+
+//115 download // notes 63 //likes 24
+//36 download // notes 17 // likes // 3

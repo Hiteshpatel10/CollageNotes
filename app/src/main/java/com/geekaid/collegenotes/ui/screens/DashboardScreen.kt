@@ -12,7 +12,6 @@ import com.geekaid.collegenotes.components.NoNotesFound
 import com.geekaid.collegenotes.components.noteLayoutComponents.NoteLayout
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.model.FilterModel
-import com.geekaid.collegenotes.navigation.BottomNavScreen
 import com.geekaid.collegenotes.navigation.Screens
 import com.geekaid.collegenotes.util.Constants
 import com.geekaid.collegenotes.viewmodel.DashboardViewModel
@@ -110,7 +109,6 @@ fun DashboardScreen(
 
             }
         }
-
     }
 }
 

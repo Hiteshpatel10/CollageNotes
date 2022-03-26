@@ -1,6 +1,5 @@
 package com.geekaid.collegenotes.viewmodel
 
-import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +29,6 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     var uploaderDetails: MutableState<UploaderDetailModel?> = mutableStateOf(UploaderDetailModel())
     var userUploadList: MutableState<List<FileUploadModel>> = mutableStateOf(mutableListOf())
     var favDocRefList: MutableState<ListFetch> = mutableStateOf(ListFetch())
-    var pdfUri: MutableState<String> = mutableStateOf("")
 
     //To store lists fetch in filterScreen.kt
     var courseList: MutableState<ListFetch> = mutableStateOf(ListFetch())
@@ -55,18 +52,13 @@ class DashboardViewModel @Inject constructor(private val repository: Repository)
     //function to get the user detail from firebase
     suspend fun getDetails(email: String) {
         isGetDetailsFetching.value = true
-        Timber.i(isGetDetailsFetching.value.toString())
         userDetails.value = repository.getUserDetails(email = email)
-        Timber.i(userDetails.value.toString())
         isGetDetailsFetching.value = false
-        Timber.i(isGetDetailsFetching.value.toString())
     }
 
     suspend fun getUploaderDetails(email: String) {
         isGetUploaderDetailsFetching.value = true
-        Timber.i(isGetUploaderDetailsFetching.value.toString())
         uploaderDetails.value = repository.getUserDetails(email = email)
-        Timber.i(uploaderDetails.value.toString())
         isGetUploaderDetailsFetching.value = false
     }
 

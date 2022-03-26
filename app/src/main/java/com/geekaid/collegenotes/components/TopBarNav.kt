@@ -39,11 +39,12 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
         actions = {
 
             if (topBarDropdownVisibility(navController = navController)) {
-                IconButton(onClick = {
-                    notesType = !notesType
-                }) {
-                    Icon(Icons.Filled.FilterList, contentDescription = "more")
-                }
+                if (navBackStackEntry?.destination?.route != BottomNavScreen.DashboardNav.route)
+                    IconButton(onClick = {
+                        notesType = !notesType
+                    }) {
+                        Icon(Icons.Filled.FilterList, contentDescription = "more")
+                    }
 
                 if (navBackStackEntry?.destination?.route != BottomNavScreen.FavouriteScreenNav.route)
                     IconButton(onClick = { notesOrderBy = !notesOrderBy }) {
@@ -90,7 +91,8 @@ fun TopBarNav(dashboardViewModel: DashboardViewModel, navController: NavControll
                 DropdownMenuItem(
                     onClick = {
                         if (dashboardViewModel.isGetDetailsFetching.value)
-                            Toast.makeText(context, "poor internet connection", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "poor internet connection", Toast.LENGTH_SHORT)
+                                .show()
                         else if (dashboardViewModel.userDetails.value == UploaderDetailModel() || dashboardViewModel.userDetails.value == null)
                             navController.navigate(BottomNavScreen.UserProfileCreateNav.route)
                         else

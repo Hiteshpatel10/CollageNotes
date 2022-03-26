@@ -12,6 +12,9 @@ data class UploaderDetailModel(
     var profileUri: String = "",
     var about: String = "",
     var verified: Boolean = false,
+    var uploaded: Long = 0,
+    var downloadedTimes: Long = 0,
+    var likes: Long = 0,
 
     //Social
     var instagram: String = "",

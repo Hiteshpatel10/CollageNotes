@@ -3,7 +3,6 @@ package com.geekaid.collegenotes.components
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -68,16 +67,20 @@ fun FileUploadComponent(
         }
 
         if (course.isNotEmpty())
-            scope.launch {
-                dashboardViewModel.branchList.value =
-                    dashboardViewModel.getBranchList(course)!!
-            }
+          SideEffect {
+              scope.launch {
+                  dashboardViewModel.branchList.value =
+                      dashboardViewModel.getBranchList(course)!!
+              }
+          }
 
         if (course.isNotEmpty() && branch.isNotEmpty())
-            scope.launch {
-                dashboardViewModel.subjectList.value =
-                    dashboardViewModel.getSubjectList(course, branch)!!
-            }
+           SideEffect {
+               scope.launch {
+                   dashboardViewModel.subjectList.value =
+                       dashboardViewModel.getSubjectList(course, branch)!!
+               }
+           }
 
         Column(Modifier.weight(1f)) {
 
