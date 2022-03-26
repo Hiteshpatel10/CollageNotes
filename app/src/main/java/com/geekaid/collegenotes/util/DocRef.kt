@@ -56,6 +56,11 @@ fun userDetailRef(firestore: FirebaseFirestore, currentUser: FirebaseUser): Docu
         .collection("userData").document("userInfo")
 }
 
+fun userDetailRef(firestore: FirebaseFirestore, currentUser: String): DocumentReference {
+    return firestore.collection("users").document(currentUser)
+        .collection("userData").document("userInfo")
+}
+
 fun userUploadRef(
     note: FileUploadModel,
     firestore: FirebaseFirestore,

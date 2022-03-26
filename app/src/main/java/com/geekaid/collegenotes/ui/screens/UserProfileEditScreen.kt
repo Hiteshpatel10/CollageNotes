@@ -39,6 +39,9 @@ fun UserProfileEditScreen(
     var about by remember { mutableStateOf(dashboardViewModel.userDetails.value?.about.toString()) }
     val userDetail by remember { mutableStateOf(dashboardViewModel.userDetails.value) }
     var imageUri by remember { mutableStateOf<Uri?>(Uri.parse(dashboardViewModel.userDetails.value?.profileUri.toString())) }
+    val uploaded by remember { mutableStateOf(dashboardViewModel.userDetails.value?.uploaded.toString())}
+    val downloadedTimes by remember { mutableStateOf(dashboardViewModel.userDetails.value?.downloadedTimes.toString())}
+    val likes by remember { mutableStateOf(dashboardViewModel.userDetails.value?.likes.toString())}
     var socialMediaLinks by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -95,16 +98,16 @@ fun UserProfileEditScreen(
                 )
 
             OutlinedTextField(
-                value = qualification,
-                onValueChange = { qualification = it },
+                value = institution,
+                onValueChange = { institution = it },
                 label = { Text(text = "Institution Associated With") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = institution,
-                onValueChange = { institution = it },
-                label = { Text(text = "Qualifications") },
+                value = qualification,
+                onValueChange = { qualification = it },
+                label = { Text(text = "Qualification") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -126,6 +129,9 @@ fun UserProfileEditScreen(
                     about = about,
                     profileUri = imageUri.toString(),
                     institutionAssociatedWith = institution,
+                    uploaded = uploaded.toLong(),
+                    downloadedTimes = downloadedTimes.toLong(),
+                    likes = likes.toLong(),
                     instagram = userDetail?.instagram.toString(),
                     youtube = userDetail?.youtube.toString(),
                     twitter = userDetail?.twitter.toString(),

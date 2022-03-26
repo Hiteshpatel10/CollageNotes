@@ -45,10 +45,6 @@ object Constants {
 
     val filterBy = listOf(
         "Notes", "Papers", "Assignments", "Lab Record"
-//        StringValuePair("Notes","Notes"),
-//        StringValuePair("Papers","Papers"),
-//        StringValuePair("Assignments","Assignments"),
-//        StringValuePair("Lab Record","Lab Record"),
     )
 
 

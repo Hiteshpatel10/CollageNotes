@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.navigation.NavHostController
 import com.geekaid.collegenotes.model.FileUploadModel
 import com.geekaid.collegenotes.navigation.BottomNavScreen
+import com.geekaid.collegenotes.util.userDetailRef
 import com.geekaid.collegenotes.util.userUploadRef
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -37,24 +39,22 @@ fun fileUploadDao(
     val userUploadRef =
         userUploadRef(note = note, firestore = firestore, email = currentUser.email.toString())
 
-    Timber.i("a")
+    val userDetailRef = userDetailRef(firestore = firestore, currentUser = currentUser)
+
     firestoreRef.get()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Timber.i("b")
                 if (task.result?.exists() == true) {
                     Toast.makeText(context, "File Already Exist", Toast.LENGTH_SHORT).show()
                 } else {
-                    Timber.i("c")
                     firestoreRef.set(note)
                         .addOnCompleteListener {
-                            Timber.i("d")
                             locationRef.putFile(uri).also {
                                 Toast.makeText(context, "Upload Started", Toast.LENGTH_SHORT)
                                     .show()
                             }
                             userUploadRef.set(note)
-
+                            userDetailRef.update("uploaded", FieldValue.increment(1))
                             navController.navigate(BottomNavScreen.DashboardNav.route)
                         }
                         .addOnFailureListener {
